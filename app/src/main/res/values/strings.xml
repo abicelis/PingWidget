@@ -1,3 +1,16 @@
 <resources>
+    /* Widget */
     <string name="app_name">PingWidget</string>
+    <string name="widget_ms">ms</string>
+    <string name="widget_min">Min</string>
+    <string name="widget_avg">Avg</string>
+    <string name="widget_max">Max</string>
+
+    /* Activity Home */
+    <string name="activity_home_title">"Welcome to PingWidget!</string>
+    <string name="activity_home_text">"This app is a widget. To be able to use it, you must add a PingWidget to your android launcher.</string>
+    <string name="activity_home_version">"App version %1$s</string>
+    <string name="activity_home_author">Alejandro Bicelis %1$d</string>
+    <string name="activity_home_github_link">Check project at GitHub</string>
+    <string name="activity_home_website_link">Visit my site</string>
 </resources>
