@@ -1,0 +1,83 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="ve.com.abicelis.creditcardexpensemanager.fragments.AboutFragment" >
+
+        <ImageView
+            android:id="@+id/activity_home_app_icon"
+            android:layout_width="192dp"
+            android:layout_height="192dp"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="16dp"
+            android:src="@drawable/icon_ping_widget" />
+
+        <TextView
+            android:id="@+id/activity_home_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_home_title"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_below="@+id/activity_home_app_icon"
+            android:layout_centerHorizontal="true" />
+
+
+        <TextView
+            android:id="@+id/activity_home_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_home_text"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_below="@+id/activity_home_title"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/activity_home_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/activity_home_text"
+            android:text="@string/activity_home_version" />
+
+        <TextView
+            android:id="@+id/activity_home_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/activity_home_version"
+            android:layout_centerHorizontal="true"
+            android:text="@string/activity_home_author" />
+
+        <TextView
+            android:id="@+id/activity_home_github_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/activity_home_author"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/activity_home_github_link"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/activity_home_website_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/activity_home_github_link"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/activity_home_website_link"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </RelativeLayout>
+
+</ScrollView>
