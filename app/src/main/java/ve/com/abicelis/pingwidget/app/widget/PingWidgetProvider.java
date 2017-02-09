@@ -1,4 +1,4 @@
-package ve.com.abicelis.pingwidget;
+package ve.com.abicelis.pingwidget.app.widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -12,6 +12,9 @@ import android.widget.RemoteViews;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import ve.com.abicelis.pingwidget.service.PingWidgetUpdateService;
+import ve.com.abicelis.pingwidget.R;
 
 /**
  * Created by abice on 6/2/2017.

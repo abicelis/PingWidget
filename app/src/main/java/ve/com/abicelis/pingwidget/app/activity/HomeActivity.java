@@ -1,4 +1,4 @@
-package ve.com.abicelis.pingwidget;
+package ve.com.abicelis.pingwidget.app.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -20,6 +20,7 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ve.com.abicelis.pingwidget.R;
 
 /**
  * Created by abice on 6/2/2017.

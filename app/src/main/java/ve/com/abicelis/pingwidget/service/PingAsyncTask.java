@@ -1,4 +1,4 @@
-package ve.com.abicelis.pingwidget;
+package ve.com.abicelis.pingwidget.service;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -10,6 +10,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Locale;
+
+import ve.com.abicelis.pingwidget.R;
 
 /**
  * Created by abice on 7/2/2017.

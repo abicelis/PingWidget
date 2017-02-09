@@ -1,24 +1,15 @@
-package ve.com.abicelis.pingwidget;
+package ve.com.abicelis.pingwidget.service;
 
 
-import android.app.IntentService;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.RemoteViews;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * Created by abice on 6/2/2017.
