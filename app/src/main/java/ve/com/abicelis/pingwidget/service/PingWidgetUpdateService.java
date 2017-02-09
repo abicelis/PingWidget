@@ -11,6 +11,9 @@ import android.util.Log;
 import java.util.HashMap;
 import java.util.Map;
 
+import ve.com.abicelis.pingwidget.model.PingWidgetData;
+import ve.com.abicelis.pingwidget.util.SharedPreferencesHelper;
+
 /**
  * Created by abice on 6/2/2017.
  */
@@ -48,23 +51,24 @@ public class PingWidgetUpdateService extends Service {
 
         //Get widgetId extra
         int widgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-        boolean shouldRun = intent.getBooleanExtra(PingWidgetUpdateService.SHOULD_RUN, false);
+
+        //Get widget data from SharedPreferences
+        PingWidgetData currentWidget = SharedPreferencesHelper.readPingWidgetData(getApplicationContext(), widgetId);
 
 
         PingAsyncTask task = mAsyncTasks.get(widgetId);
-        if(shouldRun) {
+        if(currentWidget.isRunning()) {
             if(task != null && !task.isCancelled()) {
                 Log.d(TAG, "ERROR: Task already running when trying to create a new one! ID=" + widgetId);
                 task.cancel(true);
 
             } else {
                 //Create a new task and run it, also save it to mAsyncTasks using widgetId
-                task = new PingAsyncTask(this.getApplicationContext(), widgetId);
+                task = new PingAsyncTask(this.getApplicationContext(), widgetId, currentWidget.getmPingInterval());
                 mAsyncTasks.put(widgetId, task);
 
-                //Get stored ip from somewhere, preferenceSettings?, AppWidget Settings activity? A bundle?
-                String ipToPing = "www.google.com";
-                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, ipToPing);
+                //Get stored address from PreferenceSettings
+                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, currentWidget.getAddress());
             }
         } else {
             mAsyncTasks.remove(widgetId);
