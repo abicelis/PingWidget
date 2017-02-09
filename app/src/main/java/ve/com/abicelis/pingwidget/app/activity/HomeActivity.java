@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +47,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
 
+        setUpToolbar();
 
         mVersion.setText(String.format(Locale.getDefault(), getResources().getString(R.string.activity_home_version), getAppVersionAndBuild(this).first));
         mAuthor.setText(String.format(Locale.getDefault(), getResources().getString(R.string.activity_home_author), Calendar.getInstance().get(Calendar.YEAR)));
@@ -64,8 +67,29 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
+    private void setUpToolbar() {
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.activity_home_toolbar);
+        toolbar.setTitle(getResources().getString(R.string.app_name));
 
+        //Set toolbar as actionbar
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            // Respond to the mToolbar's back/home button
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     public static Pair<String, Integer> getAppVersionAndBuild(Context context) {
         try {
