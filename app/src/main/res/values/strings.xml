@@ -13,4 +13,12 @@
     <string name="activity_home_author">Alejandro Bicelis %1$d</string>
     <string name="activity_home_github_link">Check project at GitHub</string>
     <string name="activity_home_website_link">Visit my site</string>
+
+    /* Widget Configure preference activity/fragment */
+    <string name="fragment_widget_configure_name">Configure PingWidget</string>
+    <string name="fragment_widget_configure_color_palette">Color Palette</string>
+    <string name="fragment_widget_configure_err_address">Please enter a valid Address</string>
+    <string name="fragment_widget_configure_err_interval">Please select an interval</string>
+    <string name="fragment_widget_configure_err_color">Please select a color</string>
+
 </resources>

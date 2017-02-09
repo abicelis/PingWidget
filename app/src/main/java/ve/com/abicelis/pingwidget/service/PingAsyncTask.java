@@ -20,7 +20,8 @@ import ve.com.abicelis.pingwidget.R;
 class PingAsyncTask extends AsyncTask<String, Float, Integer> {
 
     //CONST
-    private static final int SLEEP_TIME = 1000;
+    private static final int MILLIS = 1000;
+    private static int SLEEP_TIME = 1000;
     private static final String TAG = PingAsyncTask.class.getSimpleName();
 
     //DATA
@@ -28,11 +29,12 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
     private AppWidgetManager mAppWidgetManager;
     private int mWidgetId;
 
-    public PingAsyncTask(Context appContext, int widgetId ) {
+    public PingAsyncTask(Context appContext, int widgetId, int pingInterval) {
         Log.d(TAG, "constructor()");
 
         mAppContext = appContext;
         mWidgetId = widgetId;
+        SLEEP_TIME = pingInterval * MILLIS;
         mAppWidgetManager = AppWidgetManager.getInstance(appContext);
     }
 

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Widget settings"/>
+    <EditTextPreference
+        android:key="widget_configure_address"
+        android:title="Address"
+        android:summary="Enter a valid IP or web address to ping" />
+    <ListPreference
+        android:key="widget_configure_interval"
+        android:title="Ping Interval"
+        android:summary="Set how fast the ping should occur. Note: shorter times drain more battery"
+        android:entries="@array/pingFrequency"
+        android:entryValues="@array/pingFrequency"/>
+    <Preference
+        android:key="widget_configure_color"
+        android:title="Widget Color"
+        android:summary="Click here to select a background color"/>
+    <PreferenceCategory android:title="Enable Widget"/>
+    <Preference
+        android:key="widget_configure_enable"
+        android:title="Click here to enable widget!"/>
+</PreferenceScreen>

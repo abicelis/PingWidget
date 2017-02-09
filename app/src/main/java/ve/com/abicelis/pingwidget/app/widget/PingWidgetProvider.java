@@ -1,6 +1,5 @@
 package ve.com.abicelis.pingwidget.app.widget;
 
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
@@ -13,8 +12,10 @@ import android.widget.RemoteViews;
 import java.util.HashMap;
 import java.util.Map;
 
+import ve.com.abicelis.pingwidget.model.PingWidgetData;
 import ve.com.abicelis.pingwidget.service.PingWidgetUpdateService;
 import ve.com.abicelis.pingwidget.R;
+import ve.com.abicelis.pingwidget.util.SharedPreferencesHelper;
 
 /**
  * Created by abice on 6/2/2017.
@@ -24,17 +25,14 @@ public class PingWidgetProvider extends AppWidgetProvider {
 
     //CONST
     private static final String TAG = PingWidgetProvider.class.getSimpleName();
-    public static String TOGGLE_PING_WIDGET = "TOGGLE_PING_WIDGET";
-
-    //DATA
-    private static Map<Integer,Boolean> mServiceRunning = new HashMap<>();
+    public static String PING_WIDGET_TOGGLE = "PING_WIDGET_TOGGLE";
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
-        //Delete widgets from mServiceRunning Map
-        for(int appWidgetId :appWidgetIds) {
-            mServiceRunning.remove(appWidgetId);
-        }
+        //Delete widgets from SharedPreferences
+        for(int appWidgetId :appWidgetIds)
+            SharedPreferencesHelper.deletePingWidgetData(context.getApplicationContext(), appWidgetId);
+
         super.onDeleted(context, appWidgetIds);
     }
 
@@ -42,33 +40,30 @@ public class PingWidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         Log.d(TAG, "onUpdate");
 
-        checkPermissions();
-
-        for (int widgetId : appWidgetIds) {
-
-            //Add widget to mServiceRunning map!
-            mServiceRunning.put(widgetId, false);
-
-            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-
-
-
-            //Register an Intent so that onClicks are received by PingWidgetProvider.onReceive()
-
-            //Create an Intent, set TOGGLE_PING_WIDGET action to it, put EXTRA_APPWIDGET_ID as extra
-            Intent clickIntent = new Intent(context, PingWidgetProvider.class);
-            clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-            clickIntent.setAction(TOGGLE_PING_WIDGET);
-
-            //Construct a PendingIntent using the Intent above
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, widgetId, clickIntent, 0);
-
-            //Register pendingIntent in RemoteViews onClick
-            remoteViews.setOnClickPendingIntent(R.id.widget_start_pause, pendingIntent);
-
-            //Update widget
-            appWidgetManager.updateAppWidget(widgetId, remoteViews);
-        }
+//        for (int widgetId : appWidgetIds) {
+//
+//            //Add widget to mServiceRunning map!
+//            mServiceRunning.put(widgetId, false);
+//
+//            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+//
+//
+//            //Register an Intent so that onClicks are received by PingWidgetProvider.onReceive()
+//
+//            //Create an Intent, set PING_WIDGET_TOGGLE action to it, put EXTRA_APPWIDGET_ID as extra
+//            Intent clickIntent = new Intent(context, PingWidgetProvider.class);
+//            clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+//            clickIntent.setAction(PING_WIDGET_TOGGLE);
+//
+//            //Construct a PendingIntent using the Intent above
+//            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, widgetId, clickIntent, 0);
+//
+//            //Register pendingIntent in RemoteViews onClick
+//            remoteViews.setOnClickPendingIntent(R.id.widget_start_pause, pendingIntent);
+//
+//            //Update widget
+//            appWidgetManager.updateAppWidget(widgetId, remoteViews);
+//        }
 
 
 //        // Get all ids
@@ -119,9 +114,6 @@ public class PingWidgetProvider extends AppWidgetProvider {
 //        }
     }
 
-    private void checkPermissions() {
-
-    }
 
 
     @Override
@@ -129,57 +121,44 @@ public class PingWidgetProvider extends AppWidgetProvider {
         Log.d(TAG, "onReceive()");
 
         //R.id.widget_start_pause was clicked
-        if(intent.getAction().equals(TOGGLE_PING_WIDGET)) {
-            Log.d(TAG, "onReceive(), TOGGLE_PING_WIDGET");
+        if(PING_WIDGET_TOGGLE.equals(intent.getAction())) {
+            Log.d(TAG, "onReceive(), PING_WIDGET_TOGGLE");
 
-
+            //Get extras from intent, namely, the widgetId
             Bundle extras = intent.getExtras();
             int widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
             Log.d(TAG, "onReceive(), widgetId=" + widgetId);
 
+            if (widgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+                //Get widget data from SharedPreferences
+                PingWidgetData currentWidget = SharedPreferencesHelper.readPingWidgetData(context.getApplicationContext(), widgetId);
 
-            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+                if (currentWidget != null) {
+                    //Toggle isRunning(), write new running state into SharedPreferences
+                    currentWidget.toggleRunning();
+                    SharedPreferencesHelper.writePingWidgetData(context.getApplicationContext(), widgetId, currentWidget);
 
-            //If map doesn't contain widget id, add it, set it to false.
-            //This happens when app is reinstalled and there are existing widgets, I think.
-            if(!mServiceRunning.containsKey(widgetId)) {
-                mServiceRunning.put(widgetId, false);
+                    // Notify PingWidgetUpdateService about the change (start/pause) ping
+                    Intent serviceIntent = new Intent(context.getApplicationContext(), PingWidgetUpdateService.class);
+                    serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+                    context.startService(serviceIntent);
+
+                    //Get remote views and update
+                    RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+
+                    if (currentWidget.isRunning()) {
+                        remoteViews.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_pause);
+                        Log.d(TAG, "onReceive(), Sent START to service");
+                    } else {
+                        remoteViews.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
+                        Log.d(TAG, "onReceive(), Sent STOP to service");
+                    }
+
+                    //Update widget
+                    AppWidgetManager.getInstance(context).updateAppWidget(widgetId, remoteViews);
+                }
             }
-            mServiceRunning.put(widgetId, !mServiceRunning.get(widgetId));
-
-
-            // Create a fresh intent
-            Intent serviceIntent = new Intent(context.getApplicationContext(), PingWidgetUpdateService.class);
-            serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-            serviceIntent.putExtra(PingWidgetUpdateService.SHOULD_RUN, mServiceRunning.get(widgetId));
-            context.startService(serviceIntent);
-
-
-            if(mServiceRunning.get(widgetId)) {
-                remoteViews.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_pause);
-                Log.d(TAG, "onReceive(), Sent START to service");
-            } else {
-                remoteViews.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
-                Log.d(TAG, "onReceive(), Sent STOP to service");
-            }
-
-//            if(mServiceRunning.get(widgetId)) {
-//                context.stopService(serviceIntent);
-//                remoteViews.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
-//                Log.d(TAG, "onReceive(), Service stopped");
-//            } else {
-//                context.startService(serviceIntent);
-//                remoteViews.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_pause);
-//                Log.d(TAG, "onReceive(), Service started");
-//            }
-
-
-            //Update widget
-            ComponentName thisWidget = new ComponentName(context, PingWidgetProvider.class);
-
-            AppWidgetManager.getInstance(context).updateAppWidget(widgetId, remoteViews);
         }
-
-            super.onReceive(context, intent);
+        super.onReceive(context, intent);
     }
 }
