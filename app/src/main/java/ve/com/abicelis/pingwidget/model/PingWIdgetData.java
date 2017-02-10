@@ -1,6 +1,6 @@
 package ve.com.abicelis.pingwidget.model;
 
-import java.util.List;
+import java.util.LinkedList;
 
 /**
  * Created by abice on 9/2/2017.
@@ -11,20 +11,20 @@ public class PingWidgetData {
     private String mAddress;
     private int mPingInterval;
     private int mColor;
-    private List<Float> mPingTimes;
+    private int mMaxPings;
+    private LinkedList<Float> mPingTimes;
 
     private boolean isRunning;
 
 
-    public PingWidgetData(String address, int pingInterval, int color, List<Float> pingTimes) {
+    public PingWidgetData(String address, int pingInterval, int color, int maxPings) {
         mAddress = address;
         mPingInterval = pingInterval;
         mColor = color;
-        mPingTimes = pingTimes;
+        mMaxPings = maxPings;
+
+        mPingTimes = new LinkedList<>();
         isRunning = false;
-    }
-    public PingWidgetData(String address, int pingInterval, int color) {
-        this(address, pingInterval, color, null);
     }
 
 
@@ -37,11 +37,11 @@ public class PingWidgetData {
     }
 
 
-    public int getmPingInterval() {
+    public int getPingInterval() {
         return mPingInterval;
     }
 
-    public void setmPingInterval(int pingInterval) {
+    public void setPingInterval(int pingInterval) {
         this.mPingInterval = pingInterval;
     }
 
@@ -55,11 +55,20 @@ public class PingWidgetData {
     }
 
 
-    public List<Float> getPingTimes() {
+    public int getMaxPings() {
+        return mMaxPings;
+    }
+
+    public void setMaxPings(int mMaxPings) {
+        this.mMaxPings = mMaxPings;
+    }
+
+
+    public LinkedList<Float> getPingTimes() {
         return mPingTimes;
     }
 
-    public void setPingTimes(List<Float> mPingTimes) {
+    public void setPingTimes(LinkedList<Float> mPingTimes) {
         this.mPingTimes = mPingTimes;
     }
 
