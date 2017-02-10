@@ -7,4 +7,10 @@
     <color name="text_white">#EEEEEE</color>
 
 
+    <color name="graph_lines">#1976d2</color>
+    <color name="graph_points">#e53935</color>
+
+
+
+
 </resources>
