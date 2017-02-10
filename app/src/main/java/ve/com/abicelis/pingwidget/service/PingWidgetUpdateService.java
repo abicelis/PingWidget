@@ -3,14 +3,18 @@ package ve.com.abicelis.pingwidget.service;
 
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import ve.com.abicelis.pingwidget.R;
 import ve.com.abicelis.pingwidget.model.PingWidgetData;
 import ve.com.abicelis.pingwidget.util.SharedPreferencesHelper;
 
@@ -32,10 +36,17 @@ public class PingWidgetUpdateService extends Service {
     }
 
 
+
     @Override
     public void onCreate() {
         Log.d(TAG, "onCreate()");
         super.onCreate();
+
+        //Register ScreenReceiver to screen on/off broadcasts
+        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+        //filter.addAction(Intent.ACTION_SCREEN_ON);
+        BroadcastReceiver mReceiver = new ScreenReceiver();
+        registerReceiver(mReceiver, filter);
     }
 
     @Override
@@ -50,104 +61,85 @@ public class PingWidgetUpdateService extends Service {
         Log.d(TAG, "onStartCommand()");
 
         if(intent != null) {
-            //Get widgetId extra
+            //Try to get extras
+            String screenState = intent.getStringExtra(ScreenReceiver.SCREEN_STATE);
             int widgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 
-            //Get widget data from SharedPreferences
-            PingWidgetData currentWidget = SharedPreferencesHelper.readPingWidgetData(getApplicationContext(), widgetId);
+            //Check if intent is coming from ScreenReceiver
+            if(screenState != null)
+                handleScreenState(screenState);
 
+            //Check if intent came from a Widget click
+            else if (widgetId != AppWidgetManager.INVALID_APPWIDGET_ID)
+                handleWidgetClick(widgetId);
 
-            PingAsyncTask task = mAsyncTasks.get(widgetId);
-            if(currentWidget.isRunning()) {
-                if(task != null && !task.isCancelled()) {
-                    Log.d(TAG, "ERROR: Task already running when trying to create a new one! ID=" + widgetId);
-                    task.cancel(true);
-
-                } else {
-                    //Create a new task and run it, also save it to mAsyncTasks using widgetId
-                    task = new PingAsyncTask(this.getApplicationContext(), widgetId, currentWidget.getPingInterval(), currentWidget.getMaxPings());
-                    mAsyncTasks.put(widgetId, task);
-
-                    //Get stored address from PreferenceSettings
-                    task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, currentWidget.getAddress());
-                }
-            } else {
-                mAsyncTasks.remove(widgetId);
-
-                if(task == null)
-                    Log.d(TAG, "ERROR: Could not find asyncTask to cancel! ID=" + widgetId);
-                else if(!task.isCancelled())
-                    task.cancel(false);
-            }
+            else
+                Log.d(TAG, "Error:Got an unknown onStartCommand() in PingWidgetUpdateService");
         }
-
-
-//        //Get the RemoteViews of Widget
-//        RemoteViews remoteViews = new RemoteViews(getApplicationContext().getPackageName(), R.layout.widget_layout);
-//
-//        // Set the text
-//        remoteViews.setTextViewText(R.id.widget_max_ping_value, String.valueOf(500) + ".0");
-//
-//        //Update widget
-//        AppWidgetManager.getInstance(this.getApplicationContext()).updateAppWidget(mWidgetId, remoteViews);
-
-//        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this.getApplicationContext());
-//        int[] allWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
-//
-//        for (int widgetId : allWidgetIds) {
-//
-//
-////            PingAsyncTask pingRunnable = new PingAsyncTask(this.getApplicationContext(), widgetId);
-////            Thread pingThread = new Thread(pingRunnable);
-////            pingThread.start();
-////
-////            try {
-////                Thread.sleep(10000);
-////            } catch (InterruptedException e) {
-////
-////            }
-////            pingThread.interrupt();
-//
-//
-//            RemoteViews remoteViews = new RemoteViews(this.getApplicationContext().getPackageName(), R.layout.widget_layout);
-//
-//            // Set the text
-//            int number;
-//            number = (new Random().nextInt(100));
-//            remoteViews.setTextViewText(R.id.widget_max_ping_value, String.valueOf(number) + ".0");
-//            number = (new Random().nextInt(100));
-//            remoteViews.setTextViewText(R.id.widget_avg_ping_value, String.valueOf(number) + ".0");
-//            number = (new Random().nextInt(100));
-//            remoteViews.setTextViewText(R.id.widget_min_ping_value, String.valueOf(number) + ".0");
-//
-//
-//
-//
-//            // Register an onClickListener
-//            /*Intent clickIntent = new Intent(this.getApplicationContext(), PingWidgetProvider.class);
-//
-//            clickIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-//            clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, allWidgetIds);
-//
-//            PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//            remoteViews.setOnClickPendingIntent(R.id.widget_start_pause, pendingIntent);*/
-//
-//
-//            //Update widget
-//            appWidgetManager.updateAppWidget(widgetId, remoteViews);
-//        }
-//
-//        try {
-//            Thread.sleep(100000);
-//            //ping("8.8.8.8");
-//        }catch (Exception e) {
-//
-//        }
-//
-//        //stopSelf();
 
         // If service get killed, after returning from here, restart
         return START_STICKY;
+    }
+
+    private void handleScreenState(String screenState) {
+        Log.d(TAG, "handleScreenState()" + screenState);
+
+        //If screen has just been turned off, stop all threads and clear mAsyncTasks
+        if(Intent.ACTION_SCREEN_OFF.equals(screenState)){
+            for (Map.Entry<Integer, PingAsyncTask> entry : mAsyncTasks.entrySet()) {
+
+                //Stop asyncTask
+                if(entry == null || entry.getKey() == null || entry.getValue() == null)
+                    Log.d(TAG, "ERROR: Could not find asyncTask to cancel! ID=" + entry.getKey());
+                else if(!entry.getValue().isCancelled())
+                    entry.getValue().cancel(false);
+
+
+                //Get AppWidgetManager and RemoteViews
+                RemoteViews views = new RemoteViews(getApplication().getPackageName(), R.layout.widget_layout);
+                //Change widget's start_pause icon to pause
+                views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
+                //Finally, update the widget
+                AppWidgetManager.getInstance(getApplicationContext()).updateAppWidget(entry.getKey(), views);
+
+                //Get widget data, toggle toggleRunning() so that it's isRunning() is false.
+                PingWidgetData currentWidget = SharedPreferencesHelper.readPingWidgetData(getApplicationContext(), entry.getKey());
+                currentWidget.toggleRunning();
+                SharedPreferencesHelper.writePingWidgetData(getApplicationContext(), entry.getKey(), currentWidget);
+
+
+            }
+            mAsyncTasks.clear();
+        }
+    }
+
+    private void handleWidgetClick(int widgetId) {
+        //Get widget data from SharedPreferences
+        PingWidgetData currentWidget = SharedPreferencesHelper.readPingWidgetData(getApplicationContext(), widgetId);
+
+
+        PingAsyncTask task = mAsyncTasks.get(widgetId);
+        if(currentWidget.isRunning()) {
+            if(task != null && !task.isCancelled()) {
+                Log.d(TAG, "ERROR: Task already running when trying to create a new one! ID=" + widgetId);
+                task.cancel(true);
+
+            } else {
+                //Create a new task and run it, also save it to mAsyncTasks using widgetId
+                task = new PingAsyncTask(this.getApplicationContext(), widgetId, currentWidget.getPingInterval(), currentWidget.getMaxPings());
+                mAsyncTasks.put(widgetId, task);
+
+                //Get stored address from PreferenceSettings
+                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, currentWidget.getAddress());
+            }
+        } else {
+            mAsyncTasks.remove(widgetId);
+
+            if(task == null)
+                Log.d(TAG, "ERROR: Could not find asyncTask to cancel! ID=" + widgetId);
+            else if(!task.isCancelled())
+                task.cancel(false);
+        }
     }
 
 }
