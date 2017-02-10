@@ -12,6 +12,8 @@ import java.io.InputStreamReader;
 import java.util.Locale;
 
 import ve.com.abicelis.pingwidget.R;
+import ve.com.abicelis.pingwidget.model.PingWidgetData;
+import ve.com.abicelis.pingwidget.util.SharedPreferencesHelper;
 
 /**
  * Created by abice on 7/2/2017.
@@ -103,7 +105,7 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
         RemoteViews remoteViews = new RemoteViews(mAppContext.getPackageName(), R.layout.widget_layout);
 
         // Set the text
-        remoteViews.setTextViewText(R.id.widget_max_ping_value, String.valueOf(pingDelay));
+        remoteViews.setTextViewText(R.id.widget_last_ping_value, String.valueOf(pingDelay));
 
         //Update widget
         mAppWidgetManager.updateAppWidget(mWidgetId, remoteViews);

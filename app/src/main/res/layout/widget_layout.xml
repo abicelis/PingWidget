@@ -78,6 +78,40 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
                 <TextView
+                    android:id="@+id/widget_last_ping_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="@color/text_white"
+                    android:textSize="@dimen/text_small"
+                    android:text="@string/widget_last"/>
+                <TextView
+                    android:id="@+id/widget_last_ping_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/widget_last_ping_label"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="@color/text_white"
+                    android:textSize="@dimen/text_large"
+                    android:text="99.9"/>
+                <TextView
+                    android:id="@+id/widget_last_ping_ms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/widget_last_ping_value"
+                    android:layout_alignBottom="@id/widget_last_ping_value"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="@color/text_white"
+                    android:textSize="@dimen/text_tiny"
+                    android:text="@string/widget_ms"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <TextView
                     android:id="@+id/widget_max_ping_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -95,7 +129,7 @@
                     android:fontFamily="sans-serif-light"
                     android:textColor="@color/text_white"
                     android:textSize="@dimen/text_large"
-                    android:text="99.9"/>
+                    android:text="-"/>
                 <TextView
                     android:id="@+id/widget_max_ping_ms"
                     android:layout_width="match_parent"
