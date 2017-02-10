@@ -21,5 +21,6 @@
     <string name="fragment_widget_configure_err_address">Please enter a valid Address</string>
     <string name="fragment_widget_configure_err_interval">Please select an interval</string>
     <string name="fragment_widget_configure_err_color">Please select a color</string>
+    <string name="fragment_widget_configure_err_max_pings">Please select a Max Pings amount</string>
 
 </resources>

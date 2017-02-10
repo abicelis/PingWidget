@@ -33,6 +33,8 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
     private EditTextPreference mAddress;
     private ListPreference mInterval;
     private Preference mColor;
+    private ListPreference mMaxPings;
+
     private int mWidgetColor = -1;
 
     @Override
@@ -63,6 +65,7 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
                 return false;
             }
         });
+        mMaxPings = (ListPreference) findPreference("widget_configure_max_pings");
 
 
         Preference enable = findPreference("widget_configure_enable");
@@ -91,11 +94,12 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
                     //views.setInt(R.id.widget_background, "setColorFilter", Color.WHITE);
                     //views.setInt(R.id.widget_background, "setBackgroundTint", Color.GREEN);
                    // views.setInt(R.id.widget_background, "setBackgroundColor", mWidgetColor);
-                    views.setInt(R.id.widget_layout, "setBackgroundColor", mWidgetColor);
+                    views.setInt(R.id.widget_background, "setBackgroundColor", mWidgetColor);
+                    //views.setInt(R.id.widget_layout, "setBackgroundColor", mWidgetColor);
                     //And if your color has transparency call remoteViews.setInt(R.id.backgroundimage, "setImageAlpha", Color.alpha(color); if SDK>=16; else remoteViews.setInt(R.id.backgroundimage, "setAlpha", Color.alpha(color);
 
                     //Save PingWidgetData in SharedPreferences()
-                    savePingWidgetData(widgetId, mAddress.getText(), Integer.parseInt(mInterval.getValue()));
+                    savePingWidgetData(widgetId, mAddress.getText(), Integer.parseInt(mInterval.getValue()), Integer.parseInt(mMaxPings.getValue()));
 
 
 
@@ -148,11 +152,16 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
             Toast.makeText(getActivity(), getResources().getString(R.string.fragment_widget_configure_err_color), Toast.LENGTH_SHORT).show();
             return false;
         }
+
+        if(mMaxPings.getValue() == null) {
+            Toast.makeText(getActivity(), getResources().getString(R.string.fragment_widget_configure_err_max_pings), Toast.LENGTH_SHORT).show();
+            return false;
+        }
         return true;
     }
 
-    private void savePingWidgetData(int widgetId, String address, int pingInterval) {
-        PingWidgetData data = new PingWidgetData(address, pingInterval, mWidgetColor);
+    private void savePingWidgetData(int widgetId, String address, int pingInterval, int maxPings) {
+        PingWidgetData data = new PingWidgetData(address, pingInterval, mWidgetColor, maxPings);
         SharedPreferencesHelper.writePingWidgetData(getContext().getApplicationContext(), widgetId, data);
     }
 
