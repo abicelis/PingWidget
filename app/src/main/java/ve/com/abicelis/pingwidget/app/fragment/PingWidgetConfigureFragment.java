@@ -91,16 +91,15 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
                     views.setTextViewText(R.id.widget_host, mAddress.getText());
 
                     //TODO: Cant seem to figure out how to change background color without overwriting background drawable (killing the rounded corners)
+                    //Do this here and in PingWidgetProvider
                     //views.setInt(R.id.widget_background, "setColorFilter", Color.WHITE);
                     //views.setInt(R.id.widget_background, "setBackgroundTint", Color.GREEN);
-                   // views.setInt(R.id.widget_background, "setBackgroundColor", mWidgetColor);
-                    views.setInt(R.id.widget_background, "setBackgroundColor", mWidgetColor);
+                     views.setInt(R.id.widget_background, "setBackgroundColor", mWidgetColor);
                     //views.setInt(R.id.widget_layout, "setBackgroundColor", mWidgetColor);
                     //And if your color has transparency call remoteViews.setInt(R.id.backgroundimage, "setImageAlpha", Color.alpha(color); if SDK>=16; else remoteViews.setInt(R.id.backgroundimage, "setAlpha", Color.alpha(color);
 
                     //Save PingWidgetData in SharedPreferences()
                     savePingWidgetData(widgetId, mAddress.getText(), Integer.parseInt(mInterval.getValue()), Integer.parseInt(mMaxPings.getValue()));
-
 
 
                     //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()
@@ -114,7 +113,6 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
 
                     //Register pendingIntent in RemoteViews onClick
                     views.setOnClickPendingIntent(R.id.widget_start_pause, pendingIntent);
-
 
 
 
