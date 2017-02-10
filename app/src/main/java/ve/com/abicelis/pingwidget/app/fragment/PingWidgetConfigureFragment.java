@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -32,31 +30,33 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
 
     private EditTextPreference mAddress;
     private ListPreference mInterval;
-    private Preference mColor;
+    private Preference mBackgroundColor;
+    private Preference mChartLineColor;
     private ListPreference mMaxPings;
 
-    private int mWidgetColor = -1;
+    private int mWidgetBackgroundColor = -1;
+    private int mWidgetChartLineColor = -1;
 
     @Override
     public void onCreatePreferencesFix(@Nullable Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.ping_widget_configure_preferences);
 
-        mAddress = (EditTextPreference) findPreference("widget_configure_address");
+        mAddress = (EditTextPreference) findPreference(getResources().getString(R.string.fragment_widget_configure_key_address));
         mAddress.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                Toast.makeText(getActivity(), "TODO: Check if valid IP", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "TODO: Check if valid IP", Toast.LENGTH_SHORT).show();
                 //TODO: Check if valid IP
                 return true;
             }
         });
-        mInterval = (ListPreference) findPreference("widget_configure_interval");
-        mColor =  findPreference("widget_configure_color");
-        mColor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        mInterval = (ListPreference) findPreference(getResources().getString(R.string.fragment_widget_configure_key_interval));
+        mBackgroundColor =  findPreference(getResources().getString(R.string.fragment_widget_configure_key_background_color));
+        mBackgroundColor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
 
-                new ColorChooserDialog.Builder((PingWidgetConfigureActivity) getActivity(), R.string.fragment_widget_configure_color_palette)
+                new ColorChooserDialog.Builder((PingWidgetConfigureActivity) getActivity(), R.string.fragment_widget_configure_dialog_background_color)
                         .doneButton(R.string.md_done_label)  // changes label of the done button
                         .cancelButton(R.string.md_cancel_label)  // changes label of the cancel button
                         .backButton(R.string.md_back_label)  // changes label of the back button
@@ -65,10 +65,24 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
                 return false;
             }
         });
-        mMaxPings = (ListPreference) findPreference("widget_configure_max_pings");
+        mChartLineColor =  findPreference(getResources().getString(R.string.fragment_widget_configure_key_line_color));
+        mChartLineColor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+
+                new ColorChooserDialog.Builder((PingWidgetConfigureActivity) getActivity(), R.string.fragment_widget_configure_dialog_chart_line_color)
+                        .doneButton(R.string.md_done_label)  // changes label of the done button
+                        .cancelButton(R.string.md_cancel_label)  // changes label of the cancel button
+                        .backButton(R.string.md_back_label)  // changes label of the back button
+                        .dynamicButtonColor(true)  // defaults to true, false will disable changing action buttons' color to currently selected color
+                        .show();
+                return false;
+            }
+        });
+        mMaxPings = (ListPreference) findPreference(getResources().getString(R.string.fragment_widget_configure_key_max_pings));
 
 
-        Preference enable = findPreference("widget_configure_enable");
+        Preference enable = findPreference(getResources().getString(R.string.fragment_widget_configure_key_enable));
         enable.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -95,8 +109,8 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
                     //Do this here and in PingWidgetProvider
                     //views.setInt(R.id.widget_background, "setColorFilter", Color.WHITE);
                     //views.setInt(R.id.widget_background, "setBackgroundTint", Color.GREEN);
-                     views.setInt(R.id.widget_background, "setBackgroundColor", mWidgetColor);
-                    //views.setInt(R.id.widget_layout, "setBackgroundColor", mWidgetColor);
+                     views.setInt(R.id.widget_background, "setBackgroundColor", mWidgetBackgroundColor);
+                    //views.setInt(R.id.widget_layout, "setBackgroundColor", mWidgetBackgroundColor);
                     //And if your color has transparency call remoteViews.setInt(R.id.backgroundimage, "setImageAlpha", Color.alpha(color); if SDK>=16; else remoteViews.setInt(R.id.backgroundimage, "setAlpha", Color.alpha(color);
 
                     //Save PingWidgetData in SharedPreferences()
@@ -147,8 +161,13 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
             return false;
         }
 
-        if(mWidgetColor == -1) {
-            Toast.makeText(getActivity(), getResources().getString(R.string.fragment_widget_configure_err_color), Toast.LENGTH_SHORT).show();
+        if(mWidgetBackgroundColor == -1) {
+            Toast.makeText(getActivity(), getResources().getString(R.string.fragment_widget_configure_err_background_color), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if(mWidgetChartLineColor == -1) {
+            Toast.makeText(getActivity(), getResources().getString(R.string.fragment_widget_configure_err_chart_line_color), Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -160,12 +179,15 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
     }
 
     private void savePingWidgetData(int widgetId, String address, int pingInterval, int maxPings) {
-        PingWidgetData data = new PingWidgetData(address, pingInterval, mWidgetColor, maxPings);
+        PingWidgetData data = new PingWidgetData(address, pingInterval, mWidgetBackgroundColor, mWidgetChartLineColor, maxPings);
         SharedPreferencesHelper.writePingWidgetData(getContext().getApplicationContext(), widgetId, data);
     }
 
     //Method called from parent activity
-    public void setWidgetColor( int color) {
-        mWidgetColor = color;
+    public void setWidgetBackgroundColor(int color) {
+        mWidgetBackgroundColor = color;
+    }
+    public void setWidgetChartLineColor(int color) {
+        mWidgetChartLineColor = color;
     }
 }

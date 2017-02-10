@@ -109,11 +109,11 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
         SharedPreferencesHelper.writePingWidgetData(mAppContext.getApplicationContext(), mWidgetId, data);
 
 
-        updateWidget(data.getPingTimes(), data.getMaxPings());
+        updateWidget(data.getPingTimes(), data.getMaxPings(), data.getChartLineColor());
 
     }
 
-    private void updateWidget(LinkedList<Float> values, int maxPings) {
+    private void updateWidget(LinkedList<Float> values, int maxPings, int chartLineColor) {
 
         //Get the RemoteViews of Widget
         RemoteViews remoteViews = new RemoteViews(mAppContext.getPackageName(), R.layout.widget_layout);
@@ -140,7 +140,7 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
             remoteViews.setTextViewText(R.id.widget_min_ping_value, String.format(Locale.getDefault(), "%.1f", min));
             remoteViews.setTextViewText(R.id.widget_avg_ping_value, String.format(Locale.getDefault(), "%.1f", avg));
 
-            drawGraph(remoteViews, max, min, maxPings, values);
+            drawGraph(remoteViews, max, min, maxPings, values, chartLineColor);
 
 
         } else {
@@ -154,8 +154,9 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
         mAppWidgetManager.updateAppWidget(mWidgetId, remoteViews);
     }
 
-    private void drawGraph(RemoteViews views, float max, float min, int maxValueCount, LinkedList<Float> values) {
+    private void drawGraph(RemoteViews views, float max, float min, int maxValueCount, LinkedList<Float> values, int chartLineColor) {
 
+        final int POINT_SIZE = 5;
         int canvasWidth = 500;
         int canvasHeight = 100;
         int chartPadding = 15;
@@ -168,13 +169,15 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
         linesPaint.setAntiAlias(true);
         linesPaint.setStyle(Paint.Style.STROKE);
         linesPaint.setStrokeWidth(4);
-        linesPaint.setColor(ContextCompat.getColor(mAppContext, R.color.graph_lines));
+        //linesPaint.setColor(ContextCompat.getColor(mAppContext, R.color.graph_lines));
+        linesPaint.setColor(chartLineColor);
 
         Paint pointsPaint = new Paint();
         pointsPaint.setAntiAlias(true);
         pointsPaint.setStyle(Paint.Style.STROKE);
         pointsPaint.setStrokeWidth(8);
-        pointsPaint.setColor(ContextCompat.getColor(mAppContext, R.color.graph_points));
+        //pointsPaint.setColor(ContextCompat.getColor(mAppContext, R.color.graph_points));
+        pointsPaint.setColor(chartLineColor);
 
         Bitmap bitmap = Bitmap.createBitmap(canvasWidth, canvasHeight, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
@@ -204,7 +207,7 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
             if(oldXPos != -1){
                 canvas.drawLine(oldXPos, oldYPos, xPos, yPos, linesPaint);
             }
-            canvas.drawPoint(xPos, yPos, pointsPaint);
+            canvas.drawCircle(xPos, yPos, POINT_SIZE, pointsPaint);
 
             //Save oldXPos, move xPos
             oldXPos = xPos;

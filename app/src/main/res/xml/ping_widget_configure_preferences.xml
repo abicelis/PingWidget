@@ -2,30 +2,35 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="Widget settings"/>
     <EditTextPreference
-        android:key="widget_configure_address"
+        android:key="@string/fragment_widget_configure_key_address"
         android:title="Address"
         android:summary="Enter a valid IP or web address to ping"
         android:defaultValue="192.168.1.1"/>
     <ListPreference
-        android:key="widget_configure_interval"
+        android:key="@string/fragment_widget_configure_key_interval"
         android:title="Ping Interval"
         android:summary="Set how fast the ping should occur. Note: shorter times drain more battery"
         android:entries="@array/pingInterval"
         android:entryValues="@array/pingInterval"
         android:defaultValue="1"/>
     <ListPreference
-        android:key="widget_configure_max_pings"
+        android:key="@string/fragment_widget_configure_key_max_pings"
         android:title="Max number of pings"
         android:summary="Set how many pings this widget should graph. Recommended: 15"
         android:entries="@array/maxPings"
         android:entryValues="@array/maxPings"
         android:defaultValue="15"/>
     <Preference
-        android:key="widget_configure_color"
-        android:title="Widget Color"
+        android:key="@string/fragment_widget_configure_key_background_color"
+        android:title="Background Color"
         android:summary="Click here to select a background color"/>
+    <Preference
+        android:key="@string/fragment_widget_configure_key_line_color"
+        android:title="Chart Color"
+        android:summary="Click here to select a color for the chart"/>
+
     <PreferenceCategory android:title="Enable Widget"/>
     <Preference
-        android:key="widget_configure_enable"
+        android:key="@string/fragment_widget_configure_key_enable"
         android:title="Click here to enable widget!"/>
 </PreferenceScreen>

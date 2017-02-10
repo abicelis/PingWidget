@@ -93,7 +93,13 @@ public class PingWidgetConfigureActivity extends AppCompatActivity implements Co
     @Override
     public void onColorSelection(@NonNull ColorChooserDialog dialog, @ColorInt int selectedColor) {
         PingWidgetConfigureFragment fragment = (PingWidgetConfigureFragment) getSupportFragmentManager().findFragmentById(R.id.activity_preference_fragment);
-        fragment.setWidgetColor(selectedColor);
+
+        if (dialog.getTitle() == R.string.fragment_widget_configure_dialog_background_color) {
+            fragment.setWidgetBackgroundColor(selectedColor);
+
+        } else if (dialog.getTitle() == R.string.fragment_widget_configure_dialog_chart_line_color) {
+            fragment.setWidgetChartLineColor(selectedColor);
+        }
     }
 
     @Override

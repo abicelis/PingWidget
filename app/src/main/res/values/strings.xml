@@ -16,11 +16,20 @@
     <string name="activity_home_website_link">Visit my site</string>
 
     /* Widget Configure preference activity/fragment */
+    <string name="fragment_widget_configure_key_address">widget_configure_address</string>
+    <string name="fragment_widget_configure_key_interval">widget_configure_interval</string>
+    <string name="fragment_widget_configure_key_max_pings">widget_configure_max_pings</string>
+    <string name="fragment_widget_configure_key_background_color">widget_configure_background_color</string>
+    <string name="fragment_widget_configure_key_line_color">widget_configure_chart_line_color</string>
+    <string name="fragment_widget_configure_key_enable">widget_configure_enable</string>
+
     <string name="fragment_widget_configure_name">Configure PingWidget</string>
-    <string name="fragment_widget_configure_color_palette">Color Palette</string>
     <string name="fragment_widget_configure_err_address">Please enter a valid Address</string>
     <string name="fragment_widget_configure_err_interval">Please select an interval</string>
-    <string name="fragment_widget_configure_err_color">Please select a color</string>
+    <string name="fragment_widget_configure_err_background_color">Please select a background color</string>
+    <string name="fragment_widget_configure_dialog_background_color">Background Color</string>
+    <string name="fragment_widget_configure_err_chart_line_color">Please select a chart color</string>
+    <string name="fragment_widget_configure_dialog_chart_line_color">Chart Color</string>
     <string name="fragment_widget_configure_err_max_pings">Please select a Max Pings amount</string>
 
 </resources>

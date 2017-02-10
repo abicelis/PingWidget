@@ -55,7 +55,7 @@ public class PingWidgetProvider extends AppWidgetProvider {
 
                 //TODO: Cant seem to figure out how to change background color without overwriting background drawable (killing the rounded corners)
                 //Do this here and in PingWidgetConfigureFragment
-                views.setInt(R.id.widget_background, "setBackgroundColor", currentWidget.getColor());
+                views.setInt(R.id.widget_background, "setBackgroundColor", currentWidget.getBackgroundColor());
 
 
                 //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()
