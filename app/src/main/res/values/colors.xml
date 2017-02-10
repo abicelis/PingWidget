@@ -7,8 +7,7 @@
     <color name="text_white">#EEEEEE</color>
 
 
-    <color name="graph_lines">#1976d2</color>
-    <color name="graph_points">#e53935</color>
+    <color name="graph_ping_failed_paint">#e53935</color>
 
 
 

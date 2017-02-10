@@ -52,15 +52,16 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
         while (!isCancelled()) {
             Log.d(TAG, "doInBackground() loop");
 
-
             try {
                 float pingDelay = ping(strings[0]);
+
+                Log.d(TAG, "PING SUCCESS (" + pingDelay + "ms)");
                 publishProgress(pingDelay);
 
-                Log.d(TAG, "PING =" + pingDelay);
             }catch (Exception e) {
-                Log.d(TAG, "doInBackground() EX!" + e.getMessage());
-                e.printStackTrace();
+                Log.d(TAG, "PING FAILED");
+                publishProgress(-1f);
+
             }
 
             try {
@@ -77,22 +78,21 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
         String str;
         float pingDelay;
 
-        try {
-            Process process = Runtime.getRuntime().exec(String.format(Locale.getDefault(), "/system/bin/ping -c 1 %1$s ", url));
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            int i;
-            char[] buffer = new char[4096];
-            StringBuilder output = new StringBuilder();
-            while ((i = reader.read(buffer)) > 0)
-                output.append(buffer, 0, i);
-            reader.close();
+        Process process = Runtime.getRuntime().exec(String.format(Locale.getDefault(), "/system/bin/ping -c 1 -W 1 %1$s ", url));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        int i;
+        char[] buffer = new char[4096];
+        StringBuilder output = new StringBuilder();
+        while ((i = reader.read(buffer)) > 0)
+            output.append(buffer, 0, i);
+        reader.close();
 
-            str = output.toString();
-            str = str.substring(str.indexOf("time=")+5, str.indexOf("ms")-1);
-            pingDelay =  Float.parseFloat(str);
-        } catch (IOException e) {
-            pingDelay = -1;
-        }
+        str = output.toString();
+        //Log.d(TAG, "PING str:" + str);
+
+        str = str.substring(str.indexOf("time=")+5, str.indexOf("ms")-1);
+        pingDelay =  Float.parseFloat(str);
+
         return pingDelay;
     }
 
@@ -126,19 +126,22 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
 
         if(values.size() > 0) {
             for (float val : values) {
-                avg += val;
+                if(val != -1) {     //skip unsuccessful pings
+                    avg += val;
 
-                if(val > max)
-                    max = val;
-                if(val < min)
-                    min = val;
+                    if (val > max)
+                        max = val;
+                    if (val < min)
+                        min = val;
+                }
+
             }
             avg = avg/values.size();
 
-            remoteViews.setTextViewText(R.id.widget_last_ping_value, String.format(Locale.getDefault(), "%.1f", values.peekFirst()));
-            remoteViews.setTextViewText(R.id.widget_max_ping_value, String.format(Locale.getDefault(), "%.1f", max));
-            remoteViews.setTextViewText(R.id.widget_min_ping_value, String.format(Locale.getDefault(), "%.1f", min));
-            remoteViews.setTextViewText(R.id.widget_avg_ping_value, String.format(Locale.getDefault(), "%.1f", avg));
+            remoteViews.setTextViewText(R.id.widget_last_ping_value, (values.peekFirst() != -1f ? String.format(Locale.getDefault(), "%.1f", values.peekFirst()) : "ERR"));
+            remoteViews.setTextViewText(R.id.widget_max_ping_value, (max != 0f ? String.format(Locale.getDefault(), "%.1f", max) : "-"));
+            remoteViews.setTextViewText(R.id.widget_min_ping_value, (min != Float.MAX_VALUE ? String.format(Locale.getDefault(), "%.1f", min) : "-"));
+            remoteViews.setTextViewText(R.id.widget_avg_ping_value, (avg != 0f ? String.format(Locale.getDefault(), "%.1f", avg) : "-"));
 
             drawGraph(remoteViews, max, min, maxPings, values, chartLineColor);
 
@@ -157,6 +160,7 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
     private void drawGraph(RemoteViews views, float max, float min, int maxValueCount, LinkedList<Float> values, int chartLineColor) {
 
         final int POINT_SIZE = 5;
+        final int SQUARE_SIZE = 5;
         int canvasWidth = 500;
         int canvasHeight = 100;
         int chartPadding = 15;
@@ -179,6 +183,12 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
         //pointsPaint.setColor(ContextCompat.getColor(mAppContext, R.color.graph_points));
         pointsPaint.setColor(chartLineColor);
 
+        Paint pingFailedPaint = new Paint();
+        pingFailedPaint.setAntiAlias(true);
+        pingFailedPaint.setStyle(Paint.Style.STROKE);
+        pingFailedPaint.setStrokeWidth(8);
+        pingFailedPaint.setColor(ContextCompat.getColor(mAppContext, R.color.graph_ping_failed_paint));
+
         Bitmap bitmap = Bitmap.createBitmap(canvasWidth, canvasHeight, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 
@@ -196,22 +206,38 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
         int xPos = canvasWidth - chartPadding;
         int yPos = -1;
         int oldXPos = -1, oldYPos = -1;
-
+        boolean pingFailedFlag = false;
 
         //Loop through all the values
         for (float value : values) {
 
             oldYPos = yPos;
-            yPos = (int) (chartPadding + calcY(value, max, min, chartHeight));
+            if(value != -1f) {      //if ping was ok
+                yPos = (int) (chartPadding + calcY(value, max, min, chartHeight));
+            } else {
+                yPos = chartPadding + chartHeight;
+                pingFailedFlag = true;  //set flag to draw line with pingFailedPaint
+            }
+
 
             if(oldXPos != -1){
-                canvas.drawLine(oldXPos, oldYPos, xPos, yPos, linesPaint);
+                if(!pingFailedFlag)     //ping was ok
+                    canvas.drawLine(oldXPos, oldYPos, xPos, yPos, linesPaint);
+                else {                  //ping failed
+                    canvas.drawLine(oldXPos, oldYPos, xPos, yPos, pingFailedPaint);
+                }
+
             }
-            canvas.drawCircle(xPos, yPos, POINT_SIZE, pointsPaint);
+            if(!pingFailedFlag)     //ping was ok
+                canvas.drawCircle(xPos, yPos, POINT_SIZE, pointsPaint);
+            else                    //ping failed
+                canvas.drawRect(xPos-SQUARE_SIZE, yPos-SQUARE_SIZE, xPos+SQUARE_SIZE, yPos+SQUARE_SIZE, pingFailedPaint);
+
 
             //Save oldXPos, move xPos
             oldXPos = xPos;
             xPos -=chartStepX;
+            pingFailedFlag = false; //reset flag
         }
 
         views.setImageViewBitmap(R.id.widget_graph, bitmap);
