@@ -49,37 +49,37 @@ public class PingWidgetUpdateService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand()");
 
-        //Get widgetId extra
-        int widgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+        if(intent != null) {
+            //Get widgetId extra
+            int widgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 
-        //Get widget data from SharedPreferences
-        PingWidgetData currentWidget = SharedPreferencesHelper.readPingWidgetData(getApplicationContext(), widgetId);
+            //Get widget data from SharedPreferences
+            PingWidgetData currentWidget = SharedPreferencesHelper.readPingWidgetData(getApplicationContext(), widgetId);
 
 
-        PingAsyncTask task = mAsyncTasks.get(widgetId);
-        if(currentWidget.isRunning()) {
-            if(task != null && !task.isCancelled()) {
-                Log.d(TAG, "ERROR: Task already running when trying to create a new one! ID=" + widgetId);
-                task.cancel(true);
+            PingAsyncTask task = mAsyncTasks.get(widgetId);
+            if(currentWidget.isRunning()) {
+                if(task != null && !task.isCancelled()) {
+                    Log.d(TAG, "ERROR: Task already running when trying to create a new one! ID=" + widgetId);
+                    task.cancel(true);
 
+                } else {
+                    //Create a new task and run it, also save it to mAsyncTasks using widgetId
+                    task = new PingAsyncTask(this.getApplicationContext(), widgetId, currentWidget.getPingInterval(), currentWidget.getMaxPings());
+                    mAsyncTasks.put(widgetId, task);
+
+                    //Get stored address from PreferenceSettings
+                    task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, currentWidget.getAddress());
+                }
             } else {
-                //Create a new task and run it, also save it to mAsyncTasks using widgetId
-                task = new PingAsyncTask(this.getApplicationContext(), widgetId, currentWidget.getmPingInterval());
-                mAsyncTasks.put(widgetId, task);
+                mAsyncTasks.remove(widgetId);
 
-                //Get stored address from PreferenceSettings
-                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, currentWidget.getAddress());
+                if(task == null)
+                    Log.d(TAG, "ERROR: Could not find asyncTask to cancel! ID=" + widgetId);
+                else if(!task.isCancelled())
+                    task.cancel(false);
             }
-        } else {
-            mAsyncTasks.remove(widgetId);
-
-            if(task == null)
-                Log.d(TAG, "ERROR: Could not find asyncTask to cancel! ID=" + widgetId);
-            else if(!task.isCancelled())
-                task.cancel(false);
         }
-
-
 
 
 //        //Get the RemoteViews of Widget
