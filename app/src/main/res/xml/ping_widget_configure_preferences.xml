@@ -4,6 +4,7 @@
     <EditTextPreference
         android:key="@string/fragment_widget_configure_key_address"
         android:title="Address"
+        android:inputType="text|textEmailAddress"
         android:summary="Enter a valid IP or web address to ping"
         android:defaultValue="192.168.1.1"/>
     <ListPreference
