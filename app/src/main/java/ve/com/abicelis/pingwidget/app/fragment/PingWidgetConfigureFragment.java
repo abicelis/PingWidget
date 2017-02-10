@@ -89,6 +89,7 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
 
                     //Update the widget's views
                     views.setTextViewText(R.id.widget_host, mAddress.getText());
+                    views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
 
                     //TODO: Cant seem to figure out how to change background color without overwriting background drawable (killing the rounded corners)
                     //Do this here and in PingWidgetProvider

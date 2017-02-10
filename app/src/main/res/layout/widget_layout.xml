@@ -46,20 +46,21 @@
                 android:maxLines="1"
                 android:fontFamily="sans-serif-light"
                 android:textColor="@color/text_white"
-                android:text="www.google.com"
+                android:text="-"
                 />
 
             <ImageView
                 android:id="@+id/widget_start_pause"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@android:drawable/ic_media_play"
                 android:tint="@color/text_white"
                 />
         </LinearLayout>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+
             android:background="@color/text_white"
             />
 
@@ -68,9 +69,9 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:scaleType="fitXY"
-            android:gravity="center_horizontal|center_vertical"/>
+            android:scaleType="fitCenter"
+            android:gravity="center_horizontal|center_vertical"
+            android:src="@drawable/icon_ping_widget"/>
 
         <ImageView
             android:layout_width="match_parent"
@@ -105,7 +106,7 @@
                     android:fontFamily="sans-serif-light"
                     android:textColor="@color/text_white"
                     android:textSize="@dimen/text_large"
-                    android:text="99.9"
+                    android:text="0"
                     android:layout_below="@+id/widget_last_ping_label" />
                 <TextView
                     android:id="@+id/widget_last_ping_ms"
@@ -140,7 +141,7 @@
                     android:fontFamily="sans-serif-light"
                     android:textColor="@color/text_white"
                     android:textSize="@dimen/text_large"
-                    android:text="-"/>
+                    android:text="0"/>
                 <TextView
                     android:id="@+id/widget_max_ping_ms"
                     android:layout_width="match_parent"
@@ -176,7 +177,7 @@
                     android:fontFamily="sans-serif-light"
                     android:textColor="@color/text_white"
                     android:textSize="@dimen/text_large"
-                    android:text="-"/>
+                    android:text="0"/>
                 <TextView
                     android:id="@+id/widget_min_ping_ms"
                     android:layout_width="match_parent"
@@ -211,7 +212,7 @@
                     android:fontFamily="sans-serif-light"
                     android:textColor="@color/text_white"
                     android:textSize="@dimen/text_large"
-                    android:text="-"/>
+                    android:text="0"/>
                 <TextView
                     android:id="@+id/widget_avg_ping_ms"
                     android:layout_width="match_parent"
