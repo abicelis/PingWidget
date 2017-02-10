@@ -1,16 +1,13 @@
 package ve.com.abicelis.pingwidget.app.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import ve.com.abicelis.pingwidget.model.PingWidgetData;
 import ve.com.abicelis.pingwidget.service.PingWidgetUpdateService;
@@ -39,6 +36,45 @@ public class PingWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         Log.d(TAG, "onUpdate");
+
+
+        for (int widgetId : appWidgetIds) {
+
+            //Get widget data from SharedPreferences
+            PingWidgetData currentWidget = SharedPreferencesHelper.readPingWidgetData(context.getApplicationContext(), widgetId);
+
+            //Check if widget has data (has been configured on PingWidgetConfigureFragment!)
+            if(currentWidget != null) {
+
+                //Get AppWidgetManager and RemoteViews
+                RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+
+                //Update the widget's views
+                views.setTextViewText(R.id.widget_host, currentWidget.getAddress());
+
+                //TODO: Cant seem to figure out how to change background color without overwriting background drawable (killing the rounded corners)
+                //Do this here and in PingWidgetConfigureFragment
+                views.setInt(R.id.widget_background, "setBackgroundColor", currentWidget.getColor());
+
+
+                //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()
+                //Create an Intent, set PING_WIDGET_TOGGLE action to it, put EXTRA_APPWIDGET_ID as extra
+                Intent clickIntent = new Intent(context, PingWidgetProvider.class);
+                clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+                clickIntent.setAction(PingWidgetProvider.PING_WIDGET_TOGGLE);
+
+                //Construct a PendingIntent using the Intent above
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, widgetId, clickIntent, 0);
+
+                //Register pendingIntent in RemoteViews onClick
+                views.setOnClickPendingIntent(R.id.widget_start_pause, pendingIntent);
+
+
+                //Finally, update the widget
+                appWidgetManager.updateAppWidget(widgetId, views);
+            }
+        }
+
 
 //        for (int widgetId : appWidgetIds) {
 //
