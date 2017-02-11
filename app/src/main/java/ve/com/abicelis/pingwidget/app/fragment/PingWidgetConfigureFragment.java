@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.preference.ListPreference;
@@ -67,6 +68,7 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
                 return false;
             }
         });
+        mWidgetBackgroundColor = Color.parseColor("#448AFF");
         mChartLineColor =  findPreference(getResources().getString(R.string.fragment_widget_configure_key_line_color));
         mChartLineColor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -83,6 +85,7 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
                 return false;
             }
         });
+        mWidgetChartLineColor = Color.parseColor("#FFEB3B");
         mMaxPings = (ListPreference) findPreference(getResources().getString(R.string.fragment_widget_configure_key_max_pings));
 
 
