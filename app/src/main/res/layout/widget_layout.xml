@@ -96,7 +96,7 @@
                 android:layout_gravity="center"
                 android:scaleType="fitCenter"
                 android:gravity="center_horizontal|center_vertical"
-                android:src="@drawable/icon_ping_widget"/>
+                />
 
         </LinearLayout>
 
