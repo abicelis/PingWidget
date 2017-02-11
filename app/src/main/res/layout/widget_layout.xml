@@ -78,7 +78,7 @@
                 android:gravity="right"
                 android:textColor="@color/text_white"
                 android:textSize="@dimen/text_tiny"
-                android:text="99.9"/>
+                android:text=""/>
             <ImageView
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
