@@ -138,7 +138,9 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
             }
             avg = avg/values.size();
 
+            remoteViews.setTextViewText(R.id.widget_graph_max_ping_value, (max != 0f ? String.format(Locale.getDefault(), "%.1f", max) : ""));
             remoteViews.setTextViewText(R.id.widget_last_ping_value, (values.peekFirst() != -1f ? String.format(Locale.getDefault(), "%.1f", values.peekFirst()) : "ERR"));
+            remoteViews.setTextViewText(R.id.widget_graph_max_ping_value, (max != 0f ? String.format(Locale.getDefault(), "%.1f", max) : "-"));
             remoteViews.setTextViewText(R.id.widget_max_ping_value, (max != 0f ? String.format(Locale.getDefault(), "%.1f", max) : "-"));
             remoteViews.setTextViewText(R.id.widget_min_ping_value, (min != Float.MAX_VALUE ? String.format(Locale.getDefault(), "%.1f", min) : "-"));
             remoteViews.setTextViewText(R.id.widget_avg_ping_value, (avg != 0f ? String.format(Locale.getDefault(), "%.1f", avg) : "-"));
@@ -147,6 +149,7 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
 
 
         } else {
+            remoteViews.setTextViewText(R.id.widget_graph_max_ping_value, "");
             remoteViews.setTextViewText(R.id.widget_last_ping_value, "-");
             remoteViews.setTextViewText(R.id.widget_max_ping_value, "-");
             remoteViews.setTextViewText(R.id.widget_min_ping_value, "-");
@@ -168,6 +171,11 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
         int chartHeight = canvasHeight - (2*chartPadding);
         int chartStepX = chartWidth / (maxValueCount - 1);      //.   .   .   .   .   If maxValues = 5
                                                                 //  ^   ^   ^   ^     There are 4 spaces in between
+        Paint textPaint = new Paint();
+        textPaint.setAntiAlias(true);
+        textPaint.setStyle(Paint.Style.STROKE);
+        textPaint.setStrokeWidth(1);
+        textPaint.setColor(ContextCompat.getColor(mAppContext, R.color.graph_text_paint));
 
         Paint linesPaint = new Paint();
         linesPaint.setAntiAlias(true);
@@ -198,10 +206,9 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
         //canvas.drawLine(canvasWidth, canvasHeight, canvasWidth, 0, p);
         //canvas.drawLine(canvasWidth, 0, 0, 0, p);
 
-
         //Draw axis
-        //canvas.drawLine(chartPadding, chartPadding, chartPadding, canvasHeight - chartPadding, axisPaint);  //Y
-        //canvas.drawLine(chartPadding, canvasHeight - chartPadding, canvasWidth - chartPadding, canvasHeight - chartPadding, axisPaint);  //X
+        //canvas.drawLine(chartPadding, chartPadding, chartPadding, canvasHeight - chartPadding, textPaint);  //Y
+        //canvas.drawText((max != 0f ? String.format(Locale.getDefault(), "%d", (int)max) : ""), 4, chartPadding, textPaint);
 
         int xPos = canvasWidth - chartPadding;
         int yPos = -1;
@@ -213,7 +220,8 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
 
             oldYPos = yPos;
             if(value != -1f) {      //if ping was ok
-                yPos = (int) (chartPadding + calcY(value, max, min, chartHeight));
+                //yPos = (int) (chartPadding + calcY(value, max, min, chartHeight));
+                yPos = (int) (chartPadding + calcY(value, max, 0, chartHeight));
             } else {
                 yPos = chartPadding + chartHeight;
                 pingFailedFlag = true;  //set flag to draw line with pingFailedPaint
@@ -221,11 +229,11 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
 
 
             if(oldXPos != -1){
-                if(!pingFailedFlag)     //ping was ok
+//                if(!pingFailedFlag)     //ping was ok
                     canvas.drawLine(oldXPos, oldYPos, xPos, yPos, linesPaint);
-                else {                  //ping failed
-                    canvas.drawLine(oldXPos, oldYPos, xPos, yPos, pingFailedPaint);
-                }
+//                else {                  //ping failed
+//                    canvas.drawLine(oldXPos, oldYPos, xPos, yPos, pingFailedPaint);
+//                }
 
             }
             if(!pingFailedFlag)     //ping was ok

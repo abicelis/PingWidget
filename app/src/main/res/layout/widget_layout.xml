@@ -62,16 +62,43 @@
             android:layout_marginTop="8dp"
 
             android:background="@color/text_white"
+            android:visibility="gone"
             />
 
-        <ImageView
-            android:id="@+id/widget_graph"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_gravity="center"
-            android:scaleType="fitCenter"
-            android:gravity="center_horizontal|center_vertical"
-            android:src="@drawable/icon_ping_widget"/>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/widget_graph_max_ping_value"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:gravity="right"
+                android:textColor="@color/text_white"
+                android:textSize="@dimen/text_tiny"
+                android:text="99.9"/>
+            <ImageView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="@color/text_white"
+                />
+            <ImageView
+                android:id="@+id/widget_graph"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:scaleType="fitCenter"
+                android:gravity="center_horizontal|center_vertical"
+                android:src="@drawable/icon_ping_widget"/>
+
+        </LinearLayout>
 
         <ImageView
             android:layout_width="match_parent"

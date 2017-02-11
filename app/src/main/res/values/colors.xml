@@ -8,6 +8,7 @@
 
 
     <color name="graph_ping_failed_paint">#e53935</color>
+    <color name="graph_text_paint">#EEEEEE</color>
 
 
 
