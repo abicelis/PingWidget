@@ -130,6 +130,7 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
         float avg = 0.0f;
         float max = 0.0f;
         float min = Float.MAX_VALUE;
+        float badPingCount = 0f;
 
         if(values.size() > 0) {
             for (float val : values) {
@@ -141,10 +142,16 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
                     if (val < min)
                         min = val;
                 }
+                else
+                    badPingCount++;
 
             }
             avg = avg/values.size();
 
+            float aux = badPingCount/values.size();
+            int uptime = (badPingCount == 0 ? 100 : (int)((1-aux)*100) );
+
+            remoteViews.setTextViewText(R.id.widget_uptime_ping_value, String.format(Locale.getDefault(), "%d", uptime));
             remoteViews.setTextViewText(R.id.widget_graph_max_ping_value, (max != 0f ? String.format(Locale.getDefault(), "%.1f", max) : ""));
             remoteViews.setTextViewText(R.id.widget_last_ping_value, (values.peekLast() != -1f ? String.format(Locale.getDefault(), "%.1f", values.peekLast()) : "ERR"));
             remoteViews.setTextViewText(R.id.widget_graph_max_ping_value, (max != 0f ? String.format(Locale.getDefault(), "%.1f", max) : "-"));

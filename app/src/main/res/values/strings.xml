@@ -6,6 +6,7 @@
     <string name="widget_avg">Avg</string>
     <string name="widget_max">Max</string>
     <string name="widget_last">Last</string>
+    <string name="widget_uptime">Up</string>
 
     /* Activity Home */
     <string name="activity_home_title">"Welcome to Ping Widget!</string>
