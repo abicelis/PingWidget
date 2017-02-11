@@ -20,6 +20,7 @@ import ve.com.abicelis.pingwidget.R;
 import ve.com.abicelis.pingwidget.app.activity.PingWidgetConfigureActivity;
 import ve.com.abicelis.pingwidget.app.widget.PingWidgetProvider;
 import ve.com.abicelis.pingwidget.model.PingWidgetData;
+import ve.com.abicelis.pingwidget.util.AddressValidator;
 import ve.com.abicelis.pingwidget.util.SharedPreferencesHelper;
 
 
@@ -158,7 +159,8 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
     }
 
     private boolean checkValues() {
-        if(mAddress.getText() == null) {
+        AddressValidator validator = new AddressValidator();
+        if(mAddress.getText() == null || !validator.validate(mAddress.getText())) {
             Toast.makeText(getActivity(), getResources().getString(R.string.fragment_widget_configure_err_address), Toast.LENGTH_SHORT).show();
             return false;
         }
