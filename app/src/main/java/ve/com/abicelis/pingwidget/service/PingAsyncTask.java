@@ -103,9 +103,9 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
 
 
         PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(mAppContext.getApplicationContext(), mWidgetId);
-        data.getPingTimes().addFirst(values[0]);
+        data.getPingTimes().addLast(values[0]);
         if(data.getPingTimes().size() > data.getMaxPings())
-            data.getPingTimes().removeLast();
+            data.getPingTimes().removeFirst();
         SharedPreferencesHelper.writePingWidgetData(mAppContext.getApplicationContext(), mWidgetId, data);
 
 
@@ -139,7 +139,7 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
             avg = avg/values.size();
 
             remoteViews.setTextViewText(R.id.widget_graph_max_ping_value, (max != 0f ? String.format(Locale.getDefault(), "%.1f", max) : ""));
-            remoteViews.setTextViewText(R.id.widget_last_ping_value, (values.peekFirst() != -1f ? String.format(Locale.getDefault(), "%.1f", values.peekFirst()) : "ERR"));
+            remoteViews.setTextViewText(R.id.widget_last_ping_value, (values.peekLast() != -1f ? String.format(Locale.getDefault(), "%.1f", values.peekLast()) : "ERR"));
             remoteViews.setTextViewText(R.id.widget_graph_max_ping_value, (max != 0f ? String.format(Locale.getDefault(), "%.1f", max) : "-"));
             remoteViews.setTextViewText(R.id.widget_max_ping_value, (max != 0f ? String.format(Locale.getDefault(), "%.1f", max) : "-"));
             remoteViews.setTextViewText(R.id.widget_min_ping_value, (min != Float.MAX_VALUE ? String.format(Locale.getDefault(), "%.1f", min) : "-"));
@@ -169,7 +169,7 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
         int chartPadding = 15;
         int chartWidth = canvasWidth - (2*chartPadding);
         int chartHeight = canvasHeight - (2*chartPadding);
-        int chartStepX = chartWidth / (maxValueCount - 1);      //.   .   .   .   .   If maxValues = 5
+        int chartStepX = chartWidth / (maxValueCount - 1);      //.   .   .   .   .   If maxValueCount = 5
                                                                 //  ^   ^   ^   ^     There are 4 spaces in between
         Paint textPaint = new Paint();
         textPaint.setAntiAlias(true);
@@ -210,7 +210,7 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
         //canvas.drawLine(chartPadding, chartPadding, chartPadding, canvasHeight - chartPadding, textPaint);  //Y
         //canvas.drawText((max != 0f ? String.format(Locale.getDefault(), "%d", (int)max) : ""), 4, chartPadding, textPaint);
 
-        int xPos = canvasWidth - chartPadding;
+        int xPos = chartPadding + ((maxValueCount - values.size()) * chartStepX);
         int yPos = -1;
         int oldXPos = -1, oldYPos = -1;
         boolean pingFailedFlag = false;
@@ -218,34 +218,36 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
         //Loop through all the values
         for (float value : values) {
 
+            if(!pingOk(value)) {
+                if(oldXPos == -1) {  //If Leftmost (oldest) ping is bad, init oldXpos to xPos, and yPos to 50% height
+                    oldXPos = xPos;
+                    yPos = chartPadding + chartHeight/2;
+                }
+                pingFailedFlag = true;  //set flag so next line draws red with pingFailedPaint
+                xPos +=chartStepX;      //Advance xPos
+                continue;
+            }
+
+            //Set old and current yPos vals
             oldYPos = yPos;
-            if(value != -1f) {      //if ping was ok
-                //yPos = (int) (chartPadding + calcY(value, max, min, chartHeight));
-                yPos = (int) (chartPadding + calcY(value, max, 0, chartHeight));
-            } else {
-                yPos = chartPadding + chartHeight;
-                pingFailedFlag = true;  //set flag to draw line with pingFailedPaint
-            }
+            yPos = (int) (chartPadding + calcY(value, max, 0, chartHeight));
 
-
-            if(oldXPos != -1){
-//                if(!pingFailedFlag)     //ping was ok
+            if(oldXPos != -1) {   //If not first point..
+                if (pingFailedFlag) {
+                    canvas.drawLine(oldXPos, (oldYPos != -1 ? oldYPos : 0), xPos, yPos, pingFailedPaint);
+                    pingFailedFlag = false; //reset flag
+                } else {
                     canvas.drawLine(oldXPos, oldYPos, xPos, yPos, linesPaint);
-//                else {                  //ping failed
-//                    canvas.drawLine(oldXPos, oldYPos, xPos, yPos, pingFailedPaint);
-//                }
-
+                }
             }
-            if(!pingFailedFlag)     //ping was ok
-                canvas.drawCircle(xPos, yPos, POINT_SIZE, pointsPaint);
-            else                    //ping failed
-                canvas.drawRect(xPos-SQUARE_SIZE, yPos-SQUARE_SIZE, xPos+SQUARE_SIZE, yPos+SQUARE_SIZE, pingFailedPaint);
+
+            //Draw point
+            canvas.drawCircle(xPos, yPos, POINT_SIZE, pointsPaint);
 
 
             //Save oldXPos, move xPos
             oldXPos = xPos;
-            xPos -=chartStepX;
-            pingFailedFlag = false; //reset flag
+            xPos +=chartStepX;
         }
 
         views.setImageViewBitmap(R.id.widget_graph, bitmap);
@@ -259,5 +261,8 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
         return (aux * chartHeight);     //Get height according to chartHeight
     }
 
+    private boolean pingOk(float val){
+        return val != -1f;  //if val == -1, ping was bad
+    }
 
 }
