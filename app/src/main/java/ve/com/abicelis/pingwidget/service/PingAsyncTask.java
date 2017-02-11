@@ -103,13 +103,20 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
 
 
         PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(mAppContext.getApplicationContext(), mWidgetId);
-        data.getPingTimes().addLast(values[0]);
-        if(data.getPingTimes().size() > data.getMaxPings())
-            data.getPingTimes().removeFirst();
-        SharedPreferencesHelper.writePingWidgetData(mAppContext.getApplicationContext(), mWidgetId, data);
+
+        if(data != null) {
+            data.getPingTimes().addLast(values[0]);
+            if(data.getPingTimes().size() > data.getMaxPings())
+                data.getPingTimes().removeFirst();
+            SharedPreferencesHelper.writePingWidgetData(mAppContext.getApplicationContext(), mWidgetId, data);
 
 
-        updateWidget(data.getPingTimes(), data.getMaxPings(), data.getChartLineColor());
+            updateWidget(data.getPingTimes(), data.getMaxPings(), data.getChartLineColor());
+        } else {
+            //Widget was probably destroyed while running, kill this AsyncTask.
+            cancel(true);
+            Log.d(TAG, "Widget " + mWidgetId + " seems gone.. Canceling PingAsyncTask");
+        }
 
     }
 
