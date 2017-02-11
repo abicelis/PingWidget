@@ -57,6 +57,8 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
             public boolean onPreferenceClick(Preference preference) {
 
                 new ColorChooserDialog.Builder((PingWidgetConfigureActivity) getActivity(), R.string.fragment_widget_configure_dialog_background_color)
+                        .tag(getResources().getString(R.string.fragment_widget_configure_dialog_background_color))
+                        .accentMode(true)
                         .doneButton(R.string.md_done_label)  // changes label of the done button
                         .cancelButton(R.string.md_cancel_label)  // changes label of the cancel button
                         .backButton(R.string.md_back_label)  // changes label of the back button
@@ -71,6 +73,8 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
             public boolean onPreferenceClick(Preference preference) {
 
                 new ColorChooserDialog.Builder((PingWidgetConfigureActivity) getActivity(), R.string.fragment_widget_configure_dialog_chart_line_color)
+                        .tag(getResources().getString(R.string.fragment_widget_configure_dialog_chart_line_color))
+                        .accentMode(false)
                         .doneButton(R.string.md_done_label)  // changes label of the done button
                         .cancelButton(R.string.md_cancel_label)  // changes label of the cancel button
                         .backButton(R.string.md_back_label)  // changes label of the back button

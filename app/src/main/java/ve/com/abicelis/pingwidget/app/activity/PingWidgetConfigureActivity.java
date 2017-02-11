@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
@@ -94,10 +95,10 @@ public class PingWidgetConfigureActivity extends AppCompatActivity implements Co
     public void onColorSelection(@NonNull ColorChooserDialog dialog, @ColorInt int selectedColor) {
         PingWidgetConfigureFragment fragment = (PingWidgetConfigureFragment) getSupportFragmentManager().findFragmentById(R.id.activity_preference_fragment);
 
-        if (dialog.getTitle() == R.string.fragment_widget_configure_dialog_background_color) {
+        if (dialog.tag() == getResources().getString(R.string.fragment_widget_configure_dialog_background_color)) {
             fragment.setWidgetBackgroundColor(selectedColor);
 
-        } else if (dialog.getTitle() == R.string.fragment_widget_configure_dialog_chart_line_color) {
+        } else if (dialog.tag() == getResources().getString(R.string.fragment_widget_configure_dialog_chart_line_color)) {
             fragment.setWidgetChartLineColor(selectedColor);
         }
     }
