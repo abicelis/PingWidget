@@ -30,13 +30,11 @@ import ve.com.abicelis.pingwidget.R;
 
 public class HomeActivity extends AppCompatActivity {
 
-    //CONST
-    public static final String GITHUB_URL = "github.com/abicelis/";
-    public static final String WEBSITE_URL = "www.alejandrobicelis.com.ve";
 
     //UI
     @BindView(R.id.activity_home_version) TextView mVersion;
     @BindView(R.id.activity_home_author) TextView mAuthor;
+    @BindView(R.id.activity_home_market_link) TextView mMarketLink;
     @BindView(R.id.activity_home_github_link) TextView mGithubLink;
     @BindView(R.id.activity_home_website_link) TextView mWebsiteLink;
 
@@ -53,16 +51,26 @@ public class HomeActivity extends AppCompatActivity {
         mAuthor.setText(String.format(Locale.getDefault(), getResources().getString(R.string.activity_home_author), Calendar.getInstance().get(Calendar.YEAR)));
 
         final AppCompatActivity thisActivity = this;
+
+
+        mMarketLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent playStoreIntent = new Intent(Intent.ACTION_VIEW);
+                playStoreIntent.setData(Uri.parse(getResources().getString(R.string.url_market)));
+                startActivity(playStoreIntent);
+            }
+        });
         mGithubLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchWebBrowser(thisActivity, GITHUB_URL);
+                launchWebBrowser(thisActivity, getResources().getString(R.string.url_github));
             }
         });
         mWebsiteLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchWebBrowser(thisActivity, WEBSITE_URL);
+                launchWebBrowser(thisActivity, getResources().getString(R.string.url_website));
             }
         });
     }
