@@ -2,36 +2,45 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="Widget settings"/>
     <EditTextPreference
-        android:key="@string/fragment_widget_configure_key_address"
-        android:title="Address"
+        android:key="@string/fragment_widget_configure_address_key"
+        android:title="@string/fragment_widget_configure_address_title"
+        android:summary="@string/fragment_widget_configure_address_summary"
         android:inputType="text|textEmailAddress"
-        android:summary="Enter a valid IP or web address to ping"
-        android:defaultValue="192.168.1.1"/>
+        android:defaultValue="www.google.com"/>
     <ListPreference
-        android:key="@string/fragment_widget_configure_key_interval"
-        android:title="Ping Interval"
-        android:summary="Set how fast the ping should occur. Note: shorter times drain more battery"
+        android:key="@string/fragment_widget_configure_interval_key"
+        android:title="@string/fragment_widget_configure_interval_title"
+        android:summary="@string/fragment_widget_configure_interval_summary"
         android:entries="@array/pingInterval"
-        android:entryValues="@array/pingInterval"
+        android:entryValues="@array/pingIntervalEntries"
         android:defaultValue="1"/>
     <ListPreference
-        android:key="@string/fragment_widget_configure_key_max_pings"
-        android:title="Max number of pings"
-        android:summary="Set how many pings this widget should graph. Recommended: 15"
+        android:key="@string/fragment_widget_configure_max_pings_key"
+        android:title="@string/fragment_widget_configure_max_pings_title"
+        android:summary="@string/fragment_widget_configure_max_pings_summary"
         android:entries="@array/maxPings"
-        android:entryValues="@array/maxPings"
+        android:entryValues="@array/maxPingsEntries"
         android:defaultValue="15"/>
+    <!--<Preference-->
+        <!--android:key="@string/fragment_widget_configure_background_color_key"-->
+        <!--android:title="@string/fragment_widget_configure_background_color_title"-->
+        <!--android:summary="Blue!"/>-->
     <Preference
-        android:key="@string/fragment_widget_configure_key_background_color"
-        android:title="Background Color"
-        android:summary="Click here to select a background color"/>
-    <Preference
-        android:key="@string/fragment_widget_configure_key_line_color"
-        android:title="Chart Color"
-        android:summary="Click here to select a color for the chart"/>
+        android:key="@string/fragment_widget_configure_line_color_key"
+        android:title="@string/fragment_widget_configure_line_color_title"
+        android:summary="Yellow!"/>
 
-    <PreferenceCategory android:title="Enable Widget"/>
+    <PreferenceCategory android:title="About"/>
     <Preference
-        android:key="@string/fragment_widget_configure_key_enable"
-        android:title="Click here to enable widget!"/>
+        android:key="@string/fragment_widget_configure_about_key"
+        android:title="@string/app_name"
+        android:summary="@string/fragment_widget_configure_about_summary"/>
+    <Preference
+        android:key="@string/fragment_widget_configure_rate_key"
+        android:title="@string/fragment_widget_configure_rate_title"
+        android:summary="@string/fragment_widget_configure_rate_summary"/>
+    <Preference
+        android:key="@string/fragment_widget_configure_contact_key"
+        android:title="@string/fragment_widget_configure_contact_title"
+        android:summary="@string/fragment_widget_configure_contact_summary"/>
 </PreferenceScreen>
