@@ -17,6 +17,7 @@
     <string name="activity_home_text">"This app is a widget. To be able to use it, you must add a PingWidget to your android launcher.</string>
     <string name="activity_home_version">Version %1$s</string>
     <string name="activity_home_author">Alejandro Bicelis %1$d</string>
+    <string name="activity_home_market_link">I love this app, I want to rate it!</string>
     <string name="activity_home_github_link">Check project at GitHub</string>
     <string name="activity_home_website_link">Visit my site</string>
 
@@ -48,7 +49,7 @@
 
     <string name="fragment_widget_configure_rate_key">widget_configure_rate</string>
     <string name="fragment_widget_configure_rate_title">Rate Ping Widget</string>
-    <string name="fragment_widget_configure_rate_summary">Like this app? I appreciate your 5-star rating!</string>
+    <string name="fragment_widget_configure_rate_summary">Like this app? A 5-star rating is gladly appreciated</string>
 
     <string name="fragment_widget_configure_contact_key">widget_configure_contact</string>
     <string name="fragment_widget_configure_contact_title">Contact developer</string>
@@ -66,4 +67,10 @@
     <string name="fragment_widget_configure_err_max_pings">Please select a Max Pings amount</string>
 
 
+    /* Links */
+
+    <string name="url_market">market://details?id=ve.com.abicelis.pingwidget</string>
+    <string name="url_github">github.com/abicelis/</string>
+    <string name="url_website">www.alejandrobicelis.com.ve</string>
+    <string name="address_email">alejandro@alejandrobicelis.com.ve</string>
 </resources>
