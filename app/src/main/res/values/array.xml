@@ -1,25 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="pingInterval">
+    <string-array name="pingIntervalEntries">
         <item>1</item>
         <item>2</item>
         <item>3</item>
         <item>5</item>
         <item>10</item>
-        <item>15</item>
         <item>20</item>
         <item>30</item>
         <item>60</item>
     </string-array>
+    <string-array name="pingInterval">
+        <item>1 sec</item>
+        <item>2 sec</item>
+        <item>3 sec</item>
+        <item>5 sec</item>
+        <item>10 sec</item>
+        <item>20 sec</item>
+        <item>30 sec</item>
+        <item>1 min</item>
+    </string-array>
 
-    <string-array name="maxPings">
+    <string-array name="maxPingsEntries">
+        <item>5</item>
         <item>10</item>
         <item>15</item>
         <item>20</item>
         <item>25</item>
         <item>30</item>
         <item>40</item>
-        <item>50</item>
-        <item>60</item>
+    </string-array>
+
+    <string-array name="maxPings">
+        <item>5 pings</item>
+        <item>10 pings</item>
+        <item>15 pings</item>
+        <item>20 pings</item>
+        <item>25 pings</item>
+        <item>30 pings</item>
+        <item>40 pings</item>
     </string-array>
 </resources>
