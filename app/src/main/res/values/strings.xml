@@ -1,36 +1,69 @@
 <resources>
     /* Widget */
     <string name="app_name">Ping Widget</string>
+    <string name="widget_press_start_activate">Click Start to activate</string>
     <string name="widget_ms">ms</string>
-    <string name="widget_min">Min</string>
-    <string name="widget_avg">Avg</string>
-    <string name="widget_max">Max</string>
-    <string name="widget_last">Last</string>
-    <string name="widget_uptime">Up</string>
+    <string name="widget_max_min">Max: %1$s - Min: %2$s</string>
+    <string name="widget_last">Last: %1$s</string>
+    <string name="widget_uptime">Uptime %1$d%%</string>
+    <string name="widget_avg">Avg: %1$s</string>
+    <string name="widget_max_min_err">Max: ERR - Min: ERR</string>
+    <string name="widget_last_err">Last: ERR</string>
+    <string name="widget_uptime_err">Uptime 0%</string>
+    <string name="widget_avg_err">Avg: ERR</string>
 
     /* Activity Home */
     <string name="activity_home_title">"Welcome to Ping Widget!</string>
     <string name="activity_home_text">"This app is a widget. To be able to use it, you must add a PingWidget to your android launcher.</string>
-    <string name="activity_home_version">"App version %1$s</string>
+    <string name="activity_home_version">Version %1$s</string>
     <string name="activity_home_author">Alejandro Bicelis %1$d</string>
     <string name="activity_home_github_link">Check project at GitHub</string>
     <string name="activity_home_website_link">Visit my site</string>
 
     /* Widget Configure preference activity/fragment */
-    <string name="fragment_widget_configure_key_address">widget_configure_address</string>
-    <string name="fragment_widget_configure_key_interval">widget_configure_interval</string>
-    <string name="fragment_widget_configure_key_max_pings">widget_configure_max_pings</string>
-    <string name="fragment_widget_configure_key_background_color">widget_configure_background_color</string>
-    <string name="fragment_widget_configure_key_line_color">widget_configure_chart_line_color</string>
-    <string name="fragment_widget_configure_key_enable">widget_configure_enable</string>
-
     <string name="fragment_widget_configure_name">Configure PingWidget</string>
+    <string name="activity_widget_configure_menu_done">DONE</string>
+
+
+    <string name="fragment_widget_configure_address_key">widget_configure_address</string>
+    <string name="fragment_widget_configure_address_title">IP Address or domain</string>
+    <string name="fragment_widget_configure_address_summary">www.google.com</string>
+
+    <string name="fragment_widget_configure_interval_key">widget_configure_interval</string>
+    <string name="fragment_widget_configure_interval_title">Ping Interval</string>
+    <string name="fragment_widget_configure_interval_summary">1 sec</string>
+
+    <string name="fragment_widget_configure_max_pings_key">widget_configure_max_pings</string>
+    <string name="fragment_widget_configure_max_pings_title">Max number of pings</string>
+    <string name="fragment_widget_configure_max_pings_summary">15 pings</string>
+
+    <string name="fragment_widget_configure_background_color_key">widget_configure_background_color</string>
+    <string name="fragment_widget_configure_background_color_title">Background Color</string>
+
+    <string name="fragment_widget_configure_line_color_key">widget_configure_chart_line_color</string>
+    <string name="fragment_widget_configure_line_color_title">Chart Color</string>
+
+    <string name="fragment_widget_configure_about_key">widget_configure_about</string>
+    <string name="fragment_widget_configure_about_summary">Version %1$s</string>
+
+    <string name="fragment_widget_configure_rate_key">widget_configure_rate</string>
+    <string name="fragment_widget_configure_rate_title">Rate Ping Widget</string>
+    <string name="fragment_widget_configure_rate_summary">Like this app? I appreciate your 5-star rating!</string>
+
+    <string name="fragment_widget_configure_contact_key">widget_configure_contact</string>
+    <string name="fragment_widget_configure_contact_title">Contact developer</string>
+    <string name="fragment_widget_configure_contact_summary">Having trouble using this app? Questions? Email me at alejandro@alejandrobicelis.com.ve</string>
+
+
+    <string name="fragment_widget_configure_dialog_background_color">Background Color</string>
+    <string name="fragment_widget_configure_dialog_chart_line_color">Chart Color</string>
+
+
     <string name="fragment_widget_configure_err_address">Please enter a valid Address</string>
     <string name="fragment_widget_configure_err_interval">Please select an interval</string>
     <string name="fragment_widget_configure_err_background_color">Please select a background color</string>
-    <string name="fragment_widget_configure_dialog_background_color">Background Color</string>
     <string name="fragment_widget_configure_err_chart_line_color">Please select a chart color</string>
-    <string name="fragment_widget_configure_dialog_chart_line_color">Chart Color</string>
     <string name="fragment_widget_configure_err_max_pings">Please select a Max Pings amount</string>
+
 
 </resources>

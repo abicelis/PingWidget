@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import java.util.HashMap;
@@ -99,6 +100,7 @@ public class PingWidgetUpdateService extends Service {
                 RemoteViews views = new RemoteViews(getApplication().getPackageName(), R.layout.widget_layout);
                 //Change widget's start_pause icon to pause
                 views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
+
                 //Finally, update the widget
                 AppWidgetManager.getInstance(getApplicationContext()).updateAppWidget(entry.getKey(), views);
 
@@ -125,6 +127,12 @@ public class PingWidgetUpdateService extends Service {
                 task.cancel(true);
 
             } else {
+
+                //Set widget_press_start to GONE
+                RemoteViews views = new RemoteViews(getApplication().getPackageName(), R.layout.widget_layout);
+                views.setViewVisibility(R.id.widget_press_start, View.GONE);
+                AppWidgetManager.getInstance(getApplicationContext()).updateAppWidget(widgetId, views);
+
                 //Create a new task and run it, also save it to mAsyncTasks using widgetId
                 task = new PingAsyncTask(this.getApplicationContext(), widgetId, currentWidget.getPingInterval(), currentWidget.getMaxPings());
                 mAsyncTasks.put(widgetId, task);

@@ -59,7 +59,8 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
                 publishProgress(pingDelay);
 
             }catch (Exception e) {
-                Log.d(TAG, "PING FAILED");
+                Log.d(TAG, "PING FAILED" + e.getMessage());
+                e.printStackTrace();
                 publishProgress(-1f);
 
             }
@@ -69,6 +70,7 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
             } catch (InterruptedException e) {
                 return -1;
             }
+
         }
         return -1;
     }
@@ -78,10 +80,24 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
         String str;
         float pingDelay;
 
-        Process process = Runtime.getRuntime().exec(String.format(Locale.getDefault(), "/system/bin/ping -c 1 -W 1 %1$s ", url));
+
+        //TODO: Figure this out: reader.read(buffer) takes way too long, solution is using grep to minimize output but it gives
+        //TODO: permission errors; "java.io.IOException: Error running exec(). Command: [bash, -c, /system/bin/ping -c 1 -W 1 www.google.com] Working Directory: null Environment: null"
+//        String[] pingCommand = {
+//                "/bin/sh",
+//                "-c",
+//                "/system/bin/ping -c 1 -W 1 " + url
+//        };
+        //Process process =  Runtime.getRuntime().exec(pingCommand);
+        //Process process =  Runtime.getRuntime().exec(String.format(Locale.getDefault(), "/system/bin/ping -c 1 -W 1 %1$s  | grep 'icmp_seq'", url));
+        Process process =  Runtime.getRuntime().exec(String.format(Locale.getDefault(), "/system/bin/ping -c 1 -W 1 %1$s", url));
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
         int i;
         char[] buffer = new char[4096];
+
+
         StringBuilder output = new StringBuilder();
         while ((i = reader.read(buffer)) > 0)
             output.append(buffer, 0, i);
@@ -101,7 +117,6 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
     protected void onProgressUpdate(Float... values) {
         Log.d(TAG, "onProgressUpdate(). Value = " + values[0]);
 
-
         PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(mAppContext.getApplicationContext(), mWidgetId);
 
         if(data != null) {
@@ -117,7 +132,6 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
             cancel(true);
             Log.d(TAG, "Widget " + mWidgetId + " seems gone.. Canceling PingAsyncTask");
         }
-
     }
 
     private void updateWidget(LinkedList<Float> values, int maxPings, int chartLineColor) {
@@ -148,26 +162,34 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
             }
             avg = avg/values.size();
 
-            float aux = badPingCount/values.size();
-            int uptime = (badPingCount == 0 ? 100 : (int)((1-aux)*100) );
+            if(badPingCount == values.size()) {     //all pings are bad
+                remoteViews.setTextViewText(R.id.widget_max_min_ping, mAppContext.getResources().getString(R.string.widget_max_min_err));
+                remoteViews.setTextViewText(R.id.widget_last_ping, mAppContext.getResources().getString(R.string.widget_last_err));
+                remoteViews.setTextViewText(R.id.widget_uptime_ping, mAppContext.getResources().getString(R.string.widget_uptime_err));
+                remoteViews.setTextViewText(R.id.widget_avg_ping, mAppContext.getResources().getString(R.string.widget_avg_err));
 
-            remoteViews.setTextViewText(R.id.widget_uptime_ping_value, String.format(Locale.getDefault(), "%d", uptime));
-            remoteViews.setTextViewText(R.id.widget_graph_max_ping_value, (max != 0f ? String.format(Locale.getDefault(), "%.1f", max) : ""));
-            remoteViews.setTextViewText(R.id.widget_last_ping_value, (values.peekLast() != -1f ? String.format(Locale.getDefault(), "%.1f", values.peekLast()) : "ERR"));
-            remoteViews.setTextViewText(R.id.widget_graph_max_ping_value, (max != 0f ? String.format(Locale.getDefault(), "%.1f", max) : "-"));
-            remoteViews.setTextViewText(R.id.widget_max_ping_value, (max != 0f ? String.format(Locale.getDefault(), "%.1f", max) : "-"));
-            remoteViews.setTextViewText(R.id.widget_min_ping_value, (min != Float.MAX_VALUE ? String.format(Locale.getDefault(), "%.1f", min) : "-"));
-            remoteViews.setTextViewText(R.id.widget_avg_ping_value, (avg != 0f ? String.format(Locale.getDefault(), "%.1f", avg) : "-"));
+            } else {                                //at least one ping is good
+                float aux = badPingCount/values.size();
+                int uptime = (badPingCount == 0 ? 100 : (int)((1-aux)*100) );
 
-            drawGraph(remoteViews, max, min, maxPings, values, chartLineColor);
+                String maxStr = (max != 0f ? String.format(Locale.getDefault(), "%.1f", max) : "-");
+                String minStr = (min != Float.MAX_VALUE ? String.format(Locale.getDefault(), "%.1f", min) : "-");
+                String lastStr = (values.peekLast() != -1f ? String.format(Locale.getDefault(), "%.1f", values.peekLast()) : "ERR");
+                String avgStr = (avg != 0f ? String.format(Locale.getDefault(), "%.1f", avg) : "-");
 
+                remoteViews.setTextViewText(R.id.widget_max_min_ping, String.format(Locale.getDefault(), mAppContext.getResources().getString(R.string.widget_max_min), maxStr, minStr));
+                remoteViews.setTextViewText(R.id.widget_last_ping, String.format(Locale.getDefault(), mAppContext.getResources().getString(R.string.widget_last), lastStr));
+                remoteViews.setTextViewText(R.id.widget_uptime_ping, String.format(Locale.getDefault(), mAppContext.getResources().getString(R.string.widget_uptime), uptime));
+                remoteViews.setTextViewText(R.id.widget_avg_ping, String.format(Locale.getDefault(), mAppContext.getResources().getString(R.string.widget_avg), avgStr));
+
+                drawGraph(remoteViews, max, min, maxPings, values, chartLineColor);
+            }
 
         } else {
-            remoteViews.setTextViewText(R.id.widget_graph_max_ping_value, "");
-            remoteViews.setTextViewText(R.id.widget_last_ping_value, "-");
-            remoteViews.setTextViewText(R.id.widget_max_ping_value, "-");
-            remoteViews.setTextViewText(R.id.widget_min_ping_value, "-");
-            remoteViews.setTextViewText(R.id.widget_avg_ping_value, "-");
+            remoteViews.setTextViewText(R.id.widget_max_min_ping, "-");
+            remoteViews.setTextViewText(R.id.widget_last_ping, "-");
+            remoteViews.setTextViewText(R.id.widget_uptime_ping, "-");
+            remoteViews.setTextViewText(R.id.widget_avg_ping, "-");
         }
 
         //Update widget

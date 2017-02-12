@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import ve.com.abicelis.pingwidget.model.PingWidgetData;
@@ -52,10 +53,11 @@ public class PingWidgetProvider extends AppWidgetProvider {
                 //Update the widget's views
                 views.setTextViewText(R.id.widget_host, currentWidget.getAddress());
                 views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
+                views.setViewVisibility(R.id.widget_press_start, View.VISIBLE);
 
-                //TODO: Cant seem to figure out how to change background color without overwriting background drawable (killing the rounded corners)
+                //TODO: switch here when ThemePreference is done, selecting widget_layout_container_top background
                 //Do this here and in PingWidgetConfigureFragment
-                views.setInt(R.id.widget_background, "setBackgroundColor", currentWidget.getBackgroundColor());
+                //views.setInt(R.id.widget_background, "setBackgroundColor", currentWidget.getBackgroundColor());
 
 
                 //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()

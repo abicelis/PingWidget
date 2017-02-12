@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="text_white">#EEEEEE</color>
+    <color name="text_dark_gray">#424242</color>
 
 
     <color name="graph_ping_failed_paint">#e53935</color>
