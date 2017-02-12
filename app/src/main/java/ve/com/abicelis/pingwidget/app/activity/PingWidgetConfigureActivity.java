@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
@@ -57,6 +58,12 @@ public class PingWidgetConfigureActivity extends AppCompatActivity implements Co
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_activity_ping_widget_configure, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
@@ -64,6 +71,9 @@ public class PingWidgetConfigureActivity extends AppCompatActivity implements Co
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case R.id.menu_activity_widget_configure_done:
+                PingWidgetConfigureFragment fragment = (PingWidgetConfigureFragment) getSupportFragmentManager().findFragmentById(R.id.activity_preference_fragment);
+                fragment.handleWidgetCreation();
         }
         return super.onOptionsItemSelected(item);
     }
