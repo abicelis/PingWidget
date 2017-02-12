@@ -6,7 +6,7 @@
         android:title="@string/fragment_widget_configure_address_title"
         android:summary="@string/fragment_widget_configure_address_summary"
         android:inputType="text|textEmailAddress"
-        android:defaultValue="www.google.com"/>
+        android:defaultValue="@string/fragment_widget_configure_address_summary"/>
     <ListPreference
         android:key="@string/fragment_widget_configure_interval_key"
         android:title="@string/fragment_widget_configure_interval_title"
@@ -28,7 +28,7 @@
     <Preference
         android:key="@string/fragment_widget_configure_line_color_key"
         android:title="@string/fragment_widget_configure_line_color_title"
-        android:summary="Yellow!"/>
+        android:summary=""/>
 
     <PreferenceCategory android:title="About"/>
     <Preference
