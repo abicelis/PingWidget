@@ -62,6 +62,7 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
         addPreferencesFromResource(R.xml.ping_widget_configure_preferences);
 
         mAddress = (EditTextPreference) findPreference(getResources().getString(R.string.fragment_widget_configure_address_key));
+        mAddress.setSummary(mAddress.getText());                            //If a value was previously set for a previous widget, keep that for next widget
         mAddress.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {

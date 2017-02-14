@@ -10,14 +10,14 @@
     <ListPreference
         android:key="@string/fragment_widget_configure_interval_key"
         android:title="@string/fragment_widget_configure_interval_title"
-        android:summary="@string/fragment_widget_configure_interval_summary"
+        android:summary="%s"
         android:entries="@array/pingInterval"
         android:entryValues="@array/pingIntervalEntries"
         android:defaultValue="1"/>
     <ListPreference
         android:key="@string/fragment_widget_configure_max_pings_key"
         android:title="@string/fragment_widget_configure_max_pings_title"
-        android:summary="@string/fragment_widget_configure_max_pings_summary"
+        android:summary="%s"
         android:entries="@array/maxPings"
         android:entryValues="@array/maxPingsEntries"
         android:defaultValue="15"/>
