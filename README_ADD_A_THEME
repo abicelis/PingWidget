@@ -1,0 +1,27 @@
+How to add a PingWidget theme.
+
+- Add a @string summary:
+
+	/* Widget Themes (Summaries)*/
+	<string name="widget_theme_summary_blue_yellow">Blue/Yellow</string>
+
+- Add Theme colors:
+
+	/*Widget theme colors*/
+	<color name="widget_theme_blue_yellow_background_top">#03A9F4</color>
+	<color name="widget_theme_blue_yellow_chart">#FFEB3B</color>
+
+- Add a ThemeView in preference_theme.xml:
+
+
+	<ve.com.abicelis.pingwidget.app.preference.ThemeView
+	    android:id="@+id/theme_blue_yellow"
+	    android:layout_width="40dp"
+	    android:layout_height="40dp"
+	    android:layout_marginLeft="10dp"
+	    />
+
+- Add a drawable named widget_background_top_blue.xml.
+
+- Add entries in WidgetTheme.java enum.
+
