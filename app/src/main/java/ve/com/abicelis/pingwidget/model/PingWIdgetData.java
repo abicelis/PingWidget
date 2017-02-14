@@ -13,17 +13,19 @@ public class PingWidgetData {
     private int mBackgroundColor;
     private int mChartLineColor;
     private int mMaxPings;
+    private String mThemeName;
     private LinkedList<Float> mPingTimes;
 
     private boolean isRunning;
 
 
-    public PingWidgetData(String address, int pingInterval, int backgroundColor, int chartLineColor, int maxPings) {
+    public PingWidgetData(String address, int pingInterval, int backgroundColor, int chartLineColor, int maxPings, String themeName) {
         mAddress = address;
         mPingInterval = pingInterval;
         mBackgroundColor = backgroundColor;
         mChartLineColor = chartLineColor;
         mMaxPings = maxPings;
+        mThemeName = themeName;
 
         mPingTimes = new LinkedList<>();
         isRunning = false;
@@ -72,6 +74,15 @@ public class PingWidgetData {
 
     public void setMaxPings(int mMaxPings) {
         this.mMaxPings = mMaxPings;
+    }
+
+
+    public String getThemeName() {
+        return mThemeName;
+    }
+
+    public void setThemeName(String mThemeName) {
+        this.mThemeName = mThemeName;
     }
 
 

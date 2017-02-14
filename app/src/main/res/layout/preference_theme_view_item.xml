@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    >
+    <ImageView
+        android:id="@+id/preference_theme_view_item_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:tint="@color/widget_theme_blue_yellow_background_top"
+        android:src="@drawable/preference_theme_item_background"
+        />
+
+    <ImageView
+        android:id="@+id/preference_theme_view_item_chart"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_centerInParent="true"
+        android:tint="@color/widget_theme_blue_yellow_chart"
+        android:src="@drawable/preference_theme_item_background"
+        />
+
+
+</RelativeLayout>

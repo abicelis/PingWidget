@@ -7,10 +7,20 @@
     <color name="text_white">#EEEEEE</color>
     <color name="text_dark_gray">#424242</color>
 
+    /*Chart colors*/
+    <color name="chart_ping_failed_paint">#e53935</color>
+    <color name="chart_text_paint">#EEEEEE</color>
 
-    <color name="graph_ping_failed_paint">#e53935</color>
-    <color name="graph_text_paint">#EEEEEE</color>
 
+    /*Widget theme colors*/
+    <color name="widget_theme_blue_yellow_background_top">#03A9F4</color>
+    <color name="widget_theme_blue_yellow_chart">#FFEB3B</color>
+
+    <color name="widget_theme_green_background_top">#8bc34a</color>
+    <color name="widget_theme_green_chart">#1b5e20</color>
+
+    <color name="widget_theme_orange_amber_background_top">#ff5722</color>
+    <color name="widget_theme_orange_amber_chart">#ffc107</color>
 
 
 

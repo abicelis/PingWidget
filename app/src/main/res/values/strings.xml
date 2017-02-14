@@ -38,6 +38,9 @@
     <string name="fragment_widget_configure_max_pings_title">Max number of pings</string>
     <string name="fragment_widget_configure_max_pings_summary">15 pings</string>
 
+    <string name="fragment_widget_configure_theme_key">widget_configure_theme</string>
+    <string name="fragment_widget_configure_theme_title">Theme</string>
+
     <string name="fragment_widget_configure_background_color_key">widget_configure_background_color</string>
     <string name="fragment_widget_configure_background_color_title">Background Color</string>
 
@@ -66,6 +69,11 @@
     <string name="fragment_widget_configure_err_chart_line_color">Please select a chart color</string>
     <string name="fragment_widget_configure_err_max_pings">Please select a Max Pings amount</string>
 
+
+    /* Widget Themes (Summaries)*/
+    <string name="widget_theme_summary_blue_yellow">Blue/Yellow</string>
+    <string name="widget_theme_summary_green_green">Green</string>
+    <string name="widget_theme_summary_orange_amber">Orange/Amber</string>
 
     /* Links */
 

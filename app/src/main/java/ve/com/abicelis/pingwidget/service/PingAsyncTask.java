@@ -17,6 +17,7 @@ import java.util.LinkedList;
 import java.util.Locale;
 
 import ve.com.abicelis.pingwidget.R;
+import ve.com.abicelis.pingwidget.enums.WidgetTheme;
 import ve.com.abicelis.pingwidget.model.PingWidgetData;
 import ve.com.abicelis.pingwidget.util.SharedPreferencesHelper;
 
@@ -126,7 +127,7 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
             SharedPreferencesHelper.writePingWidgetData(mAppContext.getApplicationContext(), mWidgetId, data);
 
 
-            updateWidget(data.getPingTimes(), data.getMaxPings(), data.getChartLineColor());
+            updateWidget(data.getPingTimes(), data.getMaxPings(), WidgetTheme.valueOf(data.getThemeName()).getColorChart());
         } else {
             //Widget was probably destroyed while running, kill this AsyncTask.
             cancel(true);
@@ -182,7 +183,7 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
                 remoteViews.setTextViewText(R.id.widget_uptime_ping, String.format(Locale.getDefault(), mAppContext.getResources().getString(R.string.widget_uptime), uptime));
                 remoteViews.setTextViewText(R.id.widget_avg_ping, String.format(Locale.getDefault(), mAppContext.getResources().getString(R.string.widget_avg), avgStr));
 
-                drawGraph(remoteViews, max, min, maxPings, values, chartLineColor);
+                drawChart(remoteViews, max, min, maxPings, values, chartLineColor);
             }
 
         } else {
@@ -196,7 +197,7 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
         mAppWidgetManager.updateAppWidget(mWidgetId, remoteViews);
     }
 
-    private void drawGraph(RemoteViews views, float max, float min, int maxValueCount, LinkedList<Float> values, int chartLineColor) {
+    private void drawChart(RemoteViews views, float max, float min, int maxValueCount, LinkedList<Float> values, int chartLineColor) {
 
         final int POINT_SIZE = 5;
         final int SQUARE_SIZE = 5;
@@ -211,27 +212,25 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
         textPaint.setAntiAlias(true);
         textPaint.setStyle(Paint.Style.STROKE);
         textPaint.setStrokeWidth(1);
-        textPaint.setColor(ContextCompat.getColor(mAppContext, R.color.graph_text_paint));
+        textPaint.setColor(ContextCompat.getColor(mAppContext, R.color.chart_text_paint));
 
         Paint linesPaint = new Paint();
         linesPaint.setAntiAlias(true);
         linesPaint.setStyle(Paint.Style.STROKE);
         linesPaint.setStrokeWidth(4);
-        //linesPaint.setColor(ContextCompat.getColor(mAppContext, R.color.graph_lines));
-        linesPaint.setColor(chartLineColor);
+        linesPaint.setColor(ContextCompat.getColor(mAppContext, chartLineColor));
 
         Paint pointsPaint = new Paint();
         pointsPaint.setAntiAlias(true);
         pointsPaint.setStyle(Paint.Style.STROKE);
         pointsPaint.setStrokeWidth(8);
-        //pointsPaint.setColor(ContextCompat.getColor(mAppContext, R.color.graph_points));
-        pointsPaint.setColor(chartLineColor);
+        pointsPaint.setColor(ContextCompat.getColor(mAppContext, chartLineColor));
 
         Paint pingFailedPaint = new Paint();
         pingFailedPaint.setAntiAlias(true);
         pingFailedPaint.setStyle(Paint.Style.STROKE);
         pingFailedPaint.setStrokeWidth(8);
-        pingFailedPaint.setColor(ContextCompat.getColor(mAppContext, R.color.graph_ping_failed_paint));
+        pingFailedPaint.setColor(ContextCompat.getColor(mAppContext, R.color.chart_ping_failed_paint));
 
         Bitmap bitmap = Bitmap.createBitmap(canvasWidth, canvasHeight, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
@@ -286,7 +285,7 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
             xPos +=chartStepX;
         }
 
-        views.setImageViewBitmap(R.id.widget_graph, bitmap);
+        views.setImageViewBitmap(R.id.widget_chart, bitmap);
     }
 
     private float calcY(float val, float max, float min, int chartHeight) {

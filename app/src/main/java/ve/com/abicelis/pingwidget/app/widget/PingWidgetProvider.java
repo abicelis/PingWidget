@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import ve.com.abicelis.pingwidget.enums.WidgetTheme;
 import ve.com.abicelis.pingwidget.model.PingWidgetData;
 import ve.com.abicelis.pingwidget.service.PingWidgetUpdateService;
 import ve.com.abicelis.pingwidget.R;
@@ -54,10 +55,8 @@ public class PingWidgetProvider extends AppWidgetProvider {
                 views.setTextViewText(R.id.widget_host, currentWidget.getAddress());
                 views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
                 views.setViewVisibility(R.id.widget_press_start, View.VISIBLE);
+                views.setInt(R.id.widget_layout_container_top, "setBackgroundResource", WidgetTheme.valueOf(currentWidget.getThemeName()).getDrawableBackgroundContainerTop());
 
-                //TODO: switch here when ThemePreference is done, selecting widget_layout_container_top background
-                //Do this here and in PingWidgetConfigureFragment
-                //views.setInt(R.id.widget_background, "setBackgroundColor", currentWidget.getBackgroundColor());
 
 
                 //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()

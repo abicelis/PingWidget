@@ -25,10 +25,15 @@
         <!--android:key="@string/fragment_widget_configure_background_color_key"-->
         <!--android:title="@string/fragment_widget_configure_background_color_title"-->
         <!--android:summary="Blue!"/>-->
-    <Preference
-        android:key="@string/fragment_widget_configure_line_color_key"
-        android:title="@string/fragment_widget_configure_line_color_title"
-        android:summary=""/>
+    <ve.com.abicelis.pingwidget.app.preference.ThemePreference
+        android:key="@string/fragment_widget_configure_theme_key"
+        android:title="@string/fragment_widget_configure_theme_title"
+        android:summary="@string/widget_theme_summary_blue_yellow"/>
+
+    <!--<Preference-->
+        <!--android:key="@string/fragment_widget_configure_line_color_key"-->
+        <!--android:title="@string/fragment_widget_configure_line_color_title"-->
+        <!--/>-->
 
     <PreferenceCategory android:title="About"/>
     <Preference
