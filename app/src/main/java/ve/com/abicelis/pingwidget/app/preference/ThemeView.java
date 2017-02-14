@@ -29,7 +29,7 @@ public class ThemeView extends FrameLayout {
         ImageView imageViewBackground = (ImageView) view.findViewById(R.id.preference_theme_view_item_background);
         ImageView imageViewChart = (ImageView) view.findViewById(R.id.preference_theme_view_item_chart);
 
-        WidgetTheme theme = WidgetTheme.getByThemeWiewId(view.getId());
+        WidgetTheme theme = WidgetTheme.getByThemeViewId(view.getId());
 
         imageViewBackground.setColorFilter(ContextCompat.getColor(context, theme.getColorBackgroundContainerTop()));
         imageViewChart.setColorFilter(ContextCompat.getColor(context, theme.getColorChart()));

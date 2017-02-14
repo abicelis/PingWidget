@@ -22,6 +22,15 @@
     <color name="widget_theme_orange_amber_background_top">#ff5722</color>
     <color name="widget_theme_orange_amber_chart">#ffc107</color>
 
+    <color name="widget_theme_red_teal_background_top">#e53935</color>
+    <color name="widget_theme_red_teal_chart">#00bfa5</color>
+
+    <color name="widget_theme_teal_orange_background_top">#009688</color>
+    <color name="widget_theme_teal_orange_chart">#ffab40</color>
+
+    <color name="widget_theme_purple_orange_background_top">#673ab7</color>
+    <color name="widget_theme_purple_orange_chart">#ff6e40</color>
+
 
 
 </resources>

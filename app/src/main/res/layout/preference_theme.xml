@@ -41,6 +41,7 @@
         android:layout_marginRight="16dp"
         android:layout_centerVertical="true"
         android:scrollbarStyle="outsideOverlay"
+        android:scrollbarSize="3dp"
         >
 
         <LinearLayout
@@ -63,6 +64,27 @@
 
             <ve.com.abicelis.pingwidget.app.preference.ThemeView
                 android:id="@+id/theme_orange_amber"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                />
+
+            <ve.com.abicelis.pingwidget.app.preference.ThemeView
+                android:id="@+id/theme_red_teal"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                />
+
+            <ve.com.abicelis.pingwidget.app.preference.ThemeView
+                android:id="@+id/theme_teal_orange"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                />
+
+            <ve.com.abicelis.pingwidget.app.preference.ThemeView
+                android:id="@+id/theme_purple_orange"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="10dp"

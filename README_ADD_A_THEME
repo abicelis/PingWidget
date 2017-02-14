@@ -1,15 +1,16 @@
 How to add a PingWidget theme.
 
-- Add a @string summary:
-
-	/* Widget Themes (Summaries)*/
-	<string name="widget_theme_summary_blue_yellow">Blue/Yellow</string>
-
 - Add Theme colors:
 
 	/*Widget theme colors*/
 	<color name="widget_theme_blue_yellow_background_top">#03A9F4</color>
 	<color name="widget_theme_blue_yellow_chart">#FFEB3B</color>
+
+- Add a @string summary:
+
+	/* Widget Themes (Summaries)*/
+	<string name="widget_theme_summary_blue_yellow">Blue/Yellow</string>
+
 
 - Add a ThemeView in preference_theme.xml:
 

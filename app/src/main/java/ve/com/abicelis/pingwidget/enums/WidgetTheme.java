@@ -14,7 +14,10 @@ import ve.com.abicelis.pingwidget.R;
 public enum WidgetTheme {
     BLUE_YELLOW(R.id.theme_blue_yellow, R.string.widget_theme_summary_blue_yellow, R.drawable.widget_background_top_blue, R.color.widget_theme_blue_yellow_background_top, R.color.widget_theme_blue_yellow_chart),
     GREEN_GREEN(R.id.theme_green_green, R.string.widget_theme_summary_green_green, R.drawable.widget_background_top_green, R.color.widget_theme_green_background_top, R.color.widget_theme_green_chart),
-    ORANGE_AMBER(R.id.theme_orange_amber, R.string.widget_theme_summary_orange_amber, R.drawable.widget_background_top_orange, R.color.widget_theme_orange_amber_background_top, R.color.widget_theme_orange_amber_chart)
+    ORANGE_AMBER(R.id.theme_orange_amber, R.string.widget_theme_summary_orange_amber, R.drawable.widget_background_top_orange, R.color.widget_theme_orange_amber_background_top, R.color.widget_theme_orange_amber_chart),
+    RED_TEAL(R.id.theme_red_teal, R.string.widget_theme_summary_red_teal, R.drawable.widget_background_top_red, R.color.widget_theme_red_teal_background_top, R.color.widget_theme_red_teal_chart),
+    TEAL_ORANGE(R.id.theme_teal_orange, R.string.widget_theme_summary_teal_orange, R.drawable.widget_background_top_teal, R.color.widget_theme_teal_orange_background_top, R.color.widget_theme_teal_orange_chart),
+    PURPLE_ORANGE(R.id.theme_purple_orange, R.string.widget_theme_summary_purple_orange, R.drawable.widget_background_top_purple, R.color.widget_theme_purple_orange_background_top, R.color.widget_theme_purple_orange_chart)
     ;
 
     private @IdRes int mThemeViewId;
@@ -51,12 +54,12 @@ public enum WidgetTheme {
         return mColorChart;
     }
 
-    public static WidgetTheme getByThemeWiewId(@IdRes int themeViewId) {
-        switch(themeViewId) {
-            case R.id.theme_blue_yellow: return WidgetTheme.BLUE_YELLOW;
-            case R.id.theme_green_green: return WidgetTheme.GREEN_GREEN;
-            case R.id.theme_orange_amber: return WidgetTheme.ORANGE_AMBER;
-            default: throw new IllegalArgumentException(String.valueOf(themeViewId));
+    public static WidgetTheme getByThemeViewId(@IdRes int themeViewId) {
+
+        for(WidgetTheme widgetTheme : WidgetTheme.values()) {
+            if(widgetTheme.getThemeViewId() == themeViewId)
+                return widgetTheme;
         }
+        throw new IllegalArgumentException(String.valueOf(themeViewId));
     }
 }

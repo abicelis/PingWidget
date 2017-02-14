@@ -74,6 +74,9 @@
     <string name="widget_theme_summary_blue_yellow">Blue/Yellow</string>
     <string name="widget_theme_summary_green_green">Green</string>
     <string name="widget_theme_summary_orange_amber">Orange/Amber</string>
+    <string name="widget_theme_summary_red_teal">Red/Teal</string>
+    <string name="widget_theme_summary_teal_orange">Teal/Orange</string>
+    <string name="widget_theme_summary_purple_orange">Purple/Orange</string>
 
     /* Links */
 
