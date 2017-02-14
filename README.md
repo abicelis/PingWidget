@@ -21,11 +21,9 @@ This widget features:
 
 ## Screens
 
-<img alt='Get it on Google Play' src='https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.2.4/pingwidget_1.png ' width="240px"/>
-<img alt='Get it on Google Play' src='https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.2.4/pingwidget_1.png ' width="240px"/>
-<img alt='Get it on Google Play' src='https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.2.4/pingwidget_1.png ' width="240px"/>
-
-![Widgets](https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.2.4/pingwidget_1.png "Widgets title") ![Widgets](https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.2.4/pingwidget_1.png "Widgets title") ![Widgets](https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.2.4/pingwidget_1.png "Widgets title")
+<img alt='Get it on Google Play' src='https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.2.4/pingwidget_1.png ' width="260px"/>
+<img alt='Get it on Google Play' src='https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.2.4/pingwidget_2.png ' width="260px"/>
+<img alt='Get it on Google Play' src='https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.2.4/pingwidget_3.png ' width="260px"/>
 
 ## Code dependencies
 
