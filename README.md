@@ -2,9 +2,7 @@
 
 THIS SOFTWARE IS CURRENTLY IN DEVELOPMENT AT AN ALPHA STAGE
 
-[![Get it on Google Play](https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png | width=100)](https://play.google.com/store/apps/details?id=ve.com.abicelis.pingwidget&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1)
-
-<a href='https://play.google.com/store/apps/details?id=ve.com.abicelis.pingwidget&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="100px"/></a>
+<a href='https://play.google.com/store/apps/details?id=ve.com.abicelis.pingwidget&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="240px"/></a>
 
 ## About the app
 
