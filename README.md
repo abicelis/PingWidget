@@ -2,11 +2,12 @@
 
 THIS SOFTWARE IS CURRENTLY IN DEVELOPMENT AT AN ALPHA STAGE
 
-<a href='https://play.google.com/store/apps/details?id=ve.com.abicelis.pingwidget&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="240px"/></a>
 
 ## About the app
 
-Keep track of the health of your server / internet connection / host by pinging and tracking its response time using a friendly material widget on your Android
+Keep track of the health of your server / internet connection / host by pinging and tracking its response time using a friendly material widget on your Android. This app is available at the Google Play Store:
+
+<a href='https://play.google.com/store/apps/details?id=ve.com.abicelis.pingwidget&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="240px"/></a>
 
 This widget features:
 
@@ -17,6 +18,10 @@ This widget features:
 - Ad-free
 - Automatically stops when device goes to sleep to conserve battery
 - Add multiple widgets to track as many servers as you like!
+
+## Screens
+
+![Widgets](https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.2.4/pingwidget_1.png "Widgets title") ![Widgets](https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.2.4/pingwidget_1.png "Widgets title") ![Widgets](https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.2.4/pingwidget_1.png "Widgets title")
 
 ## Code dependencies
 
