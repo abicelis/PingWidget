@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,14 +18,12 @@ import android.support.v7.preference.Preference;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.color.ColorChooserDialog;
 import com.takisoft.fix.support.v7.preference.EditTextPreference;
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
 import java.util.Locale;
 
 import ve.com.abicelis.pingwidget.R;
-import ve.com.abicelis.pingwidget.app.activity.PingWidgetConfigureActivity;
 import ve.com.abicelis.pingwidget.app.preference.ThemePreference;
 import ve.com.abicelis.pingwidget.app.widget.PingWidgetProvider;
 import ve.com.abicelis.pingwidget.enums.WidgetTheme;
@@ -41,14 +38,11 @@ import ve.com.abicelis.pingwidget.util.SharedPreferencesHelper;
 
 public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
 
-
     //UI
     private EditTextPreference mAddress;
     private ListPreference mInterval;
     private ListPreference mMaxPings;
     private ThemePreference mTheme;
-//    private Preference mBackgroundColor;
-//    private Preference mChartLineColor;
     private Preference mAbout;
     private Preference mRate;
     private Preference mContact;
@@ -73,42 +67,6 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
         mInterval = (ListPreference) findPreference(getResources().getString(R.string.fragment_widget_configure_interval_key));
         mMaxPings = (ListPreference) findPreference(getResources().getString(R.string.fragment_widget_configure_max_pings_key));
         mTheme = (ThemePreference) findPreference(getResources().getString(R.string.fragment_widget_configure_theme_key));
-//        mBackgroundColor =  findPreference(getResources().getString(R.string.fragment_widget_configure_background_color_key));
-//        mBackgroundColor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-//            @Override
-//            public boolean onPreferenceClick(Preference preference) {
-//
-//                new ColorChooserDialog.Builder((PingWidgetConfigureActivity) getActivity(), R.string.fragment_widget_configure_dialog_background_color)
-//                        .tag(getResources().getString(R.string.fragment_widget_configure_dialog_background_color))
-//                        .accentMode(true)
-//                        .doneButton(R.string.md_done_label)  // changes label of the done button
-//                        .cancelButton(R.string.md_cancel_label)  // changes label of the cancel button
-//                        .backButton(R.string.md_back_label)  // changes label of the back button
-//                        .dynamicButtonColor(true)  // defaults to true, false will disable changing action buttons' color to currently selected color
-//                        .show();
-//                return false;
-//            }
-//        });
-//        mWidgetBackgroundColor = Color.parseColor("#448AFF");
-
-//        mChartLineColor =  findPreference(getResources().getString(R.string.fragment_widget_configure_line_color_key));
-//        mChartLineColor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-//            @Override
-//            public boolean onPreferenceClick(Preference preference) {
-//
-//                new ColorChooserDialog.Builder((PingWidgetConfigureActivity) getActivity(), R.string.fragment_widget_configure_dialog_chart_line_color)
-//                        .tag(getResources().getString(R.string.fragment_widget_configure_dialog_chart_line_color))
-//                        .accentMode(false)
-//                        .doneButton(R.string.md_done_label)  // changes label of the done button
-//                        .cancelButton(R.string.md_cancel_label)  // changes label of the cancel button
-//                        .backButton(R.string.md_back_label)  // changes label of the back button
-//                        .dynamicButtonColor(true)  // defaults to true, false will disable changing action buttons' color to currently selected color
-//                        .show();
-//                return false;
-//            }
-//        });
-//        mWidgetChartLineColor = Color.parseColor("#FFEB3B");
-
         mAbout = findPreference(getResources().getString(R.string.fragment_widget_configure_about_key));
         mAbout.setSummary(String.format(Locale.getDefault(), getResources().getString(R.string.fragment_widget_configure_about_summary), getAppVersionAndBuild(getActivity()).first));
         mRate = findPreference(getResources().getString(R.string.fragment_widget_configure_rate_key));
@@ -179,16 +137,6 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
             return false;
         }
 
-//        if(mWidgetBackgroundColor == -1) {
-//            Toast.makeText(getActivity(), getResources().getString(R.string.fragment_widget_configure_err_background_color), Toast.LENGTH_SHORT).show();
-//            return false;
-//        }
-//
-//        if(mWidgetChartLineColor == -1) {
-//            Toast.makeText(getActivity(), getResources().getString(R.string.fragment_widget_configure_err_chart_line_color), Toast.LENGTH_SHORT).show();
-//            return false;
-//        }
-
         if(mMaxPings.getValue() == null) {
             Toast.makeText(getActivity(), getResources().getString(R.string.fragment_widget_configure_err_max_pings), Toast.LENGTH_SHORT).show();
             return false;
@@ -200,7 +148,6 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
         PingWidgetData data = new PingWidgetData(address, pingInterval, mWidgetBackgroundColor, mWidgetChartLineColor, maxPings, themeName);
         SharedPreferencesHelper.writePingWidgetData(getContext().getApplicationContext(), widgetId, data);
     }
-
 
 
 
@@ -260,13 +207,4 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
 
     }
 
-
-//
-//    public void setWidgetBackgroundColor(int color) {
-//        mWidgetBackgroundColor = color;
-//    }
-//
-//    public void setWidgetChartLineColor(int color) {
-//        mWidgetChartLineColor = color;
-//    }
 }

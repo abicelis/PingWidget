@@ -3,17 +3,12 @@ package ve.com.abicelis.pingwidget.app.activity;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import com.afollestad.materialdialogs.color.ColorChooserDialog;
 
 import ve.com.abicelis.pingwidget.R;
 import ve.com.abicelis.pingwidget.app.fragment.PingWidgetConfigureFragment;
@@ -23,7 +18,7 @@ import ve.com.abicelis.pingwidget.app.widget.PingWidgetProvider;
  * Created by abice on 8/2/2017.
  */
 
-public class PingWidgetConfigureActivity extends AppCompatActivity implements ColorChooserDialog.ColorCallback {
+public class PingWidgetConfigureActivity extends AppCompatActivity {
 
     private static String CONFIGURE_ACTION="android.appwidget.action.APPWIDGET_CONFIGURE";
     private Toolbar mToolbar;
@@ -101,19 +96,4 @@ public class PingWidgetConfigureActivity extends AppCompatActivity implements Co
         super.onBackPressed();
     }
 
-    @Override
-    public void onColorSelection(@NonNull ColorChooserDialog dialog, @ColorInt int selectedColor) {
-//        PingWidgetConfigureFragment fragment = (PingWidgetConfigureFragment) getSupportFragmentManager().findFragmentById(R.id.activity_preference_fragment);
-//
-//        if (dialog.tag() == getResources().getString(R.string.fragment_widget_configure_dialog_background_color)) {
-//            fragment.setWidgetBackgroundColor(selectedColor);
-//
-//        } else if (dialog.tag() == getResources().getString(R.string.fragment_widget_configure_dialog_chart_line_color)) {
-//            fragment.setWidgetChartLineColor(selectedColor);
-//        }
-    }
-
-    @Override
-    public void onColorChooserDismissed(@NonNull ColorChooserDialog dialog) {
-    }
 }
