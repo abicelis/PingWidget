@@ -29,7 +29,7 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
 
     //CONST
     private static final int MILLIS = 1000;
-    private static int SLEEP_TIME = 1000;
+    private int SLEEP_TIME;
     private static final String TAG = PingAsyncTask.class.getSimpleName();
 
     //DATA
