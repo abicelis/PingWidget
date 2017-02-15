@@ -31,8 +31,8 @@
 
             <ImageView
                 android:id="@+id/activity_home_app_icon"
-                android:layout_width="92dp"
-                android:layout_height="92dp"
+                android:layout_width="@dimen/activity_home_app_logo"
+                android:layout_height="@dimen/activity_home_app_logo"
                 android:layout_centerHorizontal="true"
                 android:src="@drawable/icon_ping_widget" />
 
@@ -42,6 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:text="@string/activity_home_title"
+                android:textSize="@dimen/activity_home_app_title"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_below="@+id/activity_home_app_icon"
                 android:layout_centerHorizontal="true" />
@@ -53,6 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:text="@string/activity_home_text"
+                android:textSize="@dimen/activity_home_app_text"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_below="@+id/activity_home_title"
                 android:layout_centerHorizontal="true" />
@@ -76,6 +78,7 @@
                 android:layout_alignParentBottom="true"
                 app:backgroundTint="@color/colorPrimaryDark"
                 android:textColor="@color/text_white"
+
                 android:text="@string/activity_home_market_link"
                 />
             <TextView
@@ -84,6 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:layout_above="@id/activity_home_github_link"
+                android:textSize="@dimen/activity_home_app_text_links"
                 android:layout_centerHorizontal="true"
                 android:text="@string/activity_home_website_link"
                 />
@@ -93,6 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@id/activity_home_website_link"
+                android:textSize="@dimen/activity_home_app_text_links"
                 android:layout_centerHorizontal="true"
                 android:text="@string/activity_home_author" />
 
@@ -101,6 +106,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                android:textSize="@dimen/activity_home_app_text_links"
                 android:layout_centerHorizontal="true"
                 android:layout_above="@id/activity_home_author"
                 android:text="@string/activity_home_version" />
