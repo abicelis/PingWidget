@@ -14,12 +14,20 @@
 
     /* Activity Home */
     <string name="activity_home_title">"Welcome to Ping Widget!</string>
-    <string name="activity_home_text">"This app is a widget. To be able to use it, you must add a PingWidget to your android launcher.</string>
+    <string name="activity_home_text">
+        <![CDATA[
+            To add a PingWidget to your home screen:<br/>
+            &nbsp;&nbsp;&nbsp;&#8226; Long-click your home screen<br/>
+            &nbsp;&nbsp;&nbsp;&#8226; Click on \'Widgets\'<br/>
+            &nbsp;&nbsp;&nbsp;&#8226; Add a PingWidget<br/>
+        ]]>
+    </string>
     <string name="activity_home_version">Version %1$s</string>
     <string name="activity_home_author">Alejandro Bicelis %1$d</string>
-    <string name="activity_home_market_link">I love this app, I want to rate it!</string>
-    <string name="activity_home_github_link">Check project at GitHub</string>
-    <string name="activity_home_website_link">Visit my site</string>
+
+    <string name="activity_home_market_link">Rate app</string>
+    <string name="activity_home_github_link">View GitHub Project</string>
+    <string name="activity_home_website_link">www.alejandrobicelis.com.ve</string>
 
     /* Widget Configure preference activity/fragment */
     <string name="fragment_widget_configure_name">Configure PingWidget</string>

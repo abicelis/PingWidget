@@ -17,12 +17,13 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:fillViewport="true" >
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:background="#eeeeee"
             android:paddingBottom="8dp"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
@@ -30,8 +31,8 @@
 
             <ImageView
                 android:id="@+id/activity_home_app_icon"
-                android:layout_width="192dp"
-                android:layout_height="192dp"
+                android:layout_width="92dp"
+                android:layout_height="92dp"
                 android:layout_centerHorizontal="true"
                 android:src="@drawable/icon_ping_widget" />
 
@@ -41,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:text="@string/activity_home_title"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_below="@+id/activity_home_app_icon"
                 android:layout_centerHorizontal="true" />
 
@@ -51,11 +52,49 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-
                 android:text="@string/activity_home_text"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_below="@+id/activity_home_title"
                 android:layout_centerHorizontal="true" />
+
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/activity_home_github_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                app:backgroundTint="@color/colorPrimaryDark"
+                android:textColor="@color/text_white"
+                android:text="@string/activity_home_github_link"
+                />
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/activity_home_market_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                app:backgroundTint="@color/colorPrimaryDark"
+                android:textColor="@color/text_white"
+                android:text="@string/activity_home_market_link"
+                />
+            <TextView
+                android:id="@+id/activity_home_website_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_above="@id/activity_home_github_link"
+                android:layout_centerHorizontal="true"
+                android:text="@string/activity_home_website_link"
+                />
+
+            <TextView
+                android:id="@+id/activity_home_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/activity_home_website_link"
+                android:layout_centerHorizontal="true"
+                android:text="@string/activity_home_author" />
 
             <TextView
                 android:id="@+id/activity_home_version"
@@ -63,47 +102,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:layout_centerHorizontal="true"
-                android:layout_below="@id/activity_home_text"
+                android:layout_above="@id/activity_home_author"
                 android:text="@string/activity_home_version" />
 
-            <TextView
-                android:id="@+id/activity_home_author"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/activity_home_version"
-                android:layout_centerHorizontal="true"
-                android:text="@string/activity_home_author" />
 
-            <TextView
-                android:id="@+id/activity_home_market_link"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/activity_home_author"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="@string/activity_home_market_link"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <TextView
-                android:id="@+id/activity_home_github_link"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/activity_home_market_link"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="@string/activity_home_github_link"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <TextView
-                android:id="@+id/activity_home_website_link"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/activity_home_github_link"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="@string/activity_home_website_link"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
         </RelativeLayout>
 
     </ScrollView>

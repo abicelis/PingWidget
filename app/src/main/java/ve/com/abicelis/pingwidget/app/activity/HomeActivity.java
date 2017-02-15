@@ -12,8 +12,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,7 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ve.com.abicelis.pingwidget.R;
+import ve.com.abicelis.pingwidget.util.Util;
 
 /**
  * Created by abice on 6/2/2017.
@@ -32,11 +35,12 @@ public class HomeActivity extends AppCompatActivity {
 
 
     //UI
+    @BindView(R.id.activity_home_text) TextView mHomeText;
     @BindView(R.id.activity_home_version) TextView mVersion;
     @BindView(R.id.activity_home_author) TextView mAuthor;
-    @BindView(R.id.activity_home_market_link) TextView mMarketLink;
-    @BindView(R.id.activity_home_github_link) TextView mGithubLink;
     @BindView(R.id.activity_home_website_link) TextView mWebsiteLink;
+    @BindView(R.id.activity_home_market_link) Button mMarketLink;
+    @BindView(R.id.activity_home_github_link) Button mGithubButton;
 
 
     @Override
@@ -44,15 +48,13 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
-
         setUpToolbar();
 
+        mHomeText.setText(Util.fromHtml(getResources().getString(R.string.activity_home_text)));
         mVersion.setText(String.format(Locale.getDefault(), getResources().getString(R.string.activity_home_version), getAppVersionAndBuild(this).first));
         mAuthor.setText(String.format(Locale.getDefault(), getResources().getString(R.string.activity_home_author), Calendar.getInstance().get(Calendar.YEAR)));
 
         final AppCompatActivity thisActivity = this;
-
-
         mMarketLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,7 +63,7 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(playStoreIntent);
             }
         });
-        mGithubLink.setOnClickListener(new View.OnClickListener() {
+        mGithubButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 launchWebBrowser(thisActivity, getResources().getString(R.string.url_github));
