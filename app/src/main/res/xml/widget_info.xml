@@ -3,7 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:initialLayout="@layout/widget_layout"
     android:previewImage="@drawable/widget_preview_image"
-    android:minHeight="110dp"
-    android:minWidth="250dp"
+    android:minHeight="144dp"
+    android:minWidth="288dp"
+    android:minResizeHeight="72dp"
+    android:minResizeWidth="216dp"
+    android:resizeMode="horizontal|vertical"
     android:configure="ve.com.abicelis.pingwidget.app.activity.PingWidgetConfigureActivity">
 </appwidget-provider>
