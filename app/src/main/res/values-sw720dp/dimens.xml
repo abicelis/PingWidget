@@ -6,7 +6,6 @@
     <dimen name="widget_container_margin">8dp</dimen>
 
 
-    <dimen name="text_tiny">8sp</dimen>
     <dimen name="text_large">20sp</dimen>
     <dimen name="text_medium">18sp</dimen>
     <dimen name="text_small">18sp</dimen>
