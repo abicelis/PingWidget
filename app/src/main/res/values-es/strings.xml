@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_home_github_link">Ver proyecto en Github</string>
+    <string name="activity_home_market_link">Calificar app</string>
+    <string name="activity_home_title">Bienvenido a Ping Widget!</string>
+    <string name="activity_home_version">Versión %1$s</string>
+    <string name="activity_widget_configure_menu_done">LISTO</string>
+    <string name="fragment_widget_configure_about_summary">Versión %1$s</string>
+    <string name="fragment_widget_configure_address_title">IP ó dirección web</string>
+    <string name="fragment_widget_configure_contact_summary">Tiene algun problema para usar esta app? Preguntas? Contáctame a alejandro@alejandrobicelis.com.ve</string>
+    <string name="fragment_widget_configure_contact_title">Contactar al desarrolador</string>
+    <string name="fragment_widget_configure_err_address">Ingrese un IP o dirección válido</string>
+    <string name="fragment_widget_configure_err_interval">Ingrese un intervalo válido</string>
+    <string name="fragment_widget_configure_err_max_pings">Ingrese un valor máximo de pings</string>
+    <string name="fragment_widget_configure_interval_title">Intervalo entre pings</string>
+    <string name="fragment_widget_configure_max_pings_title">Numero máximo de pings</string>
+    <string name="fragment_widget_configure_name">Configurar Ping Widget</string>
+    <string name="fragment_widget_configure_rate_summary">Te gusta éste app? Déjame una calificación de 5 estrellas!</string>
+    <string name="fragment_widget_configure_rate_title">Calificar Ping Widget</string>
+    <string name="fragment_widget_configure_theme_title">Tema</string>
+    <string name="widget_avg">Avg: %1$s</string>
+    <string name="widget_avg_err">Avg: ERR</string>
+    <string name="widget_last">Ultimo: %1$s</string>
+    <string name="widget_last_err">Ultimo: ERR</string>
+    <string name="widget_max_min">Max: %1$s - Min: %2$s</string>
+    <string name="widget_max_min_err">Max: ERR - Min: ERR</string>
+    <string name="widget_press_start_activate">Click boton de play para iniciar</string>
+    <string name="widget_theme_summary_blue_yellow">Azul/Amarillo</string>
+    <string name="widget_theme_summary_green_green">Verde</string>
+    <string name="widget_theme_summary_orange_amber">Naranja/Ambar</string>
+    <string name="widget_theme_summary_purple_orange">Morado/Naranja</string>
+    <string name="widget_theme_summary_red_teal">Rojo/Verde</string>
+    <string name="widget_theme_summary_teal_orange">Verde/Naranja</string>
+    <string name="widget_uptime">Arriba %1$d%%</string>
+    <string name="widget_uptime_err">Arriba 0%</string>
+    <string name="activity_home_text">
+        <![CDATA[
+            Para agregar un PingWidget:<br/>
+            &nbsp;&nbsp;&nbsp;&#8226; Click largo en su pantalla principal<br/>
+            &nbsp;&nbsp;&nbsp;&#8226; Seleccione \'Widgets\'<br/>
+            &nbsp;&nbsp;&nbsp;&#8226; Añada un PingWidget<br/>
+        ]]></string>
+</resources>
