@@ -15,6 +15,7 @@ import ve.com.abicelis.pingwidget.model.PingWidgetData;
 import ve.com.abicelis.pingwidget.service.PingWidgetUpdateService;
 import ve.com.abicelis.pingwidget.R;
 import ve.com.abicelis.pingwidget.util.SharedPreferencesHelper;
+import ve.com.abicelis.pingwidget.util.Util;
 
 /**
  * Created by abice on 6/2/2017.
@@ -28,6 +29,8 @@ public class PingWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
+        Log.d(TAG, "onDeleted()");
+
         //Delete widgets from SharedPreferences
         for(int appWidgetId :appWidgetIds)
             SharedPreferencesHelper.deletePingWidgetData(context.getApplicationContext(), appWidgetId);
@@ -45,7 +48,7 @@ public class PingWidgetProvider extends AppWidgetProvider {
 
             //Get widget data from SharedPreferences
             PingWidgetData currentWidget = SharedPreferencesHelper.readPingWidgetData(context.getApplicationContext(), widgetId);
-            Log.d(TAG, "onUpdate() Current widget data " + currentWidget.toString());
+            Log.d(TAG, "onUpdate() Current widget data: " + (currentWidget != null ? currentWidget.toString() : "null"));
 
             //Check if widget has data (has been configured on PingWidgetConfigureFragment!)
             if(currentWidget != null) {
@@ -60,18 +63,10 @@ public class PingWidgetProvider extends AppWidgetProvider {
                 views.setInt(R.id.widget_layout_container_top, "setBackgroundResource", WidgetTheme.valueOf(currentWidget.getThemeName()).getDrawableBackgroundContainerTop());
 
 
-
                 //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()
                 //Create an Intent, set PING_WIDGET_TOGGLE action to it, put EXTRA_APPWIDGET_ID as extra
-                Intent clickIntent = new Intent(context, PingWidgetProvider.class);
-                clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-                clickIntent.setAction(PingWidgetProvider.PING_WIDGET_TOGGLE);
+                Util.registerWidgetStartPauseOnClickListener(context, widgetId, views);
 
-                //Construct a PendingIntent using the Intent above
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, widgetId, clickIntent, 0);
-
-                //Register pendingIntent in RemoteViews onClick
-                views.setOnClickPendingIntent(R.id.widget_start_pause, pendingIntent);
 
 
                 //Finally, update the widget
@@ -154,7 +149,34 @@ public class PingWidgetProvider extends AppWidgetProvider {
 //        }
     }
 
+    @Override
+    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
+        Log.d(TAG, "onAppWidgetOptionsChanged()");
 
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+
+    }
+
+    @Override
+    public void onEnabled(Context context) {
+        Log.d(TAG, "onEnabled()");
+
+        super.onEnabled(context);
+    }
+
+    @Override
+    public void onDisabled(Context context) {
+        Log.d(TAG, "onDisabled()");
+
+        super.onDisabled(context);
+    }
+
+    @Override
+    public void onRestored(Context context, int[] oldWidgetIds, int[] newWidgetIds) {
+        Log.d(TAG, "onRestored()");
+
+        super.onRestored(context, oldWidgetIds, newWidgetIds);
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {

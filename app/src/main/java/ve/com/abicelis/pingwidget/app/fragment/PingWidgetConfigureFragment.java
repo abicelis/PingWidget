@@ -30,6 +30,7 @@ import ve.com.abicelis.pingwidget.enums.WidgetTheme;
 import ve.com.abicelis.pingwidget.model.PingWidgetData;
 import ve.com.abicelis.pingwidget.util.AddressValidator;
 import ve.com.abicelis.pingwidget.util.SharedPreferencesHelper;
+import ve.com.abicelis.pingwidget.util.Util;
 
 
 /**
@@ -177,16 +178,7 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
 
             //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()
             //Create an Intent, set PING_WIDGET_TOGGLE action to it, put EXTRA_APPWIDGET_ID as extra
-            Intent clickIntent = new Intent(getActivity(), PingWidgetProvider.class);
-            clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-            clickIntent.setAction(PingWidgetProvider.PING_WIDGET_TOGGLE);
-
-            //Construct a PendingIntent using the Intent above
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), widgetId, clickIntent, 0);
-
-            //Register pendingIntent in RemoteViews onClick
-            views.setOnClickPendingIntent(R.id.widget_start_pause, pendingIntent);
-
+            Util.registerWidgetStartPauseOnClickListener(getActivity(), widgetId, views);
 
 
             //Finally, update the widget
