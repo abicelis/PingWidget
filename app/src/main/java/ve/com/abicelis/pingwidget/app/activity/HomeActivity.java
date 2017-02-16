@@ -12,7 +12,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +32,7 @@ import ve.com.abicelis.pingwidget.util.Util;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private static String TAG = HomeActivity.class.getSimpleName();
 
     //UI
     @BindView(R.id.activity_home_text) TextView mHomeText;

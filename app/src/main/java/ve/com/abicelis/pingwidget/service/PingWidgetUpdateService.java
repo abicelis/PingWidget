@@ -4,8 +4,10 @@ package ve.com.abicelis.pingwidget.service;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
@@ -16,8 +18,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ve.com.abicelis.pingwidget.R;
+import ve.com.abicelis.pingwidget.app.widget.PingWidgetProvider;
+import ve.com.abicelis.pingwidget.enums.WidgetTheme;
 import ve.com.abicelis.pingwidget.model.PingWidgetData;
 import ve.com.abicelis.pingwidget.util.SharedPreferencesHelper;
+import ve.com.abicelis.pingwidget.util.Util;
 
 /**
  * Created by abice on 6/2/2017.
@@ -25,8 +30,6 @@ import ve.com.abicelis.pingwidget.util.SharedPreferencesHelper;
 
 public class PingWidgetUpdateService extends Service {
     private static String TAG = PingWidgetUpdateService.class.getSimpleName();
-    public static String SHOULD_RUN = "SHOULD_RUN";
-    private volatile boolean mThreadRunning = false;
     private static Map<Integer,PingAsyncTask> mAsyncTasks = new HashMap<>();
 
 
@@ -82,12 +85,63 @@ public class PingWidgetUpdateService extends Service {
         return START_STICKY;
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        Log.d(TAG, "onConfigurationChanged() " + newConfig.toString());
+
+        //Called when screen is rotated, phone charging state changes
+        //The widget gets reset, so we need to reconfigure some things
+
+        //Get AppWidgetManager
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
+
+        // Get all widget ids
+        int[] allWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(getApplication(), PingWidgetProvider.class));
+
+        for (int widgetId : allWidgetIds) {
+
+            //Get RemoteViews and widget data
+            RemoteViews views = new RemoteViews(getApplication().getPackageName(), R.layout.widget_layout);
+            PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(getApplicationContext(), widgetId);
+
+            if(data != null) {
+                views.setTextViewText(R.id.widget_host, data.getAddress());
+                views.setInt(R.id.widget_layout_container_top, "setBackgroundResource", WidgetTheme.valueOf(data.getThemeName()).getDrawableBackgroundContainerTop());
+
+                //Never pinged?
+                if(data.getPingTimes().size() == 0)
+                    views.setViewVisibility(R.id.widget_press_start, View.VISIBLE);
+                else {
+                    Util.redrawWidgetChart(getApplicationContext(), views, widgetId, data.getPingTimes(), data.getMaxPings(), WidgetTheme.valueOf(data.getThemeName()).getColorChart());
+                    views.setViewVisibility(R.id.widget_press_start, View.GONE);
+                }
+
+                if(data.isRunning())
+                    views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_pause);
+                else
+                    views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
+
+                //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()
+                //Create an Intent, set PING_WIDGET_TOGGLE action to it, put EXTRA_APPWIDGET_ID as extra
+                Util.registerWidgetStartPauseOnClickListener(getApplication(), widgetId, views);
+
+                //Update the widget
+                appWidgetManager.updateAppWidget(widgetId, views);
+            }
+
+        }
+        super.onConfigurationChanged(newConfig);
+    }
+
     private void handleScreenState(String screenState) {
-        Log.d(TAG, "handleScreenState()" + screenState);
+        Log.d(TAG, "handleScreenState() " + screenState);
 
         //If screen has just been turned off, stop all threads and clear mAsyncTasks
         if(Intent.ACTION_SCREEN_OFF.equals(screenState)){
+            Log.d(TAG, "handleScreenState() ACTION_SCREEN_OFF");
+
             for (Map.Entry<Integer, PingAsyncTask> entry : mAsyncTasks.entrySet()) {
+                Log.d(TAG, "handleScreenState() Shutting down Widget " + entry.getKey());
 
                 //Stop asyncTask
                 if(entry == null || entry.getKey() == null || entry.getValue() == null)
