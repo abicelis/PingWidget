@@ -47,9 +47,6 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
     private Preference mRate;
     private Preference mContact;
 
-    //DATA
-    private int mWidgetBackgroundColor = -1;
-    private int mWidgetChartLineColor = -1;
 
     @Override
     public void onCreatePreferencesFix(@Nullable Bundle savedInstanceState, String rootKey) {
@@ -145,7 +142,7 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
     }
 
     private void savePingWidgetData(int widgetId, String address, int pingInterval, int maxPings, String themeName) {
-        PingWidgetData data = new PingWidgetData(address, pingInterval, mWidgetBackgroundColor, mWidgetChartLineColor, maxPings, themeName);
+        PingWidgetData data = new PingWidgetData(address, pingInterval, maxPings, themeName);
         SharedPreferencesHelper.writePingWidgetData(getContext().getApplicationContext(), widgetId, data);
     }
 
