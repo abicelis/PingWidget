@@ -1,6 +1,7 @@
 package ve.com.abicelis.pingwidget.model;
 
 import java.util.LinkedList;
+import java.util.Locale;
 
 /**
  * Created by abice on 9/2/2017.
@@ -10,8 +11,6 @@ public class PingWidgetData {
 
     private String mAddress;
     private int mPingInterval;
-    private int mBackgroundColor;
-    private int mChartLineColor;
     private int mMaxPings;
     private String mThemeName;
     private LinkedList<Float> mPingTimes;
@@ -19,11 +18,9 @@ public class PingWidgetData {
     private boolean isRunning;
 
 
-    public PingWidgetData(String address, int pingInterval, int backgroundColor, int chartLineColor, int maxPings, String themeName) {
+    public PingWidgetData(String address, int pingInterval, int maxPings, String themeName) {
         mAddress = address;
         mPingInterval = pingInterval;
-        mBackgroundColor = backgroundColor;
-        mChartLineColor = chartLineColor;
         mMaxPings = maxPings;
         mThemeName = themeName;
 
@@ -47,24 +44,6 @@ public class PingWidgetData {
 
     public void setPingInterval(int pingInterval) {
         this.mPingInterval = pingInterval;
-    }
-
-
-    public int getBackgroundColor() {
-        return mBackgroundColor;
-    }
-
-    public void setBackgroundColor(int mColor) {
-        this.mBackgroundColor = mColor;
-    }
-
-
-    public int getChartLineColor() {
-        return mChartLineColor;
-    }
-
-    public void setChartLineColor(int mColor) {
-        this.mChartLineColor = mColor;
     }
 
 
@@ -103,4 +82,9 @@ public class PingWidgetData {
         return isRunning;
     }
 
+
+    @Override
+    public String toString() {
+        return String.format(Locale.getDefault(),  "isRunning?: %1$b. Address: %2$s. PingInterval: %3$d. MaxPings: %4$d. Theme: %5$s.", isRunning, mAddress, mPingInterval, mMaxPings, mThemeName);
+    }
 }
