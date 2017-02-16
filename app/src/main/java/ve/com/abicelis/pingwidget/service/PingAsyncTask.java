@@ -38,7 +38,6 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
     private int mWidgetId;
 
     public PingAsyncTask(Context appContext, int widgetId, int pingInterval, int maxPings) {
-        Log.d(TAG, "constructor()");
 
         mAppContext = appContext;
         mWidgetId = widgetId;
@@ -51,16 +50,15 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
     @Override
     protected Integer doInBackground(String... strings) {
         while (!isCancelled()) {
-            Log.d(TAG, "doInBackground() loop");
 
             try {
                 float pingDelay = ping(strings[0]);
-
                 Log.d(TAG, "PING SUCCESS (" + pingDelay + "ms)");
+
                 publishProgress(pingDelay);
 
             }catch (Exception e) {
-                Log.d(TAG, "PING FAILED" + e.getMessage());
+                Log.d(TAG, "PING FAILED: " + e.getMessage());
                 e.printStackTrace();
                 publishProgress(-1f);
 
@@ -116,8 +114,6 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
 
     @Override
     protected void onProgressUpdate(Float... values) {
-        Log.d(TAG, "onProgressUpdate(). Value = " + values[0]);
-
         PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(mAppContext.getApplicationContext(), mWidgetId);
 
         if(data != null) {
@@ -131,7 +127,7 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
         } else {
             //Widget was probably destroyed while running, kill this AsyncTask.
             cancel(true);
-            Log.d(TAG, "Widget " + mWidgetId + " seems gone.. Canceling PingAsyncTask");
+            Log.d(TAG, "Widget " + mWidgetId + " gone.. Canceling PingAsyncTask");
         }
     }
 

@@ -37,13 +37,15 @@ public class PingWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        Log.d(TAG, "onUpdate");
+        Log.d(TAG, "onUpdate()");
 
 
         for (int widgetId : appWidgetIds) {
+            Log.d(TAG, "onUpdate() Processing ID= " + widgetId);
 
             //Get widget data from SharedPreferences
             PingWidgetData currentWidget = SharedPreferencesHelper.readPingWidgetData(context.getApplicationContext(), widgetId);
+            Log.d(TAG, "onUpdate() Current widget data " + currentWidget.toString());
 
             //Check if widget has data (has been configured on PingWidgetConfigureFragment!)
             if(currentWidget != null) {
@@ -196,6 +198,8 @@ public class PingWidgetProvider extends AppWidgetProvider {
                     AppWidgetManager.getInstance(context).updateAppWidget(widgetId, remoteViews);
                 }
             }
+        } else {
+            Log.d(TAG, "onReceive(): GOT A WEIRD REQUEST HERE: " + intent.getAction());
         }
         super.onReceive(context, intent);
     }

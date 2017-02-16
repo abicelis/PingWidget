@@ -75,7 +75,7 @@ public class PingWidgetUpdateService extends Service {
                 handleWidgetClick(widgetId);
 
             else
-                Log.d(TAG, "Error:Got an unknown onStartCommand() in PingWidgetUpdateService");
+                Log.d(TAG, "Error: Got an unknown onStartCommand() in PingWidgetUpdateService");
         }
 
         // If service get killed, after returning from here, restart
