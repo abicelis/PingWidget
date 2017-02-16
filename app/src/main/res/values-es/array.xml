@@ -11,14 +11,14 @@
         <item>60</item>
     </string-array>
     <string-array name="pingInterval">
-        <item>1 second</item>
-        <item>2 second</item>
-        <item>3 second</item>
-        <item>5 second</item>
-        <item>10 second</item>
-        <item>20 second</item>
-        <item>30 second</item>
-        <item>1 minute</item>
+        <item>1 segundo</item>
+        <item>2 segundo</item>
+        <item>3 segundo</item>
+        <item>5 segundo</item>
+        <item>10 segundo</item>
+        <item>20 segundo</item>
+        <item>30 segundo</item>
+        <item>1 minuto</item>
     </string-array>
 
     <string-array name="maxPingsEntries">
