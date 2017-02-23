@@ -12,12 +12,12 @@
     </string-array>
     <string-array name="pingInterval">
         <item>1 second</item>
-        <item>2 second</item>
-        <item>3 second</item>
-        <item>5 second</item>
-        <item>10 second</item>
-        <item>20 second</item>
-        <item>30 second</item>
+        <item>2 seconds</item>
+        <item>3 seconds</item>
+        <item>5 seconds</item>
+        <item>10 seconds</item>
+        <item>20 seconds</item>
+        <item>30 seconds</item>
         <item>1 minute</item>
     </string-array>
 
