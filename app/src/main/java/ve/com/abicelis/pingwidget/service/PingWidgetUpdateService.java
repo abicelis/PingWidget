@@ -112,7 +112,7 @@ public class PingWidgetUpdateService extends Service {
                 if(data.getPingTimes().size() == 0)
                     views.setViewVisibility(R.id.widget_press_start, View.VISIBLE);
                 else {
-                    Util.redrawWidgetChart(getApplicationContext(), views, widgetId, data.getPingTimes(), data.getMaxPings(), WidgetTheme.valueOf(data.getThemeName()).getColorChart());
+                    Util.redrawWidget(getApplicationContext(), views, widgetId, data.getPingTimes(), data.getMaxPings(), WidgetTheme.valueOf(data.getThemeName()).getColorChart());
                     views.setViewVisibility(R.id.widget_press_start, View.GONE);
                 }
 

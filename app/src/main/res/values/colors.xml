@@ -7,6 +7,11 @@
     <color name="text_white">#EEEEEE</color>
     <color name="text_dark_gray">#424242</color>
 
+    /* Ping Sent icon colors */
+    <color name="ping_icon_sent">#f44336</color>
+    <color name="ping_icon_ok">#64dd17</color>
+    <color name="ping_icon_bad">#bdbdbd</color>
+
     /*Chart colors*/
     <color name="chart_ping_failed_paint">#e53935</color>
     <color name="chart_text_paint">#EEEEEE</color>

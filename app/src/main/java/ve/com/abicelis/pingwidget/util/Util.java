@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.Spanned;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import java.util.LinkedList;
@@ -17,6 +18,7 @@ import java.util.Locale;
 
 import ve.com.abicelis.pingwidget.R;
 import ve.com.abicelis.pingwidget.app.widget.PingWidgetProvider;
+import ve.com.abicelis.pingwidget.enums.PingIconState;
 
 /**
  * Created by abice on 14/2/2017.
@@ -51,8 +53,32 @@ public class Util {
         views.setOnClickPendingIntent(R.id.widget_start_pause, pendingIntent);
     }
 
+    public static void alterPingIcon(Context context, RemoteViews remoteViews, PingIconState state) {
 
-    public static void redrawWidgetChart(Context context, RemoteViews remoteViews, int widgetId, LinkedList<Float> values, int maxPings, int chartLineColor) {
+        remoteViews.setViewVisibility(R.id.widget_ping_sent_icon, View.GONE);
+        remoteViews.setViewVisibility(R.id.widget_ping_ok_icon, View.GONE);
+        remoteViews.setViewVisibility(R.id.widget_ping_bad_icon, View.GONE);
+
+        switch (state) {
+            case PING_SENT:
+                remoteViews.setViewVisibility(R.id.widget_ping_sent_icon, View.VISIBLE);
+                //remoteViews.setInt(R.id.widget_ping_sent_icon, "setColorFilter", ContextCompat.getColor(context, R.color.ping_icon_sent));
+                break;
+            case PING_OK:
+                remoteViews.setViewVisibility(R.id.widget_ping_ok_icon, View.VISIBLE);
+                break;
+            case PING_BAD:
+                remoteViews.setViewVisibility(R.id.widget_ping_bad_icon, View.VISIBLE);
+                break;
+            case PING_HIDDEN:
+                //Do nothing
+                break;
+        }
+
+    }
+
+
+    public static void redrawWidget(Context context, RemoteViews remoteViews, int widgetId, LinkedList<Float> values, int maxPings, int chartLineColor) {
 
         //Calculate min/max/avg
         float avg = 0.0f;
@@ -118,7 +144,7 @@ public class Util {
         int chartWidth = canvasWidth - (2*chartPadding);
         int chartHeight = canvasHeight - (2*chartPadding);
         int chartStepX = chartWidth / (maxValueCount - 1);      //.   .   .   .   .   If maxValueCount = 5
-        //  ^   ^   ^   ^     There are 4 spaces in between
+                                                                //  ^   ^   ^   ^     There are 4 spaces in between
         Paint textPaint = new Paint();
         textPaint.setAntiAlias(true);
         textPaint.setStyle(Paint.Style.STROKE);

@@ -12,16 +12,21 @@ import java.io.InputStreamReader;
 import java.util.Locale;
 
 import ve.com.abicelis.pingwidget.R;
+import ve.com.abicelis.pingwidget.enums.PingIconState;
 import ve.com.abicelis.pingwidget.enums.WidgetTheme;
 import ve.com.abicelis.pingwidget.model.PingWidgetData;
 import ve.com.abicelis.pingwidget.util.SharedPreferencesHelper;
 import ve.com.abicelis.pingwidget.util.Util;
 
+import static ve.com.abicelis.pingwidget.enums.PingIconState.PING_BAD;
+import static ve.com.abicelis.pingwidget.enums.PingIconState.PING_OK;
+import static ve.com.abicelis.pingwidget.enums.PingIconState.PING_SENT;
+
 /**
  * Created by abice on 7/2/2017.
  */
 
-class PingAsyncTask extends AsyncTask<String, Float, Integer> {
+class PingAsyncTask extends AsyncTask<String, Object, Integer> {
 
     //CONST
     private static final int MILLIS = 1000;
@@ -48,15 +53,17 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
         while (!isCancelled()) {
 
             try {
+                publishProgress(PING_SENT);
+
                 float pingDelay = ping(strings[0]);
                 Log.d(TAG, "PING SUCCESS (" + pingDelay + "ms)");
 
-                publishProgress(pingDelay);
+                publishProgress(PING_OK, pingDelay);
 
             }catch (Exception e) {
                 Log.d(TAG, "PING FAILED: " + e.getMessage());
                 e.printStackTrace();
-                publishProgress(-1f);
+                publishProgress(PING_BAD, -1f);
 
             }
 
@@ -109,25 +116,39 @@ class PingAsyncTask extends AsyncTask<String, Float, Integer> {
 
 
     @Override
-    protected void onProgressUpdate(Float... values) {
-        PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(mAppContext.getApplicationContext(), mWidgetId);
+    protected void onProgressUpdate(Object... values) {
 
+        //Get remote views
+        RemoteViews views = new RemoteViews(mAppContext.getPackageName(), R.layout.widget_layout);
+
+        //If update is PING_SENT, alter icon then return;
+        if(values[0] == PingIconState.PING_SENT) {
+            Util.alterPingIcon(mAppContext, views, (PingIconState) values[0]);
+            AppWidgetManager.getInstance(mAppContext).updateAppWidget(mWidgetId, views);
+            return;
+        }
+
+        //Update is PING_OK or PING_BAD, get widget data, check if exists
+        PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(mAppContext.getApplicationContext(), mWidgetId);
         if(data != null) {
-            data.getPingTimes().addLast(values[0]);
+
+            //Change ping status according to progress update (OK or BAD)
+            Util.alterPingIcon(mAppContext, views, (PingIconState)values[0]);
+
+            //Update widget
+            data.getPingTimes().addLast((float)values[1]);
             if(data.getPingTimes().size() > data.getMaxPings())
                 data.getPingTimes().removeFirst();
             SharedPreferencesHelper.writePingWidgetData(mAppContext.getApplicationContext(), mWidgetId, data);
+            Util.redrawWidget(mAppContext, views, mWidgetId, data.getPingTimes(), data.getMaxPings(), WidgetTheme.valueOf(data.getThemeName()).getColorChart());
 
-            RemoteViews views = new RemoteViews(mAppContext.getPackageName(), R.layout.widget_layout);
-            Util.redrawWidgetChart(mAppContext, views, mWidgetId, data.getPingTimes(), data.getMaxPings(), WidgetTheme.valueOf(data.getThemeName()).getColorChart());
             AppWidgetManager.getInstance(mAppContext).updateAppWidget(mWidgetId, views);
-
         } else {
             //Widget was probably destroyed while running, kill this AsyncTask.
             cancel(true);
             Log.d(TAG, "Widget " + mWidgetId + " gone.. Canceling PingAsyncTask");
         }
-    }
 
+    }
 
 }
