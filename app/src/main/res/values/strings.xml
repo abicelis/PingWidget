@@ -12,7 +12,7 @@
     <string name="widget_avg_err">Avg: ERR</string>
 
     /* Activity Home */
-    <string name="activity_home_title">"Welcome to Ping Widget!</string>
+    <string name="activity_home_title">Welcome to Ping Widget!</string>
     <string name="activity_home_text">
         <![CDATA[
             To add a PingWidget to your home screen:<br/>
@@ -42,6 +42,9 @@
 
     <string name="fragment_widget_configure_max_pings_key" translatable="false">widget_configure_max_pings</string>
     <string name="fragment_widget_configure_max_pings_title">Max number of pings</string>
+
+    <string name="fragment_widget_show_chart_lines_key" translatable="false">widget_show_chart_lines</string>
+    <string name="fragment_widget_show_chart_lines_title">Draw average on chart</string>
 
     <string name="fragment_widget_configure_theme_key" translatable="false">widget_configure_theme</string>
     <string name="fragment_widget_configure_theme_title">Theme</string>

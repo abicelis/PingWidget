@@ -12,16 +12,18 @@ public class PingWidgetData {
     private String mAddress;
     private int mPingInterval;
     private int mMaxPings;
+    private boolean mChartLines;
     private String mThemeName;
     private LinkedList<Float> mPingTimes;
 
     private boolean isRunning;
 
 
-    public PingWidgetData(String address, int pingInterval, int maxPings, String themeName) {
+    public PingWidgetData(String address, int pingInterval, int maxPings, boolean showChartLines, String themeName) {
         mAddress = address;
         mPingInterval = pingInterval;
         mMaxPings = maxPings;
+        mChartLines = showChartLines;
         mThemeName = themeName;
 
         mPingTimes = new LinkedList<>();
@@ -53,6 +55,15 @@ public class PingWidgetData {
 
     public void setMaxPings(int mMaxPings) {
         this.mMaxPings = mMaxPings;
+    }
+
+
+    public boolean showChartLines() {
+        return mChartLines;
+    }
+
+    public void setShowChartLines(boolean in) {
+        mChartLines = in;
     }
 
 

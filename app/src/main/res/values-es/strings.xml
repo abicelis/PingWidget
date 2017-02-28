@@ -40,4 +40,5 @@
             &nbsp;&nbsp;&nbsp;&#8226; Seleccione \'Widgets\'<br/>
             &nbsp;&nbsp;&nbsp;&#8226; Añada un PingWidget<br/>
         ]]></string>
+    <string name="fragment_widget_show_chart_lines_title">Mostrar averaje en gráfico</string>
 </resources>

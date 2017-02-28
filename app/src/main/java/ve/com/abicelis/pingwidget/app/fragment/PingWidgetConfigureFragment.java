@@ -2,7 +2,6 @@ package ve.com.abicelis.pingwidget.app.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +11,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v14.preference.SwitchPreference;
 import android.support.v4.util.Pair;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
@@ -25,7 +25,6 @@ import java.util.Locale;
 
 import ve.com.abicelis.pingwidget.R;
 import ve.com.abicelis.pingwidget.app.preference.ThemePreference;
-import ve.com.abicelis.pingwidget.app.widget.PingWidgetProvider;
 import ve.com.abicelis.pingwidget.enums.WidgetTheme;
 import ve.com.abicelis.pingwidget.model.PingWidgetData;
 import ve.com.abicelis.pingwidget.util.AddressValidator;
@@ -43,6 +42,7 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
     private EditTextPreference mAddress;
     private ListPreference mInterval;
     private ListPreference mMaxPings;
+    private SwitchPreference mShowChartLines;
     private ThemePreference mTheme;
     private Preference mAbout;
     private Preference mRate;
@@ -64,6 +64,7 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
         });
         mInterval = (ListPreference) findPreference(getResources().getString(R.string.fragment_widget_configure_interval_key));
         mMaxPings = (ListPreference) findPreference(getResources().getString(R.string.fragment_widget_configure_max_pings_key));
+        mShowChartLines = (SwitchPreference) findPreference(getResources().getString(R.string.fragment_widget_show_chart_lines_key));
         mTheme = (ThemePreference) findPreference(getResources().getString(R.string.fragment_widget_configure_theme_key));
         mAbout = findPreference(getResources().getString(R.string.fragment_widget_configure_about_key));
         mAbout.setSummary(String.format(Locale.getDefault(), getResources().getString(R.string.fragment_widget_configure_about_summary), getAppVersionAndBuild(getActivity()).first));
@@ -142,8 +143,8 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
         return true;
     }
 
-    private void savePingWidgetData(int widgetId, String address, int pingInterval, int maxPings, String themeName) {
-        PingWidgetData data = new PingWidgetData(address, pingInterval, maxPings, themeName);
+    private void savePingWidgetData(int widgetId, String address, int pingInterval, int maxPings, boolean showMaxMinAvgLines, String themeName) {
+        PingWidgetData data = new PingWidgetData(address, pingInterval, maxPings, showMaxMinAvgLines, themeName);
         SharedPreferencesHelper.writePingWidgetData(getContext().getApplicationContext(), widgetId, data);
     }
 
@@ -173,7 +174,7 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
             views.setInt(R.id.widget_layout_container_top, "setBackgroundResource", WidgetTheme.valueOf(mTheme.getSelectedTheme()).getDrawableBackgroundContainerTop());
 
             //Save PingWidgetData in SharedPreferences()
-            savePingWidgetData(widgetId, mAddress.getText(), Integer.parseInt(mInterval.getValue()), Integer.parseInt(mMaxPings.getValue()), mTheme.getSelectedTheme());
+            savePingWidgetData(widgetId, mAddress.getText(), Integer.parseInt(mInterval.getValue()), Integer.parseInt(mMaxPings.getValue()), mShowChartLines.isChecked(), mTheme.getSelectedTheme());
 
 
             //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()

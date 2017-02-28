@@ -21,6 +21,10 @@
         android:entries="@array/maxPings"
         android:entryValues="@array/maxPingsEntries"
         android:defaultValue="15"/>
+    <SwitchPreference
+        android:key="@string/fragment_widget_show_chart_lines_key"
+        android:title="@string/fragment_widget_show_chart_lines_title"
+        android:defaultValue="true"/>
     <ve.com.abicelis.pingwidget.app.preference.ThemePreference
         android:key="@string/fragment_widget_configure_theme_key"
         android:title="@string/fragment_widget_configure_theme_title"

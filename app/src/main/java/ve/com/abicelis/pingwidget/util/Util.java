@@ -78,7 +78,7 @@ public class Util {
     }
 
 
-    public static void redrawWidget(Context context, RemoteViews remoteViews, int widgetId, LinkedList<Float> values, int maxPings, int chartLineColor) {
+    public static void redrawWidget(Context context, RemoteViews remoteViews, int widgetId, LinkedList<Float> values, int maxPings, int chartLineColor, boolean showChartLines) {
 
         //Calculate min/max/avg
         float avg = 0.0f;
@@ -122,7 +122,7 @@ public class Util {
                 remoteViews.setTextViewText(R.id.widget_uptime_ping, String.format(Locale.getDefault(), context.getResources().getString(R.string.widget_uptime), uptime));
                 remoteViews.setTextViewText(R.id.widget_avg_ping, String.format(Locale.getDefault(), context.getResources().getString(R.string.widget_avg), avgStr));
 
-                drawChart(context, remoteViews, max, min, maxPings, values, chartLineColor);
+                drawChart(context, remoteViews, max, avg, min, maxPings, values, chartLineColor, showChartLines);
             }
 
         } else {
@@ -134,7 +134,7 @@ public class Util {
 
     }
 
-    private static void drawChart(Context context, RemoteViews views, float max, float min, int maxValueCount, LinkedList<Float> values, int chartLineColor) {
+    private static void drawChart(Context context, RemoteViews views, float max, float avg, float min, int maxValueCount, LinkedList<Float> values, int chartLineColor, boolean showChartLines) {
 
         final int POINT_SIZE = 5;
         final int SQUARE_SIZE = 5;
@@ -145,6 +145,11 @@ public class Util {
         int chartHeight = canvasHeight - (2*chartPadding);
         int chartStepX = chartWidth / (maxValueCount - 1);      //.   .   .   .   .   If maxValueCount = 5
                                                                 //  ^   ^   ^   ^     There are 4 spaces in between
+        Paint thinLinePaint = new Paint();
+        thinLinePaint.setAntiAlias(true);
+        thinLinePaint.setStyle(Paint.Style.STROKE);
+        thinLinePaint.setStrokeWidth(2);
+
         Paint textPaint = new Paint();
         textPaint.setAntiAlias(true);
         textPaint.setStyle(Paint.Style.STROKE);
@@ -181,6 +186,17 @@ public class Util {
         //Draw axis
         //canvas.drawLine(chartPadding, chartPadding, chartPadding, canvasHeight - chartPadding, textPaint);  //Y
         //canvas.drawText((max != 0f ? String.format(Locale.getDefault(), "%d", (int)max) : ""), 4, chartPadding, textPaint);
+
+        //Draw avg line
+        if(showChartLines) {
+            thinLinePaint.setColor(ContextCompat.getColor(context, R.color.chart_avg_line_paint));
+            int avgYPos = (int) (chartPadding + calcY(avg, max, 0, chartHeight));
+            canvas.drawLine(chartPadding, avgYPos, chartPadding+chartWidth, avgYPos, thinLinePaint);
+
+//            thinLinePaint.setColor(ContextCompat.getColor(context, R.color.chart_min_line_paint));
+//            int minYPos = (int) (chartPadding + calcY(min, max, 0, chartHeight));
+//            canvas.drawLine(chartPadding, minYPos, chartPadding+chartWidth, minYPos, thinLinePaint);
+        }
 
         int xPos = chartPadding + ((maxValueCount - values.size()) * chartStepX);
         int yPos = -1;

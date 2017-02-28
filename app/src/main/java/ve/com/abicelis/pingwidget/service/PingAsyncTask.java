@@ -140,7 +140,7 @@ class PingAsyncTask extends AsyncTask<String, Object, Integer> {
             if(data.getPingTimes().size() > data.getMaxPings())
                 data.getPingTimes().removeFirst();
             SharedPreferencesHelper.writePingWidgetData(mAppContext.getApplicationContext(), mWidgetId, data);
-            Util.redrawWidget(mAppContext, views, mWidgetId, data.getPingTimes(), data.getMaxPings(), WidgetTheme.valueOf(data.getThemeName()).getColorChart());
+            Util.redrawWidget(mAppContext, views, mWidgetId, data.getPingTimes(), data.getMaxPings(), WidgetTheme.valueOf(data.getThemeName()).getColorChart(), data.showChartLines());
 
             AppWidgetManager.getInstance(mAppContext).updateAppWidget(mWidgetId, views);
         } else {
