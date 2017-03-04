@@ -21,9 +21,9 @@ This widget features:
 
 ## Screens
 
-<img alt='Widgets' src='https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.2.4/pingwidget_1.png ' width="260px"/>
-<img alt='Home Activity' src='https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.2.4/pingwidget_2.png ' width="260px"/>
-<img alt='Configuration activity' src='https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.2.4/pingwidget_3.png ' width="260px"/>
+<img alt='Widgets' src='https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.3.0\xperiaZ3c/pingwidget_1.png ' width="260px"/>
+<img alt='Home Activity' src='https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.3.0\xperiaZ3c/pingwidget_2.png ' width="260px"/>
+<img alt='Configuration activity' src='https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.3.0\xperiaZ3c/pingwidget_3.png ' width="260px"/>
 
 ## Code dependencies
 
