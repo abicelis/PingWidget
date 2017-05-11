@@ -9,6 +9,7 @@
     <dimen name="text_large">20sp</dimen>
     <dimen name="text_medium">18sp</dimen>
     <dimen name="text_small">12sp</dimen>
+    <dimen name="text_smaller">10sp</dimen>
 
     <dimen name="activity_home_app_logo">92dp</dimen>
     <dimen name="activity_home_app_title">20sp</dimen>
