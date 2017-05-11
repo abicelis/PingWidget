@@ -1,8 +1,8 @@
 package ve.com.abicelis.pingwidget.app.widget;
 
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,10 +10,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import ve.com.abicelis.pingwidget.enums.WidgetLayoutType;
 import ve.com.abicelis.pingwidget.enums.WidgetTheme;
 import ve.com.abicelis.pingwidget.model.PingWidgetData;
 import ve.com.abicelis.pingwidget.service.PingWidgetUpdateService;
 import ve.com.abicelis.pingwidget.R;
+import ve.com.abicelis.pingwidget.util.RemoteViewsUtil;
 import ve.com.abicelis.pingwidget.util.SharedPreferencesHelper;
 import ve.com.abicelis.pingwidget.util.Util;
 
@@ -54,13 +56,13 @@ public class PingWidgetProvider extends AppWidgetProvider {
             if(currentWidget != null) {
 
                 //Get AppWidgetManager and RemoteViews
-                RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+                RemoteViews views = RemoteViewsUtil.getRemoteViews(context, currentWidget.getWidgetLayoutType());
 
                 //Update the widget's views
                 views.setTextViewText(R.id.widget_host, currentWidget.getAddress());
                 views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
                 views.setViewVisibility(R.id.widget_press_start, View.VISIBLE);
-                views.setInt(R.id.widget_layout_container_top, "setBackgroundResource", WidgetTheme.valueOf(currentWidget.getThemeName()).getDrawableBackgroundContainerTop());
+                views.setInt(R.id.widget_layout_container_top, "setBackgroundResource", WidgetTheme.valueOf(currentWidget.getThemeName()).getDrawableBackgroundContainerTop(currentWidget.getWidgetLayoutType()));
 
 
                 //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()
@@ -151,40 +153,68 @@ public class PingWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
-        Log.d(TAG, "onAppWidgetOptionsChanged()");
+        Log.d(TAG, "onAppWidgetOptionsChanged() appWidgetId=" + appWidgetId);
+
+        //int OPTION_APPWIDGET_MAX_HEIGHT = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, -1);
+        //int OPTION_APPWIDGET_MAX_WIDTH = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, -1);
+        //int OPTION_APPWIDGET_MIN_WIDTH = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, -1);
+        int OPTION_APPWIDGET_MIN_HEIGHT = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, -1);
+        Log.d(TAG, "onAppWidgetOptionsChanged() Changed widget size! New OPTION_APPWIDGET_MIN_HEIGHT = " + OPTION_APPWIDGET_MIN_HEIGHT);
+
+        //Update SharedPreferenceData
+        PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(context, appWidgetId);
+        data.setWidgetLayoutType(WidgetLayoutType.getWidgetLayoutTypeByHeight(OPTION_APPWIDGET_MIN_HEIGHT));
+        SharedPreferencesHelper.writePingWidgetData(context, appWidgetId, data);
+
+        //Get new RemoteViews layout and update widget
+        RemoteViews views = RemoteViewsUtil.getRemoteViews(context, data.getWidgetLayoutType());
+
+        RemoteViewsUtil.initWidgetViews(views, data.getAddress(), WidgetTheme.valueOf(data.getThemeName()), data.getWidgetLayoutType());
+        RemoteViewsUtil.updatePlayPause(views, data.isRunning());
+
+        //Never pinged?
+        if(data.getPingTimes().size() == 0)
+            views.setViewVisibility(R.id.widget_press_start, View.VISIBLE);
+        else {
+            RemoteViewsUtil.redrawWidget(context, views, appWidgetId, data.getPingTimes(), data.getMaxPings(), WidgetTheme.valueOf(data.getThemeName()).getColorChart(), data.showChartLines());
+            views.setViewVisibility(R.id.widget_press_start, View.GONE);
+        }
+
+        //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()
+        //Create an Intent, set PING_WIDGET_TOGGLE action to it, put EXTRA_APPWIDGET_ID as extra
+        Util.registerWidgetStartPauseOnClickListener(context, appWidgetId, views);
+
+        AppWidgetManager.getInstance(context).updateAppWidget(appWidgetId, views);
 
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
-
     }
 
     @Override
     public void onEnabled(Context context) {
         Log.d(TAG, "onEnabled()");
-
         super.onEnabled(context);
     }
 
     @Override
     public void onDisabled(Context context) {
         Log.d(TAG, "onDisabled()");
-
         super.onDisabled(context);
     }
 
     @Override
     public void onRestored(Context context, int[] oldWidgetIds, int[] newWidgetIds) {
         Log.d(TAG, "onRestored()");
-
         super.onRestored(context, oldWidgetIds, newWidgetIds);
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(TAG, "onReceive()");
+        Log.d(TAG, "onReceive() Action: " + intent.getAction());
+
 
         //R.id.widget_start_pause was clicked
         if(PING_WIDGET_TOGGLE.equals(intent.getAction())) {
-            Log.d(TAG, "onReceive(), PING_WIDGET_TOGGLE");
+            Log.d(TAG, "onReceive() attending PING_WIDGET_TOGGLE");
 
             //Get extras from intent, namely, the widgetId
             Bundle extras = intent.getExtras();
@@ -206,23 +236,19 @@ public class PingWidgetProvider extends AppWidgetProvider {
                     context.startService(serviceIntent);
 
                     //Get remote views and update
-                    RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+                    RemoteViews views = RemoteViewsUtil.getRemoteViews(context, currentWidget.getWidgetLayoutType());
 
-                    if (currentWidget.isRunning()) {
-                        remoteViews.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_pause);
-                        Log.d(TAG, "onReceive(), Sent START to service");
-                    } else {
-                        remoteViews.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
-                        Log.d(TAG, "onReceive(), Sent STOP to service");
-                    }
+                    //Update Play/Pause icon
+                    RemoteViewsUtil.updatePlayPause(views, currentWidget.isRunning());
+                    Log.d(TAG, (currentWidget.isRunning() ? "onReceive(), Sent START to service" : "onReceive(), Sent STOP to service") );
+
 
                     //Update widget
-                    AppWidgetManager.getInstance(context).updateAppWidget(widgetId, remoteViews);
+                    AppWidgetManager.getInstance(context).updateAppWidget(widgetId, views);
                 }
             }
-        } else {
-            Log.d(TAG, "onReceive(): GOT A WEIRD REQUEST HERE: " + intent.getAction());
         }
+
         super.onReceive(context, intent);
     }
 }
