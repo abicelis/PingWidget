@@ -21,6 +21,7 @@ import ve.com.abicelis.pingwidget.R;
 import ve.com.abicelis.pingwidget.app.widget.PingWidgetProvider;
 import ve.com.abicelis.pingwidget.enums.WidgetTheme;
 import ve.com.abicelis.pingwidget.model.PingWidgetData;
+import ve.com.abicelis.pingwidget.util.RemoteViewsUtil;
 import ve.com.abicelis.pingwidget.util.SharedPreferencesHelper;
 import ve.com.abicelis.pingwidget.util.Util;
 
@@ -101,25 +102,39 @@ public class PingWidgetUpdateService extends Service {
         for (int widgetId : allWidgetIds) {
 
             //Get RemoteViews and widget data
-            RemoteViews views = new RemoteViews(getApplication().getPackageName(), R.layout.widget_layout);
             PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(getApplicationContext(), widgetId);
+            RemoteViews views = RemoteViewsUtil.getRemoteViews(getApplication(), data.getWidgetLayoutType());
+
 
             if(data != null) {
-                views.setTextViewText(R.id.widget_host, data.getAddress());
-                views.setInt(R.id.widget_layout_container_top, "setBackgroundResource", WidgetTheme.valueOf(data.getThemeName()).getDrawableBackgroundContainerTop());
+
+                RemoteViewsUtil.initWidgetViews(views, data.getAddress(), WidgetTheme.valueOf(data.getThemeName()), data.getWidgetLayoutType());
+                RemoteViewsUtil.updatePlayPause(views, data.isRunning());
 
                 //Never pinged?
                 if(data.getPingTimes().size() == 0)
                     views.setViewVisibility(R.id.widget_press_start, View.VISIBLE);
                 else {
-                    Util.redrawWidget(getApplicationContext(), views, widgetId, data.getPingTimes(), data.getMaxPings(), WidgetTheme.valueOf(data.getThemeName()).getColorChart(), data.showChartLines());
+                    RemoteViewsUtil.redrawWidget(getApplicationContext(), views, widgetId, data.getPingTimes(), data.getMaxPings(), WidgetTheme.valueOf(data.getThemeName()).getColorChart(), data.showChartLines());
                     views.setViewVisibility(R.id.widget_press_start, View.GONE);
                 }
 
-                if(data.isRunning())
-                    views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_pause);
-                else
-                    views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
+
+                //views.setTextViewText(R.id.widget_host, data.getAddress());
+                //views.setInt(R.id.widget_layout_container_top, "setBackgroundResource", WidgetTheme.valueOf(data.getThemeName()).getDrawableBackgroundContainerTop());
+
+//                //Never pinged?
+//                if(data.getPingTimes().size() == 0)
+//                    views.setViewVisibility(R.id.widget_press_start, View.VISIBLE);
+//                else {
+//                    Util.redrawWidget(getApplicationContext(), views, widgetId, data.getPingTimes(), data.getMaxPings(), WidgetTheme.valueOf(data.getThemeName()).getColorChart(), data.showChartLines());
+//                    views.setViewVisibility(R.id.widget_press_start, View.GONE);
+//                }
+//
+//                if(data.isRunning())
+//                    views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_pause);
+//                else
+//                    views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
 
                 //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()
                 //Create an Intent, set PING_WIDGET_TOGGLE action to it, put EXTRA_APPWIDGET_ID as extra
@@ -151,19 +166,18 @@ public class PingWidgetUpdateService extends Service {
 
 
                 //Get AppWidgetManager and RemoteViews
-                RemoteViews views = new RemoteViews(getApplication().getPackageName(), R.layout.widget_layout);
+                PingWidgetData currentWidget = SharedPreferencesHelper.readPingWidgetData(getApplicationContext(), entry.getKey());
+                RemoteViews views = RemoteViewsUtil.getRemoteViews(getApplicationContext(), currentWidget.getWidgetLayoutType());
+
                 //Change widget's start_pause icon to pause
                 views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
 
                 //Finally, update the widget
                 AppWidgetManager.getInstance(getApplicationContext()).updateAppWidget(entry.getKey(), views);
 
-                //Get widget data, toggle toggleRunning() so that it's isRunning() is false.
-                PingWidgetData currentWidget = SharedPreferencesHelper.readPingWidgetData(getApplicationContext(), entry.getKey());
+                //Toggle toggleRunning() so that it's isRunning() is false.
                 currentWidget.toggleRunning();
                 SharedPreferencesHelper.writePingWidgetData(getApplicationContext(), entry.getKey(), currentWidget);
-
-
             }
             mAsyncTasks.clear();
         }
@@ -183,7 +197,9 @@ public class PingWidgetUpdateService extends Service {
             } else {
 
                 //Set widget_press_start to GONE
-                RemoteViews views = new RemoteViews(getApplication().getPackageName(), R.layout.widget_layout);
+                PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(getApplicationContext(), widgetId);
+                RemoteViews views = RemoteViewsUtil.getRemoteViews(getApplicationContext(), data.getWidgetLayoutType());
+
                 views.setViewVisibility(R.id.widget_press_start, View.GONE);
                 AppWidgetManager.getInstance(getApplicationContext()).updateAppWidget(widgetId, views);
 

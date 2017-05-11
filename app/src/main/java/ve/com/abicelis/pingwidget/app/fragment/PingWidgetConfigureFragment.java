@@ -25,9 +25,11 @@ import java.util.Locale;
 
 import ve.com.abicelis.pingwidget.R;
 import ve.com.abicelis.pingwidget.app.preference.ThemePreference;
+import ve.com.abicelis.pingwidget.enums.WidgetLayoutType;
 import ve.com.abicelis.pingwidget.enums.WidgetTheme;
 import ve.com.abicelis.pingwidget.model.PingWidgetData;
 import ve.com.abicelis.pingwidget.util.AddressValidator;
+import ve.com.abicelis.pingwidget.util.RemoteViewsUtil;
 import ve.com.abicelis.pingwidget.util.SharedPreferencesHelper;
 import ve.com.abicelis.pingwidget.util.Util;
 
@@ -166,12 +168,13 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
 
             //Get AppWidgetManager and RemoteViews
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getActivity());
-            RemoteViews views = new RemoteViews(getActivity().getPackageName(), R.layout.widget_layout);
+            RemoteViews views = RemoteViewsUtil.getRemoteViews(getContext(), WidgetLayoutType.TALL);  //Initially, widget layout is tall
 
             //Update the widget's views
-            views.setTextViewText(R.id.widget_host, mAddress.getText());
-            views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
-            views.setInt(R.id.widget_layout_container_top, "setBackgroundResource", WidgetTheme.valueOf(mTheme.getSelectedTheme()).getDrawableBackgroundContainerTop());
+            RemoteViewsUtil.initWidgetViews(views, mAddress.getText(), WidgetTheme.valueOf(mTheme.getSelectedTheme()), WidgetLayoutType.TALL);
+//            views.setTextViewText(R.id.widget_host, mAddress.getText());
+//            views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
+//            views.setInt(R.id.widget_layout_container_top, "setBackgroundResource", WidgetTheme.valueOf(mTheme.getSelectedTheme()).getDrawableBackgroundContainerTop());
 
             //Save PingWidgetData in SharedPreferences()
             savePingWidgetData(widgetId, mAddress.getText(), Integer.parseInt(mInterval.getValue()), Integer.parseInt(mMaxPings.getValue()), mShowChartLines.isChecked(), mTheme.getSelectedTheme());
