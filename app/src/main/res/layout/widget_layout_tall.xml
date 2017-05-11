@@ -4,7 +4,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/widget_background_bottom_white"
+    android:background="@drawable/widget_background_bottom_white_tall"
 >
 
     <RelativeLayout
@@ -15,7 +15,7 @@
         android:paddingBottom="7dp"
         android:paddingRight="7dp"
         android:paddingLeft="12dp"
-        android:background="@drawable/widget_background_top_blue">
+        android:background="@drawable/widget_background_top_blue_tall">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -120,6 +120,18 @@
         android:layout_marginRight="12dp"
         android:layout_marginLeft="12dp"
         android:layout_below="@id/widget_shadow_transition">
+
+        <ImageView
+            android:id="@+id/widget_chart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_below="@+id/widget_max_min_ping"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
         <TextView
             android:id="@+id/widget_max_min_ping"
             android:layout_width="wrap_content"
@@ -170,15 +182,6 @@
             android:textStyle="bold"
             android:text="@string/widget_press_start_activate"/>
 
-        <ImageView
-            android:id="@+id/widget_chart"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:scaleType="fitCenter"
-            android:gravity="center_horizontal|center_vertical"
-            android:layout_below="@+id/widget_max_min_ping"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+
     </RelativeLayout>
 </RelativeLayout>
