@@ -1,7 +1,12 @@
 package ve.com.abicelis.pingwidget.model;
 
+import android.support.annotation.LayoutRes;
+
 import java.util.LinkedList;
 import java.util.Locale;
+
+import ve.com.abicelis.pingwidget.R;
+import ve.com.abicelis.pingwidget.enums.WidgetLayoutType;
 
 /**
  * Created by abice on 9/2/2017.
@@ -13,6 +18,7 @@ public class PingWidgetData {
     private int mPingInterval;
     private int mMaxPings;
     private boolean mChartLines;
+    private WidgetLayoutType mWidgetLayoutType;
     private String mThemeName;
     private LinkedList<Float> mPingTimes;
 
@@ -28,13 +34,13 @@ public class PingWidgetData {
 
         mPingTimes = new LinkedList<>();
         isRunning = false;
+        mWidgetLayoutType = WidgetLayoutType.TALL;    //Default layout
     }
 
 
     public String getAddress() {
         return mAddress;
     }
-
     public void setAddress(String mAddress) {
         this.mAddress = mAddress;
     }
@@ -43,7 +49,6 @@ public class PingWidgetData {
     public int getPingInterval() {
         return mPingInterval;
     }
-
     public void setPingInterval(int pingInterval) {
         this.mPingInterval = pingInterval;
     }
@@ -52,7 +57,6 @@ public class PingWidgetData {
     public int getMaxPings() {
         return mMaxPings;
     }
-
     public void setMaxPings(int mMaxPings) {
         this.mMaxPings = mMaxPings;
     }
@@ -61,16 +65,22 @@ public class PingWidgetData {
     public boolean showChartLines() {
         return mChartLines;
     }
-
     public void setShowChartLines(boolean in) {
         mChartLines = in;
+    }
+
+
+    public WidgetLayoutType getWidgetLayoutType() {
+        return mWidgetLayoutType;
+    }
+    public void setWidgetLayoutType(WidgetLayoutType widgetLayoutType) {
+        this.mWidgetLayoutType = widgetLayoutType;
     }
 
 
     public String getThemeName() {
         return mThemeName;
     }
-
     public void setThemeName(String mThemeName) {
         this.mThemeName = mThemeName;
     }
@@ -79,7 +89,6 @@ public class PingWidgetData {
     public LinkedList<Float> getPingTimes() {
         return mPingTimes;
     }
-
     public void setPingTimes(LinkedList<Float> mPingTimes) {
         this.mPingTimes = mPingTimes;
     }
@@ -88,7 +97,6 @@ public class PingWidgetData {
     public void toggleRunning() {
         isRunning = !isRunning;
     }
-
     public boolean isRunning() {
         return isRunning;
     }
