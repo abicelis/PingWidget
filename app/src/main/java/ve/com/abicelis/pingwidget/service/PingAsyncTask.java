@@ -11,10 +11,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Locale;
 
-import ve.com.abicelis.pingwidget.R;
 import ve.com.abicelis.pingwidget.enums.PingIconState;
 import ve.com.abicelis.pingwidget.enums.WidgetTheme;
 import ve.com.abicelis.pingwidget.model.PingWidgetData;
+import ve.com.abicelis.pingwidget.util.RemoteViewsUtil;
 import ve.com.abicelis.pingwidget.util.SharedPreferencesHelper;
 import ve.com.abicelis.pingwidget.util.Util;
 
@@ -61,7 +61,8 @@ class PingAsyncTask extends AsyncTask<String, Object, Integer> {
                 publishProgress(PING_OK, pingDelay);
 
             }catch (Exception e) {
-                Log.d(TAG, "PING FAILED: " + e.getMessage());
+                //Log.d(TAG, "PING FAILED: " + e.getMessage());
+                Log.d(TAG, "PING FAILED");
                 e.printStackTrace();
                 publishProgress(PING_BAD, -1f);
 
@@ -118,36 +119,42 @@ class PingAsyncTask extends AsyncTask<String, Object, Integer> {
     @Override
     protected void onProgressUpdate(Object... values) {
 
-        //Get remote views
-        RemoteViews views = new RemoteViews(mAppContext.getPackageName(), R.layout.widget_layout);
+        //Get widget data, check if exists
+        PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(mAppContext.getApplicationContext(), mWidgetId);
+        if(data == null) {
+            //Widget was probably destroyed while running, kill this AsyncTask.
+            cancel(true);
+            Log.d(TAG, "Widget " + mWidgetId + " gone.. Canceling PingAsyncTask");
+            return;
+        }
 
-        //If update is PING_SENT, alter icon then return;
+        //Get remote views
+        RemoteViews views = RemoteViewsUtil.getRemoteViews(mAppContext, data.getWidgetLayoutType());
+
+        //Update ping icon
+        RemoteViewsUtil.updatePingIcon(views, (PingIconState) values[0]);
+
+        //If update is PING_SENT, update widget views and leave
         if(values[0] == PingIconState.PING_SENT) {
-            Util.alterPingIcon(mAppContext, views, (PingIconState) values[0]);
             AppWidgetManager.getInstance(mAppContext).updateAppWidget(mWidgetId, views);
             return;
         }
 
-        //Update is PING_OK or PING_BAD, get widget data, check if exists
-        PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(mAppContext.getApplicationContext(), mWidgetId);
-        if(data != null) {
+        //Update is PING_OK or PING_BAD, Update chart:
 
-            //Change ping status according to progress update (OK or BAD)
-            Util.alterPingIcon(mAppContext, views, (PingIconState)values[0]);
+        //Add latest ping value
+        data.getPingTimes().addLast((float)values[1]);
+        if(data.getPingTimes().size() > data.getMaxPings())
+            data.getPingTimes().removeFirst();
 
-            //Update widget
-            data.getPingTimes().addLast((float)values[1]);
-            if(data.getPingTimes().size() > data.getMaxPings())
-                data.getPingTimes().removeFirst();
-            SharedPreferencesHelper.writePingWidgetData(mAppContext.getApplicationContext(), mWidgetId, data);
-            Util.redrawWidget(mAppContext, views, mWidgetId, data.getPingTimes(), data.getMaxPings(), WidgetTheme.valueOf(data.getThemeName()).getColorChart(), data.showChartLines());
+        //Save widget data
+        SharedPreferencesHelper.writePingWidgetData(mAppContext.getApplicationContext(), mWidgetId, data);
 
-            AppWidgetManager.getInstance(mAppContext).updateAppWidget(mWidgetId, views);
-        } else {
-            //Widget was probably destroyed while running, kill this AsyncTask.
-            cancel(true);
-            Log.d(TAG, "Widget " + mWidgetId + " gone.. Canceling PingAsyncTask");
-        }
+        //Redraw widget and chart
+        RemoteViewsUtil.redrawWidget(mAppContext, views, mWidgetId, data.getPingTimes(), data.getMaxPings(), WidgetTheme.valueOf(data.getThemeName()).getColorChart(), data.showChartLines());
+
+        //Update widget views
+        AppWidgetManager.getInstance(mAppContext).updateAppWidget(mWidgetId, views);
 
     }
 
