@@ -151,7 +151,7 @@ class PingAsyncTask extends AsyncTask<String, Object, Integer> {
         SharedPreferencesHelper.writePingWidgetData(mAppContext.getApplicationContext(), mWidgetId, data);
 
         //Redraw widget and chart
-        RemoteViewsUtil.redrawWidget(mAppContext, views, mWidgetId, data.getPingTimes(), data.getMaxPings(), WidgetTheme.valueOf(data.getThemeName()).getColorChart(), data.showChartLines());
+        RemoteViewsUtil.redrawWidget(mAppContext, views, mWidgetId, data.getPingTimes(), data.getMaxPings(), data.getTheme().getColorChart(), data.showChartLines());
 
         //Update widget views
         AppWidgetManager.getInstance(mAppContext).updateAppWidget(mWidgetId, views);
