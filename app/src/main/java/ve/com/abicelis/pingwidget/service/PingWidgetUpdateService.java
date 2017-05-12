@@ -108,33 +108,9 @@ public class PingWidgetUpdateService extends Service {
 
             if(data != null) {
 
-                RemoteViewsUtil.initWidgetViews(views, data.getAddress(), WidgetTheme.valueOf(data.getThemeName()), data.getWidgetLayoutType());
+                //Update widget views
+                RemoteViewsUtil.initWidgetViews(getApplicationContext(), widgetId, views, data);
                 RemoteViewsUtil.updatePlayPause(views, data.isRunning());
-
-                //Never pinged?
-                if(data.getPingTimes().size() == 0)
-                    views.setViewVisibility(R.id.widget_press_start, View.VISIBLE);
-                else {
-                    RemoteViewsUtil.redrawWidget(getApplicationContext(), views, widgetId, data.getPingTimes(), data.getMaxPings(), WidgetTheme.valueOf(data.getThemeName()).getColorChart(), data.showChartLines());
-                    views.setViewVisibility(R.id.widget_press_start, View.GONE);
-                }
-
-
-                //views.setTextViewText(R.id.widget_host, data.getAddress());
-                //views.setInt(R.id.widget_layout_container_top, "setBackgroundResource", WidgetTheme.valueOf(data.getThemeName()).getDrawableBackgroundContainerTop());
-
-//                //Never pinged?
-//                if(data.getPingTimes().size() == 0)
-//                    views.setViewVisibility(R.id.widget_press_start, View.VISIBLE);
-//                else {
-//                    Util.redrawWidget(getApplicationContext(), views, widgetId, data.getPingTimes(), data.getMaxPings(), WidgetTheme.valueOf(data.getThemeName()).getColorChart(), data.showChartLines());
-//                    views.setViewVisibility(R.id.widget_press_start, View.GONE);
-//                }
-//
-//                if(data.isRunning())
-//                    views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_pause);
-//                else
-//                    views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
 
                 //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()
                 //Create an Intent, set PING_WIDGET_TOGGLE action to it, put EXTRA_APPWIDGET_ID as extra

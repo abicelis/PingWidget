@@ -145,9 +145,10 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
         return true;
     }
 
-    private void savePingWidgetData(int widgetId, String address, int pingInterval, int maxPings, boolean showMaxMinAvgLines, String themeName) {
-        PingWidgetData data = new PingWidgetData(address, pingInterval, maxPings, showMaxMinAvgLines, themeName);
+    private PingWidgetData savePingWidgetData(int widgetId, String address, int pingInterval, int maxPings, boolean showMaxMinAvgLines, String themeName) {
+        PingWidgetData data = new PingWidgetData(address, pingInterval, maxPings, showMaxMinAvgLines, WidgetTheme.valueOf(themeName));
         SharedPreferencesHelper.writePingWidgetData(getContext().getApplicationContext(), widgetId, data);
+        return data;
     }
 
 
@@ -170,14 +171,12 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getActivity());
             RemoteViews views = RemoteViewsUtil.getRemoteViews(getContext(), WidgetLayoutType.TALL);  //Initially, widget layout is tall
 
-            //Update the widget's views
-            RemoteViewsUtil.initWidgetViews(views, mAddress.getText(), WidgetTheme.valueOf(mTheme.getSelectedTheme()), WidgetLayoutType.TALL);
-//            views.setTextViewText(R.id.widget_host, mAddress.getText());
-//            views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
-//            views.setInt(R.id.widget_layout_container_top, "setBackgroundResource", WidgetTheme.valueOf(mTheme.getSelectedTheme()).getDrawableBackgroundContainerTop());
-
             //Save PingWidgetData in SharedPreferences()
-            savePingWidgetData(widgetId, mAddress.getText(), Integer.parseInt(mInterval.getValue()), Integer.parseInt(mMaxPings.getValue()), mShowChartLines.isChecked(), mTheme.getSelectedTheme());
+            PingWidgetData data = savePingWidgetData(widgetId, mAddress.getText(), Integer.parseInt(mInterval.getValue()), Integer.parseInt(mMaxPings.getValue()), mShowChartLines.isChecked(), mTheme.getSelectedTheme());
+
+
+            //Init the widget's views
+            RemoteViewsUtil.initWidgetViews(getContext(), widgetId, views, data);
 
 
             //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()

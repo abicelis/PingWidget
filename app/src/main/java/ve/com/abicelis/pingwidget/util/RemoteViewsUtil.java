@@ -17,6 +17,7 @@ import ve.com.abicelis.pingwidget.R;
 import ve.com.abicelis.pingwidget.enums.PingIconState;
 import ve.com.abicelis.pingwidget.enums.WidgetLayoutType;
 import ve.com.abicelis.pingwidget.enums.WidgetTheme;
+import ve.com.abicelis.pingwidget.model.PingWidgetData;
 
 /**
  * Created by abice on 10/5/2017.
@@ -40,10 +41,19 @@ public class RemoteViewsUtil {
     /*
      *  Drawing methods, remoteViews update
      */
-    public static void initWidgetViews(RemoteViews views, String address, WidgetTheme theme, WidgetLayoutType layoutType) {
-        views.setTextViewText(R.id.widget_host, address);
+   // public static void initWidgetViews(RemoteViews views, String address, WidgetTheme theme, WidgetLayoutType layoutType) {
+    public static void initWidgetViews(Context context, int widgetId, RemoteViews views, PingWidgetData data) {
+        views.setTextViewText(R.id.widget_host, data.getAddress());
         views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
-        views.setInt(R.id.widget_layout_container_top, "setBackgroundResource", theme.getDrawableBackgroundContainerTop(layoutType));
+        views.setInt(R.id.widget_layout_container_top, "setBackgroundResource", data.getTheme().getDrawableBackgroundContainerTop(data.getWidgetLayoutType()));
+
+        //Never pinged?
+        if(data.getPingTimes().size() == 0)
+            views.setViewVisibility(R.id.widget_press_start, View.VISIBLE);
+        else {
+            RemoteViewsUtil.redrawWidget(context, views, widgetId, data.getPingTimes(), data.getMaxPings(), data.getTheme().getColorChart(), data.showChartLines());
+            views.setViewVisibility(R.id.widget_press_start, View.GONE);
+        }
     }
 
     public static void updatePingIcon(RemoteViews views, PingIconState state) {

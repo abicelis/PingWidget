@@ -49,20 +49,18 @@ public class PingWidgetProvider extends AppWidgetProvider {
             Log.d(TAG, "onUpdate() Processing ID= " + widgetId);
 
             //Get widget data from SharedPreferences
-            PingWidgetData currentWidget = SharedPreferencesHelper.readPingWidgetData(context.getApplicationContext(), widgetId);
-            Log.d(TAG, "onUpdate() Current widget data: " + (currentWidget != null ? currentWidget.toString() : "null"));
+            PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(context.getApplicationContext(), widgetId);
+            Log.d(TAG, "onUpdate() Current widget data: " + (data != null ? data.toString() : "null"));
 
             //Check if widget has data (has been configured on PingWidgetConfigureFragment!)
-            if(currentWidget != null) {
+            if(data != null) {
 
                 //Get AppWidgetManager and RemoteViews
-                RemoteViews views = RemoteViewsUtil.getRemoteViews(context, currentWidget.getWidgetLayoutType());
+                RemoteViews views = RemoteViewsUtil.getRemoteViews(context, data.getWidgetLayoutType());
 
                 //Update the widget's views
-                views.setTextViewText(R.id.widget_host, currentWidget.getAddress());
-                views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
-                views.setViewVisibility(R.id.widget_press_start, View.VISIBLE);
-                views.setInt(R.id.widget_layout_container_top, "setBackgroundResource", WidgetTheme.valueOf(currentWidget.getThemeName()).getDrawableBackgroundContainerTop(currentWidget.getWidgetLayoutType()));
+                RemoteViewsUtil.initWidgetViews(context, widgetId, views, data);
+                RemoteViewsUtil.updatePlayPause(views, data.isRunning());
 
 
                 //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()
@@ -168,17 +166,8 @@ public class PingWidgetProvider extends AppWidgetProvider {
 
         //Get new RemoteViews layout and update widget
         RemoteViews views = RemoteViewsUtil.getRemoteViews(context, data.getWidgetLayoutType());
-
-        RemoteViewsUtil.initWidgetViews(views, data.getAddress(), WidgetTheme.valueOf(data.getThemeName()), data.getWidgetLayoutType());
+        RemoteViewsUtil.initWidgetViews(context, appWidgetId, views, data);
         RemoteViewsUtil.updatePlayPause(views, data.isRunning());
-
-        //Never pinged?
-        if(data.getPingTimes().size() == 0)
-            views.setViewVisibility(R.id.widget_press_start, View.VISIBLE);
-        else {
-            RemoteViewsUtil.redrawWidget(context, views, appWidgetId, data.getPingTimes(), data.getMaxPings(), WidgetTheme.valueOf(data.getThemeName()).getColorChart(), data.showChartLines());
-            views.setViewVisibility(R.id.widget_press_start, View.GONE);
-        }
 
         //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()
         //Create an Intent, set PING_WIDGET_TOGGLE action to it, put EXTRA_APPWIDGET_ID as extra
