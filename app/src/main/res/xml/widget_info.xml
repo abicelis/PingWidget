@@ -3,10 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:initialLayout="@layout/widget_layout_tall"
     android:previewImage="@drawable/widget_preview_image"
-    android:minHeight="144dp"
-    android:minWidth="288dp"
-    android:minResizeHeight="72dp"
-    android:minResizeWidth="144dp"
+    android:minHeight="110dp"
+    android:minWidth="250dp"
+    android:minResizeHeight="40dp"
+    android:minResizeWidth="110dp"
     android:resizeMode="horizontal|vertical"
     android:configure="ve.com.abicelis.pingwidget.app.activity.PingWidgetConfigureActivity">
-</appwidget-provider>    <!--android:minResizeWidth="216dp"-->
+</appwidget-provider>
+
+
+    <!--
+    Formula: (cells * 70) - 30
+    minHeight           2col    110dp
+    minWidth            4col    250dp
+    minResizeHeight     1col    40dp
+    minResizeWidth      2col    110dp
+    -->
