@@ -135,10 +135,13 @@
 
         <TextView
             android:id="@+id/widget_max_min_ping"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
             android:textColor="@color/text_dark_gray"
+            android:layout_toLeftOf="@+id/widget_last_ping"
+            android:layout_toStartOf="@+id/widget_last_ping"
+            android:ellipsize="none"
             android:textSize="@dimen/text_small"
             android:textStyle="bold"/>
         <TextView
