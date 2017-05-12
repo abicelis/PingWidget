@@ -11,8 +11,6 @@
         android:id="@+id/widget_layout_container_top"
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp"
         android:paddingRight="5dp"
         android:paddingLeft="5dp"
         android:background="@drawable/widget_background_top_blue_short">
@@ -91,8 +89,8 @@
 
         <ImageView
             android:id="@+id/widget_start_pause"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="22dp"
+            android:layout_height="match_parent"
             android:layout_marginRight="0dp"
             android:layout_marginEnd="0dp"
             android:layout_centerVertical="true"
