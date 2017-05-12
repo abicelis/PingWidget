@@ -15,6 +15,7 @@ import android.support.v14.preference.SwitchPreference;
 import android.support.v4.util.Pair;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
+import android.util.Patterns;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -28,7 +29,6 @@ import ve.com.abicelis.pingwidget.app.preference.ThemePreference;
 import ve.com.abicelis.pingwidget.enums.WidgetLayoutType;
 import ve.com.abicelis.pingwidget.enums.WidgetTheme;
 import ve.com.abicelis.pingwidget.model.PingWidgetData;
-import ve.com.abicelis.pingwidget.util.AddressValidator;
 import ve.com.abicelis.pingwidget.util.RemoteViewsUtil;
 import ve.com.abicelis.pingwidget.util.SharedPreferencesHelper;
 import ve.com.abicelis.pingwidget.util.Util;
@@ -127,8 +127,7 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
     }
 
     private boolean checkValues() {
-        AddressValidator validator = new AddressValidator();
-        if(mAddress.getText() == null || !validator.validate(mAddress.getText())) {
+        if(mAddress.getText() == null || !Patterns.WEB_URL.matcher(mAddress.getText()).matches()) {
             Toast.makeText(getActivity(), getResources().getString(R.string.fragment_widget_configure_err_address), Toast.LENGTH_SHORT).show();
             return false;
         }
