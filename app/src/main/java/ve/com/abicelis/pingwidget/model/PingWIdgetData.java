@@ -7,6 +7,7 @@ import java.util.Locale;
 
 import ve.com.abicelis.pingwidget.R;
 import ve.com.abicelis.pingwidget.enums.WidgetLayoutType;
+import ve.com.abicelis.pingwidget.enums.WidgetTheme;
 
 /**
  * Created by abice on 9/2/2017.
@@ -19,18 +20,18 @@ public class PingWidgetData {
     private int mMaxPings;
     private boolean mChartLines;
     private WidgetLayoutType mWidgetLayoutType;
-    private String mThemeName;
+    private WidgetTheme mTheme;
     private LinkedList<Float> mPingTimes;
 
     private boolean isRunning;
 
 
-    public PingWidgetData(String address, int pingInterval, int maxPings, boolean showChartLines, String themeName) {
+    public PingWidgetData(String address, int pingInterval, int maxPings, boolean showChartLines, WidgetTheme theme) {
         mAddress = address;
         mPingInterval = pingInterval;
         mMaxPings = maxPings;
         mChartLines = showChartLines;
-        mThemeName = themeName;
+        mTheme = theme;
 
         mPingTimes = new LinkedList<>();
         isRunning = false;
@@ -78,11 +79,11 @@ public class PingWidgetData {
     }
 
 
-    public String getThemeName() {
-        return mThemeName;
+    public WidgetTheme getTheme() {
+        return mTheme;
     }
-    public void setThemeName(String mThemeName) {
-        this.mThemeName = mThemeName;
+    public void setTheme(WidgetTheme theme) {
+        this.mTheme = theme;
     }
 
 
@@ -104,6 +105,6 @@ public class PingWidgetData {
 
     @Override
     public String toString() {
-        return String.format(Locale.getDefault(),  "isRunning?: %1$b. Address: %2$s. PingInterval: %3$d. MaxPings: %4$d. Theme: %5$s.", isRunning, mAddress, mPingInterval, mMaxPings, mThemeName);
+        return String.format(Locale.getDefault(),  "isRunning?: %1$b. Address: %2$s. PingInterval: %3$d. MaxPings: %4$d. Theme: %5$s.", isRunning, mAddress, mPingInterval, mMaxPings, mTheme.name());
     }
 }
