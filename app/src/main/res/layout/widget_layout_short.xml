@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_small"
-                android:fontFamily="sans-serif-light"
+                android:fontFamily="sans-serif"
                 android:textColor="@color/text_white"
                 android:textStyle="bold"
                 android:text="@string/app_name_short"
