@@ -42,4 +42,5 @@
             &nbsp;&nbsp;&nbsp;&#8226; Añada un PingWidget<br/>
         ]]></string>
     <string name="fragment_widget_show_chart_lines_title">Mostrar averaje en gráfico</string>
+    <string name="fragment_widget_dark_theme_title">Usar tema oscuro (NUEVO!)</string>
 </resources>
