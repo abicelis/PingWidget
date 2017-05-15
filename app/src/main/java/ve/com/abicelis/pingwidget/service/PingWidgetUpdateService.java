@@ -37,6 +37,7 @@ public class PingWidgetUpdateService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
+        Log.d(TAG, "onBind()");
         return null;
     }
 
@@ -110,7 +111,6 @@ public class PingWidgetUpdateService extends Service {
 
                 //Update widget views
                 RemoteViewsUtil.initWidgetViews(getApplicationContext(), widgetId, views, data);
-                RemoteViewsUtil.updatePlayPause(views, data.isRunning());
 
                 //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()
                 //Create an Intent, set PING_WIDGET_TOGGLE action to it, put EXTRA_APPWIDGET_ID as extra
