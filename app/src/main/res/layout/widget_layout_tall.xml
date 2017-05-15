@@ -2,9 +2,10 @@
 
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_layout_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/widget_background_bottom_white_tall"
+    android:background="@drawable/widget_background_bottom_light_tall"
 >
 
     <RelativeLayout
@@ -110,7 +111,8 @@
         android:layout_marginTop="0dp"
         android:layout_marginRight="12dp"
         android:layout_marginLeft="12dp"
-        android:layout_below="@id/widget_shadow_transition">
+        android:layout_below="@id/widget_shadow_transition"
+        >
 
         <ImageView
             android:id="@+id/widget_chart"
