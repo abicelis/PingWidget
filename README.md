@@ -27,7 +27,7 @@ This widget features:
 
 ## Code dependencies
 
-This Project uses external SDK's
+This Project uses external dependencies and SDK's
 
 
 * [Gson](https://github.com/google/gson) - Json serialization/deserialization library
