@@ -19,18 +19,20 @@ public class PingWidgetData {
     private int mPingInterval;
     private int mMaxPings;
     private boolean mChartLines;
-    private WidgetLayoutType mWidgetLayoutType;
+    private boolean mUseDarkTheme;
     private WidgetTheme mTheme;
     private LinkedList<Float> mPingTimes;
 
+    private WidgetLayoutType mWidgetLayoutType;
     private boolean isRunning;
 
 
-    public PingWidgetData(String address, int pingInterval, int maxPings, boolean showChartLines, WidgetTheme theme) {
+    public PingWidgetData(String address, int pingInterval, int maxPings, boolean showChartLines, boolean useDarkTheme, WidgetTheme theme) {
         mAddress = address;
         mPingInterval = pingInterval;
         mMaxPings = maxPings;
         mChartLines = showChartLines;
+        mUseDarkTheme = useDarkTheme;
         mTheme = theme;
 
         mPingTimes = new LinkedList<>();
@@ -76,6 +78,13 @@ public class PingWidgetData {
     }
     public void setWidgetLayoutType(WidgetLayoutType widgetLayoutType) {
         this.mWidgetLayoutType = widgetLayoutType;
+    }
+
+    public boolean useDarkTheme() {
+        return mUseDarkTheme;
+    }
+    public void setUseDarkTheme(boolean useDarkTheme) {
+        this.mUseDarkTheme = useDarkTheme;
     }
 
 
