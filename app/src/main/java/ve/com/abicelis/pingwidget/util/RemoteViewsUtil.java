@@ -46,13 +46,16 @@ public class RemoteViewsUtil {
         views.setTextViewText(R.id.widget_host, data.getAddress());
         views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
         views.setInt(R.id.widget_layout_container_top, "setBackgroundResource", data.getTheme().getDrawableBackgroundContainerTop(data.getWidgetLayoutType()));
+        views.setViewVisibility(R.id.widget_loading, View.GONE);
 
         //Never pinged?
-        if(data.getPingTimes().size() == 0)
+        if(data.getPingTimes().size() == 0) {
             views.setViewVisibility(R.id.widget_press_start, View.VISIBLE);
-        else {
+            views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
+        } else {
             RemoteViewsUtil.redrawWidget(context, views, widgetId, data.getPingTimes(), data.getMaxPings(), data.getTheme().getColorChart(), data.showChartLines());
             views.setViewVisibility(R.id.widget_press_start, View.GONE);
+            updatePlayPause(views, data.isRunning());
         }
     }
 
