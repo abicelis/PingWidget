@@ -60,7 +60,6 @@ public class PingWidgetProvider extends AppWidgetProvider {
 
                 //Update the widget's views
                 RemoteViewsUtil.initWidgetViews(context, widgetId, views, data);
-                RemoteViewsUtil.updatePlayPause(views, data.isRunning());
 
 
                 //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()
@@ -73,80 +72,6 @@ public class PingWidgetProvider extends AppWidgetProvider {
                 appWidgetManager.updateAppWidget(widgetId, views);
             }
         }
-
-
-//        for (int widgetId : appWidgetIds) {
-//
-//            //Add widget to mServiceRunning map!
-//            mServiceRunning.put(widgetId, false);
-//
-//            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-//
-//
-//            //Register an Intent so that onClicks are received by PingWidgetProvider.onReceive()
-//
-//            //Create an Intent, set PING_WIDGET_TOGGLE action to it, put EXTRA_APPWIDGET_ID as extra
-//            Intent clickIntent = new Intent(context, PingWidgetProvider.class);
-//            clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-//            clickIntent.setAction(PING_WIDGET_TOGGLE);
-//
-//            //Construct a PendingIntent using the Intent above
-//            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, widgetId, clickIntent, 0);
-//
-//            //Register pendingIntent in RemoteViews onClick
-//            remoteViews.setOnClickPendingIntent(R.id.widget_start_pause, pendingIntent);
-//
-//            //Update widget
-//            appWidgetManager.updateAppWidget(widgetId, remoteViews);
-//        }
-
-
-//        // Get all ids
-//        ComponentName thisWidget = new ComponentName(context, PingWidgetProvider.class);
-//        int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
-//
-//        // Build the intent to call the service
-//        Intent intent = new Intent(context.getApplicationContext(), PingWidgetUpdateService.class);
-//        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, allWidgetIds);
-//
-//        // Update the widgets via the service
-//        context.startService(intent);
-
-
-
-
-
-//        // Get all ids
-//        ComponentName thisWidget = new ComponentName(context, PingWidgetProvider.class);
-//        int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
-//        for (int widgetId : allWidgetIds) {
-//
-//            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-//
-//            // Set the text
-//            int number;
-//            number = (new Random().nextInt(100));
-//            remoteViews.setTextViewText(R.id.widget_max_ping_value, String.valueOf(number) + ".0");
-//            number = (new Random().nextInt(100));
-//            remoteViews.setTextViewText(R.id.widget_avg_ping_value, String.valueOf(number) + ".0");
-//            number = (new Random().nextInt(100));
-//            remoteViews.setTextViewText(R.id.widget_min_ping_value, String.valueOf(number) + ".0");
-//
-//
-//
-//
-//            //Set its intent, on R.id.widget_start_pause ImageView
-//            Intent intent = new Intent(context, PingWidgetProvider.class);
-//            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-//            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-//            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//            // Register an onClickListener in the RemoteViews
-//            remoteViews.setOnClickPendingIntent(R.id.widget_start_pause, pendingIntent);
-//
-//            //Update widget (Whose id is widgetId) with value changes and intents, etc
-//            appWidgetManager.updateAppWidget(widgetId, remoteViews);
-//        }
     }
 
     @Override
@@ -167,7 +92,6 @@ public class PingWidgetProvider extends AppWidgetProvider {
         //Get new RemoteViews layout and update widget
         RemoteViews views = RemoteViewsUtil.getRemoteViews(context, data.getWidgetLayoutType());
         RemoteViewsUtil.initWidgetViews(context, appWidgetId, views, data);
-        RemoteViewsUtil.updatePlayPause(views, data.isRunning());
 
         //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()
         //Create an Intent, set PING_WIDGET_TOGGLE action to it, put EXTRA_APPWIDGET_ID as extra
@@ -195,6 +119,7 @@ public class PingWidgetProvider extends AppWidgetProvider {
         Log.d(TAG, "onRestored()");
         super.onRestored(context, oldWidgetIds, newWidgetIds);
     }
+
 
     @Override
     public void onReceive(Context context, Intent intent) {
