@@ -4,9 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.support.annotation.LayoutRes;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -16,7 +14,6 @@ import java.util.Locale;
 import ve.com.abicelis.pingwidget.R;
 import ve.com.abicelis.pingwidget.enums.PingIconState;
 import ve.com.abicelis.pingwidget.enums.WidgetLayoutType;
-import ve.com.abicelis.pingwidget.enums.WidgetTheme;
 import ve.com.abicelis.pingwidget.model.PingWidgetData;
 
 /**
@@ -46,6 +43,15 @@ public class RemoteViewsUtil {
         views.setTextViewText(R.id.widget_host, data.getAddress());
         views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
         views.setInt(R.id.widget_layout_container_top, "setBackgroundResource", data.getTheme().getDrawableBackgroundContainerTop(data.getWidgetLayoutType()));
+        if(data.useDarkTheme()) {
+            views.setInt(R.id.widget_layout_container, "setBackgroundResource", data.getTheme().getDrawableBackgroundContainerDark(data.getWidgetLayoutType()));
+            views.setTextColor(R.id.widget_press_start, ContextCompat.getColor(context, R.color.text_white));
+            views.setTextColor(R.id.widget_avg_ping, ContextCompat.getColor(context, R.color.text_white));
+            views.setTextColor(R.id.widget_last_ping, ContextCompat.getColor(context, R.color.text_white));
+            views.setTextColor(R.id.widget_max_min_ping, ContextCompat.getColor(context, R.color.text_white));
+            views.setTextColor(R.id.widget_uptime_ping, ContextCompat.getColor(context, R.color.text_white));
+        }
+
         views.setViewVisibility(R.id.widget_loading, View.GONE);
 
         //Never pinged?

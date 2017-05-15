@@ -48,6 +48,10 @@ public enum WidgetTheme {
         return (widgetLayoutType.equals(WidgetLayoutType.SHORT) ? mDrawableBackgroundContainerTopShort : mDrawableBackgroundContainerTopTall);
     }
 
+    public int getDrawableBackgroundContainerDark(WidgetLayoutType widgetLayoutType) {
+        return (widgetLayoutType.equals(WidgetLayoutType.SHORT) ? R.drawable.widget_background_bottom_dark_short : R.drawable.widget_background_bottom_dark_tall);
+    }
+
     public int getColorBackgroundContainerTop() {
         return mColorBackgroundContainerTop;
     }
