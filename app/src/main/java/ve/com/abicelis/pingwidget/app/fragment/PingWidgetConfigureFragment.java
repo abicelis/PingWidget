@@ -45,6 +45,7 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
     private ListPreference mInterval;
     private ListPreference mMaxPings;
     private SwitchPreference mShowChartLines;
+    private SwitchPreference mUseDarkTheme;
     private ThemePreference mTheme;
     private Preference mAbout;
     private Preference mRate;
@@ -67,6 +68,7 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
         mInterval = (ListPreference) findPreference(getResources().getString(R.string.fragment_widget_configure_interval_key));
         mMaxPings = (ListPreference) findPreference(getResources().getString(R.string.fragment_widget_configure_max_pings_key));
         mShowChartLines = (SwitchPreference) findPreference(getResources().getString(R.string.fragment_widget_show_chart_lines_key));
+        mUseDarkTheme = (SwitchPreference) findPreference(getResources().getString(R.string.fragment_widget_dark_theme_key));
         mTheme = (ThemePreference) findPreference(getResources().getString(R.string.fragment_widget_configure_theme_key));
         mAbout = findPreference(getResources().getString(R.string.fragment_widget_configure_about_key));
         mAbout.setSummary(String.format(Locale.getDefault(), getResources().getString(R.string.fragment_widget_configure_about_summary), getAppVersionAndBuild(getActivity()).first));
@@ -144,8 +146,8 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
         return true;
     }
 
-    private PingWidgetData savePingWidgetData(int widgetId, String address, int pingInterval, int maxPings, boolean showMaxMinAvgLines, String themeName) {
-        PingWidgetData data = new PingWidgetData(address, pingInterval, maxPings, showMaxMinAvgLines, WidgetTheme.valueOf(themeName));
+    private PingWidgetData savePingWidgetData(int widgetId, String address, int pingInterval, int maxPings, boolean showMaxMinAvgLines, boolean useDarkTheme, String themeName) {
+        PingWidgetData data = new PingWidgetData(address, pingInterval, maxPings, showMaxMinAvgLines, useDarkTheme, WidgetTheme.valueOf(themeName));
         SharedPreferencesHelper.writePingWidgetData(getContext().getApplicationContext(), widgetId, data);
         return data;
     }
@@ -171,7 +173,7 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
             RemoteViews views = RemoteViewsUtil.getRemoteViews(getContext(), WidgetLayoutType.TALL);  //Initially, widget layout is tall
 
             //Save PingWidgetData in SharedPreferences()
-            PingWidgetData data = savePingWidgetData(widgetId, mAddress.getText(), Integer.parseInt(mInterval.getValue()), Integer.parseInt(mMaxPings.getValue()), mShowChartLines.isChecked(), mTheme.getSelectedTheme());
+            PingWidgetData data = savePingWidgetData(widgetId, mAddress.getText(), Integer.parseInt(mInterval.getValue()), Integer.parseInt(mMaxPings.getValue()), mShowChartLines.isChecked(), mUseDarkTheme.isChecked(), mTheme.getSelectedTheme());
 
 
             //Init the widget's views

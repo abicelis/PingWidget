@@ -48,8 +48,13 @@
     <string name="fragment_widget_show_chart_lines_key" translatable="false">widget_show_chart_lines</string>
     <string name="fragment_widget_show_chart_lines_title">Draw average on chart</string>
 
+    <string name="fragment_widget_dark_theme_key" translatable="false">widget_dark_theme</string>
+    <string name="fragment_widget_dark_theme_title">Use dark theme (NEW!)</string>
+
     <string name="fragment_widget_configure_theme_key" translatable="false">widget_configure_theme</string>
     <string name="fragment_widget_configure_theme_title">Theme</string>
+
+
 
     <string name="fragment_widget_configure_about_key" translatable="false">widget_configure_about</string>
     <string name="fragment_widget_configure_about_summary">Version %1$s</string>
