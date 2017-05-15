@@ -3,6 +3,7 @@
     <string name="app_name" translatable="false">Ping Widget</string>
     <string name="app_name_short" translatable="false">PW</string>
     <string name="widget_press_start_activate">Click play button to start</string>
+    <string name="widget_loading">Loading&#8230;</string>
     <string name="widget_max_min">Max: %1$s - Min: %2$s</string>
     <string name="widget_last">Last: %1$s</string>
     <string name="widget_uptime">Uptime %1$d%%</string>

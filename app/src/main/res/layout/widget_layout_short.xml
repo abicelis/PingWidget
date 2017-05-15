@@ -170,7 +170,18 @@
             android:textColor="@color/text_dark_gray"
             android:textSize="@dimen/text_large"
             android:textStyle="bold"
-            android:text="@string/widget_press_start_activate"/>
+            android:text="@string/widget_press_start_activate"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/widget_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/text_dark_gray"
+            android:textSize="@dimen/text_large"
+            android:textStyle="bold"
+            android:text="@string/widget_loading"/>
 
     </RelativeLayout>
 </RelativeLayout>

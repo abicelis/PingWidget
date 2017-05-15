@@ -25,6 +25,7 @@
     <string name="widget_max_min">Max: %1$s - Min: %2$s</string>
     <string name="widget_max_min_err">Max: ERR - Min: ERR</string>
     <string name="widget_press_start_activate">Click boton de play para iniciar</string>
+    <string name="widget_loading">Cargando&#8230;</string>
     <string name="widget_theme_summary_blue_yellow">Azul/Amarillo</string>
     <string name="widget_theme_summary_green_green">Verde</string>
     <string name="widget_theme_summary_orange_amber">Naranja/Ambar</string>
