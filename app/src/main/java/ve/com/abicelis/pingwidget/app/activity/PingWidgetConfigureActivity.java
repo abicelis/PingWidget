@@ -12,7 +12,6 @@ import android.view.MenuItem;
 
 import ve.com.abicelis.pingwidget.R;
 import ve.com.abicelis.pingwidget.app.fragment.PingWidgetConfigureFragment;
-import ve.com.abicelis.pingwidget.app.widget.PingWidgetProvider;
 
 /**
  * Created by abice on 8/2/2017.
@@ -89,7 +88,6 @@ public class PingWidgetConfigureActivity extends AppCompatActivity {
                 Intent cancelWidgetIntent = new Intent();
                 cancelWidgetIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
                 setResult(RESULT_CANCELED, cancelWidgetIntent);
-                sendBroadcast(new Intent(this, PingWidgetProvider.class));
             }
         }
 
