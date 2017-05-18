@@ -74,6 +74,13 @@
     <string name="fragment_widget_configure_err_max_pings">Please select a Max Pings amount</string>
 
 
+
+    <string name="enum_preference_max_ping_format">%1$d pings</string>
+    <string name="enum_preference_ping_interval_format_singular">%1$d second</string>
+    <string name="enum_preference_ping_interval_format">%1$d seconds</string>
+
+
+
     /* Widget Themes (Summaries)*/
     <string name="widget_theme_summary_blue_yellow">Blue/Yellow</string>
     <string name="widget_theme_summary_green_green">Green</string>

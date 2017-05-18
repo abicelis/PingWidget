@@ -43,4 +43,7 @@
         ]]></string>
     <string name="fragment_widget_show_chart_lines_title">Mostrar averaje en gráfico</string>
     <string name="fragment_widget_dark_theme_title">Usar tema oscuro (NUEVO!)</string>
+    <string name="enum_preference_max_ping_format">%1$d pings</string>
+    <string name="enum_preference_ping_interval_format">%1$d segundos</string>
+    <string name="enum_preference_ping_interval_format_singular">%1$d segundo</string>
 </resources>
