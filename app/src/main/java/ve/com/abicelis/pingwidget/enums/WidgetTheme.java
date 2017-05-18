@@ -48,8 +48,11 @@ public enum WidgetTheme {
         return (widgetLayoutType.equals(WidgetLayoutType.SHORT) ? mDrawableBackgroundContainerTopShort : mDrawableBackgroundContainerTopTall);
     }
 
-    public int getDrawableBackgroundContainerDark(WidgetLayoutType widgetLayoutType) {
-        return (widgetLayoutType.equals(WidgetLayoutType.SHORT) ? R.drawable.widget_background_bottom_dark_short : R.drawable.widget_background_bottom_dark_tall);
+    public int getDrawableBackgroundContainer(WidgetLayoutType widgetLayoutType, boolean darkTheme) {
+        if(darkTheme)
+            return (widgetLayoutType.equals(WidgetLayoutType.SHORT) ? R.drawable.widget_background_bottom_dark_short : R.drawable.widget_background_bottom_dark_tall);
+        else
+            return (widgetLayoutType.equals(WidgetLayoutType.SHORT) ? R.drawable.widget_background_bottom_light_short : R.drawable.widget_background_bottom_light_tall);
     }
 
     public int getColorBackgroundContainerTop() {
