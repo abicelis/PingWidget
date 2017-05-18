@@ -119,11 +119,6 @@ class PingAsyncTask extends AsyncTask<String, Object, Integer> {
             str = str.substring(str.indexOf("time=")+5, str.indexOf("ms")-1);
             return Float.parseFloat(str);
         } catch (Exception e) { /* Do nothing */}
-        str = " 192.168.1.16 (192.168.1.16) 56(84) bytes of data.\n" +
-                "From 192.168.1.124: icmp_seq=1 Destination Host Unreachable\n" +
-                "\n" +
-                "--- 192.168.1.16 ping statistics ---\n" +
-                "1 packets transmitted, 0 received, +1 errors, 100% packet loss, time ";
 
         //Try to figure out ping error type
         if(PingFailureType.DESTINATION_PORT_UNREACHABLE.checkPingString(str))
