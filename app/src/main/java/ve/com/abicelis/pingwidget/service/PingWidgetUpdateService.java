@@ -19,7 +19,6 @@ import java.util.Map;
 
 import ve.com.abicelis.pingwidget.R;
 import ve.com.abicelis.pingwidget.app.widget.PingWidgetProvider;
-import ve.com.abicelis.pingwidget.enums.WidgetTheme;
 import ve.com.abicelis.pingwidget.model.PingWidgetData;
 import ve.com.abicelis.pingwidget.util.RemoteViewsUtil;
 import ve.com.abicelis.pingwidget.util.SharedPreferencesHelper;
@@ -115,6 +114,7 @@ public class PingWidgetUpdateService extends Service {
                 //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()
                 //Create an Intent, set PING_WIDGET_TOGGLE action to it, put EXTRA_APPWIDGET_ID as extra
                 Util.registerWidgetStartPauseOnClickListener(getApplication(), widgetId, views);
+                Util.registerWidgetReconfigureClickListener(getApplication(), widgetId, views);
 
                 //Update the widget
                 appWidgetManager.updateAppWidget(widgetId, views);
@@ -180,7 +180,7 @@ public class PingWidgetUpdateService extends Service {
                 AppWidgetManager.getInstance(getApplicationContext()).updateAppWidget(widgetId, views);
 
                 //Create a new task and run it, also save it to mAsyncTasks using widgetId
-                task = new PingAsyncTask(this.getApplicationContext(), widgetId, currentWidget.getPingInterval(), currentWidget.getMaxPings());
+                task = new PingAsyncTask(this.getApplicationContext(), widgetId, currentWidget.getPingInterval().getValue(), currentWidget.getMaxPings().getValue());
                 mAsyncTasks.put(widgetId, task);
 
                 //Get stored address from PreferenceSettings
