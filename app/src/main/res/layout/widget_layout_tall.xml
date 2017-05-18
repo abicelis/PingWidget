@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/widget_background_bottom_light_tall"
->
+    >
 
     <RelativeLayout
         android:id="@+id/widget_layout_container_top"
@@ -40,6 +40,7 @@
                 android:layout_height="16dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="2dp"
                 android:tint="@color/ping_icon_sent"
                 android:src="@drawable/icon_ping_sent"
                 android:visibility="gone"
@@ -50,6 +51,7 @@
                 android:layout_height="16dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="2dp"
                 android:tint="@color/ping_icon_ok"
                 android:src="@drawable/icon_ping_ok"
                 android:visibility="gone"
@@ -60,6 +62,7 @@
                 android:layout_height="16dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="2dp"
                 android:tint="@color/ping_icon_bad"
                 android:src="@drawable/icon_ping_bad"
                 android:visibility="gone"
@@ -67,20 +70,34 @@
 
         </LinearLayout>
 
-
-
-        <TextView
-            android:id="@+id/widget_host"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:textSize="@dimen/text_medium"
-            android:fontFamily="sans-serif-light"
-            android:textColor="@color/text_white"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="www.google.com"
-            />
+            android:gravity="center_vertical"
+            >
+            <TextView
+                android:id="@+id/widget_host"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_medium"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/text_white"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="www.google.com"
+                />
+            <ImageView
+                android:id="@+id/widget_reconfigure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:src="@drawable/icon_reconfigure"
+                />
+
+        </LinearLayout>
+
+
 
         <ImageView
             android:id="@+id/widget_start_pause"
