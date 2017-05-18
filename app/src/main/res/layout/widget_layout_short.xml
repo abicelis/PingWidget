@@ -32,6 +32,42 @@
                 android:textStyle="bold"
                 android:text="@string/app_name_short"
                 />
+
+
+            <ImageView
+                android:id="@+id/widget_ping_sent_icon"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="1dp"
+                android:tint="@color/ping_icon_sent"
+                android:src="@drawable/icon_ping_sent"
+                android:visibility="invisible"
+                />
+            <ImageView
+                android:id="@+id/widget_ping_ok_icon"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="1dp"
+                android:tint="@color/ping_icon_ok"
+                android:src="@drawable/icon_ping_ok"
+                android:visibility="gone"
+                />
+            <ImageView
+                android:id="@+id/widget_ping_bad_icon"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="1dp"
+                android:tint="@color/ping_icon_bad"
+                android:src="@drawable/icon_ping_bad"
+                android:visibility="gone"
+                />
+
             <TextView
                 android:id="@+id/widget_host"
                 android:layout_width="wrap_content"
@@ -47,34 +83,12 @@
                 />
 
             <ImageView
-                android:id="@+id/widget_ping_sent_icon"
-                android:layout_width="10dp"
+                android:id="@+id/widget_reconfigure"
+                android:layout_width="22dp"
                 android:layout_height="10dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginStart="4dp"
-                android:tint="@color/ping_icon_sent"
-                android:src="@drawable/icon_ping_sent"
-                android:visibility="gone"
-                />
-            <ImageView
-                android:id="@+id/widget_ping_ok_icon"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginStart="4dp"
-                android:tint="@color/ping_icon_ok"
-                android:src="@drawable/icon_ping_ok"
-                android:visibility="gone"
-                />
-            <ImageView
-                android:id="@+id/widget_ping_bad_icon"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginStart="4dp"
-                android:tint="@color/ping_icon_bad"
-                android:src="@drawable/icon_ping_bad"
-                android:visibility="gone"
+                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/icon_wrench"
                 />
 
         </LinearLayout>
@@ -92,16 +106,7 @@
             android:tint="@color/text_white"
             />
 
-        <ImageView
-            android:id="@+id/widget_reconfigure"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@id/widget_start_pause"
-            android:layout_toStartOf="@id/widget_start_pause"
-            android:layout_marginRight="8dp"
-            android:layout_marginEnd="8dp"
-            android:src="@drawable/icon_reconfigure"
-            />
+
 
     </RelativeLayout>
 
