@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.Locale;
 
 import ve.com.abicelis.pingwidget.R;
+import ve.com.abicelis.pingwidget.enums.MaxPingsPreferenceType;
+import ve.com.abicelis.pingwidget.enums.PingIntervalPreferenceType;
 import ve.com.abicelis.pingwidget.enums.WidgetLayoutType;
 import ve.com.abicelis.pingwidget.enums.WidgetTheme;
 
@@ -16,8 +18,8 @@ import ve.com.abicelis.pingwidget.enums.WidgetTheme;
 public class PingWidgetData {
 
     private String mAddress;
-    private int mPingInterval;
-    private int mMaxPings;
+    private PingIntervalPreferenceType mPingInterval;
+    private MaxPingsPreferenceType mMaxPings;
     private boolean mChartLines;
     private boolean mUseDarkTheme;
     private WidgetTheme mTheme;
@@ -27,7 +29,7 @@ public class PingWidgetData {
     private boolean isRunning;
 
 
-    public PingWidgetData(String address, int pingInterval, int maxPings, boolean showChartLines, boolean useDarkTheme, WidgetTheme theme) {
+    public PingWidgetData(String address, PingIntervalPreferenceType pingInterval, MaxPingsPreferenceType maxPings, boolean showChartLines, boolean useDarkTheme, WidgetTheme theme) {
         mAddress = address;
         mPingInterval = pingInterval;
         mMaxPings = maxPings;
@@ -49,18 +51,18 @@ public class PingWidgetData {
     }
 
 
-    public int getPingInterval() {
+    public PingIntervalPreferenceType getPingInterval() {
         return mPingInterval;
     }
-    public void setPingInterval(int pingInterval) {
+    public void setPingInterval(PingIntervalPreferenceType pingInterval) {
         this.mPingInterval = pingInterval;
     }
 
 
-    public int getMaxPings() {
+    public MaxPingsPreferenceType getMaxPings() {
         return mMaxPings;
     }
-    public void setMaxPings(int mMaxPings) {
+    public void setMaxPings(MaxPingsPreferenceType mMaxPings) {
         this.mMaxPings = mMaxPings;
     }
 
@@ -114,6 +116,7 @@ public class PingWidgetData {
 
     @Override
     public String toString() {
-        return String.format(Locale.getDefault(),  "isRunning?: %1$b. Address: %2$s. PingInterval: %3$d. MaxPings: %4$d. Theme: %5$s.", isRunning, mAddress, mPingInterval, mMaxPings, mTheme.name());
+        return String.format(Locale.getDefault(),  "Address: %1$s. PingInterval: %2$s. MaxPings: %3$s. Theme: %4$s. DarkTheme: %5$s. ChartLines: %6$s. isRunning?: %7$b. ",
+                mAddress, mPingInterval.getEntryValue(), mMaxPings.getEntryValue(), mTheme.name(), mUseDarkTheme, mChartLines, isRunning);
     }
 }
