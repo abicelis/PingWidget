@@ -15,6 +15,7 @@ import ve.com.abicelis.pingwidget.enums.WidgetTheme;
 import ve.com.abicelis.pingwidget.model.PingWidgetData;
 import ve.com.abicelis.pingwidget.service.PingWidgetUpdateService;
 import ve.com.abicelis.pingwidget.R;
+import ve.com.abicelis.pingwidget.util.Constants;
 import ve.com.abicelis.pingwidget.util.RemoteViewsUtil;
 import ve.com.abicelis.pingwidget.util.SharedPreferencesHelper;
 import ve.com.abicelis.pingwidget.util.Util;
@@ -27,7 +28,6 @@ public class PingWidgetProvider extends AppWidgetProvider {
 
     //CONST
     private static final String TAG = PingWidgetProvider.class.getSimpleName();
-    public static String PING_WIDGET_TOGGLE = "PING_WIDGET_TOGGLE";
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
@@ -65,6 +65,7 @@ public class PingWidgetProvider extends AppWidgetProvider {
                 //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()
                 //Create an Intent, set PING_WIDGET_TOGGLE action to it, put EXTRA_APPWIDGET_ID as extra
                 Util.registerWidgetStartPauseOnClickListener(context, widgetId, views);
+                Util.registerWidgetReconfigureClickListener(context, widgetId, views);
 
 
 
@@ -96,6 +97,7 @@ public class PingWidgetProvider extends AppWidgetProvider {
         //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()
         //Create an Intent, set PING_WIDGET_TOGGLE action to it, put EXTRA_APPWIDGET_ID as extra
         Util.registerWidgetStartPauseOnClickListener(context, appWidgetId, views);
+        Util.registerWidgetReconfigureClickListener(context, appWidgetId, views);
 
         AppWidgetManager.getInstance(context).updateAppWidget(appWidgetId, views);
 
@@ -127,7 +129,7 @@ public class PingWidgetProvider extends AppWidgetProvider {
 
 
         //R.id.widget_start_pause was clicked
-        if(PING_WIDGET_TOGGLE.equals(intent.getAction())) {
+        if(Constants.PING_WIDGET_TOGGLE.equals(intent.getAction())) {
             Log.d(TAG, "onReceive() attending PING_WIDGET_TOGGLE");
 
             //Get extras from intent, namely, the widgetId
