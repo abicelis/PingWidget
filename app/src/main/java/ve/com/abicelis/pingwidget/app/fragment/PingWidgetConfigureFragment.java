@@ -15,6 +15,7 @@ import android.support.v14.preference.SwitchPreference;
 import android.support.v4.util.Pair;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
+import android.util.Log;
 import android.util.Patterns;
 import android.widget.RemoteViews;
 import android.widget.Toast;
@@ -26,9 +27,12 @@ import java.util.Locale;
 
 import ve.com.abicelis.pingwidget.R;
 import ve.com.abicelis.pingwidget.app.preference.ThemePreference;
+import ve.com.abicelis.pingwidget.enums.MaxPingsPreferenceType;
+import ve.com.abicelis.pingwidget.enums.PingIntervalPreferenceType;
 import ve.com.abicelis.pingwidget.enums.WidgetLayoutType;
 import ve.com.abicelis.pingwidget.enums.WidgetTheme;
 import ve.com.abicelis.pingwidget.model.PingWidgetData;
+import ve.com.abicelis.pingwidget.util.Constants;
 import ve.com.abicelis.pingwidget.util.RemoteViewsUtil;
 import ve.com.abicelis.pingwidget.util.SharedPreferencesHelper;
 import ve.com.abicelis.pingwidget.util.Util;
@@ -39,6 +43,10 @@ import ve.com.abicelis.pingwidget.util.Util;
  */
 
 public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
+
+    //DATA
+    private static final String TAG = PingWidgetConfigureFragment.class.getSimpleName();
+    private int mWidgetId;
 
     //UI
     private EditTextPreference mAddress;
@@ -52,8 +60,11 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
     private Preference mContact;
 
 
+
     @Override
     public void onCreatePreferencesFix(@Nullable Bundle savedInstanceState, String rootKey) {
+        Log.d(TAG, "onCreatePreferencesFix(). Action " + getArguments().getString(Constants.ACTION, "NONE"));
+
         addPreferencesFromResource(R.xml.ping_widget_configure_preferences);
 
         mAddress = (EditTextPreference) findPreference(getResources().getString(R.string.fragment_widget_configure_address_key));
@@ -65,8 +76,46 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
+
+
         mInterval = (ListPreference) findPreference(getResources().getString(R.string.fragment_widget_configure_interval_key));
+        mInterval.setEntries(PingIntervalPreferenceType.getEntries(getContext()));
+        mInterval.setEntryValues(PingIntervalPreferenceType.getEntryValues());
+
+        if(mInterval.getValue() == null || !PingIntervalPreferenceType.isValidEntry(mInterval.getValue())) {
+            mInterval.setValue(PingIntervalPreferenceType.INTERVAL_1.getEntryValue());
+            mInterval.setSummary(PingIntervalPreferenceType.INTERVAL_1.getEntry(getContext()));
+        } else {
+            mInterval.setSummary(PingIntervalPreferenceType.valueOf(mInterval.getValue()).getEntry(getContext()));
+        }
+        mInterval.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                mInterval.setSummary(PingIntervalPreferenceType.valueOf((String) newValue).getEntry(getContext()));
+                return true;
+            }
+        });
+
+
         mMaxPings = (ListPreference) findPreference(getResources().getString(R.string.fragment_widget_configure_max_pings_key));
+        mMaxPings.setEntries(MaxPingsPreferenceType.getEntries(getContext()));
+        mMaxPings.setEntryValues(MaxPingsPreferenceType.getEntryValues());
+
+        if(mMaxPings.getValue() == null || !MaxPingsPreferenceType.isValidEntry(mMaxPings.getValue())) {
+            mMaxPings.setValue(MaxPingsPreferenceType.MAX_PINGS_15.getEntryValue());
+            mMaxPings.setSummary(MaxPingsPreferenceType.MAX_PINGS_15.getEntry(getContext()));
+        } else {
+            mMaxPings.setSummary(MaxPingsPreferenceType.valueOf(mMaxPings.getValue()).getEntry(getContext()));
+        }
+        mMaxPings.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                mMaxPings.setSummary(MaxPingsPreferenceType.valueOf((String) newValue).getEntry(getContext()));
+                return true;
+            }
+        });
+
+
         mShowChartLines = (SwitchPreference) findPreference(getResources().getString(R.string.fragment_widget_show_chart_lines_key));
         mUseDarkTheme = (SwitchPreference) findPreference(getResources().getString(R.string.fragment_widget_dark_theme_key));
         mTheme = (ThemePreference) findPreference(getResources().getString(R.string.fragment_widget_configure_theme_key));
@@ -91,6 +140,34 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
+
+        //Get the arguments (bundle) passed from PingWidgetConfigureActivity, which contains the widgetId
+        mWidgetId = getArguments().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+
+
+        //Check if reconfiguring widget, if so, populate preference data
+        if(getArguments().getString(Constants.ACTION, "").equals(Constants.ACTION_WIDGET_RECONFIGURE)) {
+            Log.d(TAG, "onCreatePreferencesFix(). Setting values from widget ID " + mWidgetId);
+
+            PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(getContext(), mWidgetId);
+            Log.d(TAG, "onCreatePreferencesFix(). Widget data:" + data.toString());
+
+            mAddress.setText(data.getAddress());
+            mAddress.setSummary(data.getAddress());
+
+            mInterval.setValue(data.getPingInterval().getEntryValue());
+            mInterval.setSummary(data.getPingInterval().getEntry(getContext()));
+
+            mMaxPings.setValue(data.getMaxPings().getEntryValue());
+            mMaxPings.setSummary(data.getMaxPings().getEntry(getContext()));
+
+            mShowChartLines.setChecked(data.showChartLines());
+            mUseDarkTheme.setChecked(data.useDarkTheme());
+
+            mTheme.setTheme(data.getTheme());
+            mTheme.setSummary(getResources().getString(data.getTheme().getSummaryRes()));
+        }
+
 
     }
 
@@ -146,7 +223,7 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
         return true;
     }
 
-    private PingWidgetData savePingWidgetData(int widgetId, String address, int pingInterval, int maxPings, boolean showMaxMinAvgLines, boolean useDarkTheme, String themeName) {
+    private PingWidgetData savePingWidgetData(int widgetId, String address, PingIntervalPreferenceType pingInterval, MaxPingsPreferenceType maxPings, boolean showMaxMinAvgLines, boolean useDarkTheme, String themeName) {
         PingWidgetData data = new PingWidgetData(address, pingInterval, maxPings, showMaxMinAvgLines, useDarkTheme, WidgetTheme.valueOf(themeName));
         SharedPreferencesHelper.writePingWidgetData(getContext().getApplicationContext(), widgetId, data);
         return data;
@@ -165,32 +242,30 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
         Bundle extras = getArguments();
         if (extras != null) {
 
-            //Get the arguments (bundle) passed from PingWidgetConfigureActivity, which contains the widgetId
-            int widgetId = getArguments().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-
             //Get AppWidgetManager and RemoteViews
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getActivity());
             RemoteViews views = RemoteViewsUtil.getRemoteViews(getContext(), WidgetLayoutType.TALL);  //Initially, widget layout is tall
 
             //Save PingWidgetData in SharedPreferences()
-            PingWidgetData data = savePingWidgetData(widgetId, mAddress.getText(), Integer.parseInt(mInterval.getValue()), Integer.parseInt(mMaxPings.getValue()), mShowChartLines.isChecked(), mUseDarkTheme.isChecked(), mTheme.getSelectedTheme());
+            PingWidgetData data = savePingWidgetData(mWidgetId, mAddress.getText(), PingIntervalPreferenceType.valueOf(mInterval.getValue()), MaxPingsPreferenceType.valueOf(mMaxPings.getValue()), mShowChartLines.isChecked(), mUseDarkTheme.isChecked(), mTheme.getSelectedTheme());
 
 
             //Init the widget's views
-            RemoteViewsUtil.initWidgetViews(getContext(), widgetId, views, data);
+            RemoteViewsUtil.initWidgetViews(getContext(), mWidgetId, views, data);
 
 
             //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()
             //Create an Intent, set PING_WIDGET_TOGGLE action to it, put EXTRA_APPWIDGET_ID as extra
-            Util.registerWidgetStartPauseOnClickListener(getActivity(), widgetId, views);
+            Util.registerWidgetStartPauseOnClickListener(getActivity(), mWidgetId, views);
+            Util.registerWidgetReconfigureClickListener(getActivity(), mWidgetId, views);
 
 
             //Finally, update the widget
-            appWidgetManager.updateAppWidget(widgetId, views);
+            appWidgetManager.updateAppWidget(mWidgetId, views);
 
             //Send widget an intent with RESULT_OK so it know its been configured correctly
             Intent resultValue = new Intent();
-            resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+            resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mWidgetId);
             getActivity().setResult(Activity.RESULT_OK, resultValue);
             getActivity().finish();
 
@@ -200,4 +275,47 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
 
     }
 
+    public void handleWidgetReconfigure() {
+
+        if(!checkValues()) {
+            return;
+        }
+
+        Bundle extras = getArguments();
+        if (extras != null) {
+
+            //Get PingWidgetData
+            PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(getContext(), mWidgetId);
+
+            if(data != null) {
+
+                //Get AppWidgetManager and RemoteViews
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getActivity());
+                RemoteViews views = RemoteViewsUtil.getRemoteViews(getContext(), data.getWidgetLayoutType());  //Initially, widget layout is tall
+
+
+                data.setAddress(mAddress.getText());
+                data.setPingInterval(PingIntervalPreferenceType.valueOf(mInterval.getValue()));
+                data.setMaxPings(MaxPingsPreferenceType.valueOf(mMaxPings.getValue()));
+                data.setShowChartLines(mShowChartLines.isChecked());
+                data.setUseDarkTheme(mUseDarkTheme.isChecked());
+                data.setTheme(WidgetTheme.valueOf(mTheme.getSelectedTheme()));
+                SharedPreferencesHelper.writePingWidgetData(getContext(), mWidgetId, data);
+
+                //Update the widget's views
+                RemoteViewsUtil.initWidgetViews(getContext(), mWidgetId, views, data);
+
+                //Finally, update the widget
+                appWidgetManager.updateAppWidget(mWidgetId, views);
+
+                getActivity().finish();
+            } else {
+                Toast.makeText(getActivity(), "Error: No data for widget ID" + mWidgetId, Toast.LENGTH_SHORT).show();
+            }
+
+        } else {
+            Toast.makeText(getActivity(), "Error! No WidgetID passed to handleWidgetReconfigure()", Toast.LENGTH_SHORT).show();
+        }
+
+    }
 }
