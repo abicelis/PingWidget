@@ -37,6 +37,10 @@ public class SharedPreferencesHelper {
         return pingWidgetData;
     }
 
+    public static boolean pingWidgetDataExists(Context context, int widgetId) {
+        return getPreferences(context).contains(PING_WIDGET_DATA + widgetId);
+    }
+
     public static void deletePingWidgetData(Context context, int widgetId) {
         SharedPreferences.Editor editor = getPreferences(context).edit();
         editor.remove(PING_WIDGET_DATA + widgetId);
