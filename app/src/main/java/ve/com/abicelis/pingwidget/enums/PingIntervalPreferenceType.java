@@ -27,14 +27,14 @@ public enum PingIntervalPreferenceType {
         mInterval = interval;
     }
 
-    public int getInterval() {
+    public int getValue() {
         return mInterval;
     }
 
 
     public String getEntry(Context context) {
         String format = (this == PingIntervalPreferenceType.INTERVAL_1 ? context.getResources().getString(R.string.enum_preference_ping_interval_format_singular) : context.getResources().getString(R.string.enum_preference_ping_interval_format));
-        return String.format(Locale.getDefault(), format, this.getInterval());
+        return String.format(Locale.getDefault(), format, this.getValue());
     }
 
     public String getEntryValue() {
@@ -57,7 +57,7 @@ public enum PingIntervalPreferenceType {
         for (int i = 0; i < PingIntervalPreferenceType.values().length; i++) {
             String format = (PingIntervalPreferenceType.values()[i] == PingIntervalPreferenceType.INTERVAL_1 ? context.getResources().getString(R.string.enum_preference_ping_interval_format_singular) : context.getResources().getString(R.string.enum_preference_ping_interval_format));
 
-            entries[i] = String.format(Locale.getDefault(), format, PingIntervalPreferenceType.values()[i].getInterval());
+            entries[i] = String.format(Locale.getDefault(), format, PingIntervalPreferenceType.values()[i].getValue());
         }
         return entries;
     }

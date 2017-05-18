@@ -30,13 +30,13 @@ public enum MaxPingsPreferenceType {
         mPings = pings;
     }
 
-    public int getMaxPings() {
+    public int getValue() {
         return mPings;
     }
 
 
     public String getEntry(Context context) {
-        return String.format(Locale.getDefault(), context.getResources().getString(R.string.enum_preference_max_ping_format), this.getMaxPings());
+        return String.format(Locale.getDefault(), context.getResources().getString(R.string.enum_preference_max_ping_format), this.getValue());
     }
 
     public String getEntryValue() {
@@ -58,7 +58,7 @@ public enum MaxPingsPreferenceType {
         String format = context.getResources().getString(R.string.enum_preference_max_ping_format);
 
         for (int i = 0; i < MaxPingsPreferenceType.values().length; i++) {
-            entries[i] = String.format(Locale.getDefault(), format, MaxPingsPreferenceType.values()[i].getMaxPings());
+            entries[i] = String.format(Locale.getDefault(), format, MaxPingsPreferenceType.values()[i].getValue());
         }
         return entries;
     }
