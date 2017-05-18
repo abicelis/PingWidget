@@ -125,7 +125,7 @@ public class RemoteViewsUtil {
 
             if(badPingCount == values.size()) {     //all pings are bad
                 remoteViews.setTextViewText(R.id.widget_max_min_ping, context.getResources().getString(R.string.widget_max_min_err));
-                remoteViews.setTextViewText(R.id.widget_last_ping, context.getResources().getString(R.string.widget_last_err));
+                remoteViews.setTextViewText(R.id.widget_last_ping, getLastStr(context, values.peekLast()));
                 remoteViews.setTextViewText(R.id.widget_uptime_ping, context.getResources().getString(R.string.widget_uptime_err));
                 remoteViews.setTextViewText(R.id.widget_avg_ping, context.getResources().getString(R.string.widget_avg_err));
 
