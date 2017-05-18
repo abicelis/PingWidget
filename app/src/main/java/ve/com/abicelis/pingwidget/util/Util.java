@@ -17,6 +17,7 @@ import java.util.LinkedList;
 import java.util.Locale;
 
 import ve.com.abicelis.pingwidget.R;
+import ve.com.abicelis.pingwidget.app.activity.PingWidgetConfigureActivity;
 import ve.com.abicelis.pingwidget.app.widget.PingWidgetProvider;
 import ve.com.abicelis.pingwidget.enums.PingIconState;
 
@@ -44,7 +45,7 @@ public class Util {
         //Create an Intent, set PING_WIDGET_TOGGLE action to it, put EXTRA_APPWIDGET_ID as extra
         Intent clickIntent = new Intent(context, PingWidgetProvider.class);
         clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-        clickIntent.setAction(PingWidgetProvider.PING_WIDGET_TOGGLE);
+        clickIntent.setAction(Constants.PING_WIDGET_TOGGLE);
 
         //Construct a PendingIntent using the Intent above
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, widgetId, clickIntent, 0);
@@ -53,6 +54,18 @@ public class Util {
         views.setOnClickPendingIntent(R.id.widget_start_pause, pendingIntent);
     }
 
+
+    public static void registerWidgetReconfigureClickListener(Context context, int widgetId, RemoteViews views) {
+
+        //Register an Intent so that onClicks on the widget reconfigure button are received by PingWidgetConfigureActivity
+        //Create an Intent, set ACTION_WIDGET_RECONFIGURE action to it, put EXTRA_APPWIDGET_ID as extra
+        Intent reconfigureIntent = new Intent(context, PingWidgetConfigureActivity.class);
+        reconfigureIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+        reconfigureIntent.setAction(Constants.ACTION_WIDGET_RECONFIGURE);
+
+        PendingIntent configPendingIntent = PendingIntent.getActivity(context, 0, reconfigureIntent, 0);
+        views.setOnClickPendingIntent(R.id.widget_reconfigure, configPendingIntent);
+    }
 
 
 
