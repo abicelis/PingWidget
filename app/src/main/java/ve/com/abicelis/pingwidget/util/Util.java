@@ -63,7 +63,7 @@ public class Util {
         reconfigureIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
         reconfigureIntent.setAction(Constants.ACTION_WIDGET_RECONFIGURE);
 
-        PendingIntent configPendingIntent = PendingIntent.getActivity(context, 0, reconfigureIntent, 0);
+        PendingIntent configPendingIntent = PendingIntent.getActivity(context, widgetId, reconfigureIntent, 0);
         views.setOnClickPendingIntent(R.id.widget_reconfigure, configPendingIntent);
     }
 
