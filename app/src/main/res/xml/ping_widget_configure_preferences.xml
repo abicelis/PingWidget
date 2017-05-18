@@ -9,18 +9,11 @@
         android:defaultValue="@string/fragment_widget_configure_address_summary"/>
     <ListPreference
         android:key="@string/fragment_widget_configure_interval_key"
-        android:title="@string/fragment_widget_configure_interval_title"
-        android:summary="%s"
-        android:entries="@array/pingInterval"
-        android:entryValues="@array/pingIntervalEntries"
-        android:defaultValue="1"/>
+        android:title="@string/fragment_widget_configure_interval_title" />
     <ListPreference
         android:key="@string/fragment_widget_configure_max_pings_key"
-        android:title="@string/fragment_widget_configure_max_pings_title"
-        android:summary="%s"
-        android:entries="@array/maxPings"
-        android:entryValues="@array/maxPingsEntries"
-        android:defaultValue="15"/>
+        android:title="@string/fragment_widget_configure_max_pings_title"/>
+
     <SwitchPreference
         android:key="@string/fragment_widget_show_chart_lines_key"
         android:title="@string/fragment_widget_show_chart_lines_title"
