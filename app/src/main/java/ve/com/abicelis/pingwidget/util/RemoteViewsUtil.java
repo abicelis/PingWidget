@@ -8,10 +8,12 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import java.security.InvalidParameterException;
 import java.util.LinkedList;
 import java.util.Locale;
 
 import ve.com.abicelis.pingwidget.R;
+import ve.com.abicelis.pingwidget.enums.PingFailureType;
 import ve.com.abicelis.pingwidget.enums.PingIconState;
 import ve.com.abicelis.pingwidget.enums.WidgetLayoutType;
 import ve.com.abicelis.pingwidget.model.PingWidgetData;
@@ -43,14 +45,13 @@ public class RemoteViewsUtil {
         views.setTextViewText(R.id.widget_host, data.getAddress());
         views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
         views.setInt(R.id.widget_layout_container_top, "setBackgroundResource", data.getTheme().getDrawableBackgroundContainerTop(data.getWidgetLayoutType()));
-        if(data.useDarkTheme()) {
-            views.setInt(R.id.widget_layout_container, "setBackgroundResource", data.getTheme().getDrawableBackgroundContainerDark(data.getWidgetLayoutType()));
-            views.setTextColor(R.id.widget_press_start, ContextCompat.getColor(context, R.color.text_white));
-            views.setTextColor(R.id.widget_avg_ping, ContextCompat.getColor(context, R.color.text_white));
-            views.setTextColor(R.id.widget_last_ping, ContextCompat.getColor(context, R.color.text_white));
-            views.setTextColor(R.id.widget_max_min_ping, ContextCompat.getColor(context, R.color.text_white));
-            views.setTextColor(R.id.widget_uptime_ping, ContextCompat.getColor(context, R.color.text_white));
-        }
+        views.setInt(R.id.widget_layout_container, "setBackgroundResource", data.getTheme().getDrawableBackgroundContainer(data.getWidgetLayoutType(), data.useDarkTheme()));
+
+        views.setTextColor(R.id.widget_press_start, ContextCompat.getColor(context, (data.useDarkTheme() ? R.color.text_white : R.color.text_dark_gray)));
+        views.setTextColor(R.id.widget_avg_ping, ContextCompat.getColor(context, (data.useDarkTheme() ? R.color.text_white : R.color.text_dark_gray)));
+        views.setTextColor(R.id.widget_last_ping, ContextCompat.getColor(context, (data.useDarkTheme() ? R.color.text_white : R.color.text_dark_gray)));
+        views.setTextColor(R.id.widget_max_min_ping, ContextCompat.getColor(context, (data.useDarkTheme() ? R.color.text_white : R.color.text_dark_gray)));
+        views.setTextColor(R.id.widget_uptime_ping, ContextCompat.getColor(context, (data.useDarkTheme() ? R.color.text_white : R.color.text_dark_gray)));
 
         views.setViewVisibility(R.id.widget_loading, View.GONE);
 
@@ -59,7 +60,7 @@ public class RemoteViewsUtil {
             views.setViewVisibility(R.id.widget_press_start, View.VISIBLE);
             views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
         } else {
-            RemoteViewsUtil.redrawWidget(context, views, widgetId, data.getPingTimes(), data.getMaxPings(), data.getTheme().getColorChart(), data.showChartLines());
+            RemoteViewsUtil.redrawWidget(context, views, widgetId, data.getPingTimes(), data.getMaxPings().getValue(), data.getTheme().getColorChart(), data.showChartLines());
             views.setViewVisibility(R.id.widget_press_start, View.GONE);
             updatePlayPause(views, data.isRunning());
         }
@@ -108,7 +109,7 @@ public class RemoteViewsUtil {
 
         if(values.size() > 0) {
             for (float val : values) {
-                if(val != -1) {     //skip unsuccessful pings
+                if(val >= 0) {     //Skip unsuccessful pings
                     avg += val;
 
                     if (val > max)
@@ -134,7 +135,7 @@ public class RemoteViewsUtil {
 
                 String maxStr = (max != 0f ? String.format(Locale.getDefault(), "%.1f", max) : "-");
                 String minStr = (min != Float.MAX_VALUE ? String.format(Locale.getDefault(), "%.1f", min) : "-");
-                String lastStr = (values.peekLast() != -1f ? String.format(Locale.getDefault(), "%.1f", values.peekLast()) : "ERR");
+                String lastStr = getLastStr(context, values.peekLast());
                 String avgStr = (avg != 0f ? String.format(Locale.getDefault(), "%.1f", avg) : "-");
 
                 remoteViews.setTextViewText(R.id.widget_max_min_ping, String.format(Locale.getDefault(), context.getResources().getString(R.string.widget_max_min), maxStr, minStr));
@@ -273,6 +274,15 @@ public class RemoteViewsUtil {
         return val != -1f;  //if val == -1, ping was bad
     }
 
-
+    private static String getLastStr(Context context, float lastValue) {
+        if(lastValue < 0) {
+            try {
+                return PingFailureType.getFromErrorId((int) lastValue).getErrorString(context);
+            }catch (InvalidParameterException e) {
+                return "ERR";
+            }
+        } else
+            return String.format(Locale.getDefault(), "%.1f", lastValue);
+    }
 
 }
