@@ -33,6 +33,17 @@ public class ThemePreference extends Preference {
         return WidgetTheme.values()[0].name();
     }
 
+    /**
+     * Sets the value of the ThemePreference.
+     *
+     * @param theme The value to set for the key.
+     */
+    public void setTheme(WidgetTheme theme) {
+        persistString(theme.name());
+        notifyChanged();
+    }
+
+
     public String getSelectedTheme() {
         return getPersistedString(WidgetTheme.values()[0].name());
     }
