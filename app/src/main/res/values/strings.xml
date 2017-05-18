@@ -80,6 +80,12 @@
     <string name="enum_preference_ping_interval_format">%1$d seconds</string>
 
 
+    /* Ping Failure Type */
+    <string name="enum_ping_failure_type_could_not_ping">COULD_NOT_PING</string>
+    <string name="enum_ping_failure_type_destination_port_unreachable">PORT_UNREACHABLE</string>
+    <string name="enum_ping_failure_type_destination_host_unreachable">HOST_UNREACHABLE</string>
+    <string name="enum_ping_failure_type_unknown_error">UNKNOWN_ERROR</string>
+
 
     /* Widget Themes (Summaries)*/
     <string name="widget_theme_summary_blue_yellow">Blue/Yellow</string>

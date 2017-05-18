@@ -10,13 +10,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import ve.com.abicelis.pingwidget.enums.PingFailureType;
 import ve.com.abicelis.pingwidget.enums.PingIconState;
-import ve.com.abicelis.pingwidget.enums.WidgetTheme;
+import ve.com.abicelis.pingwidget.exception.PingFailedException;
 import ve.com.abicelis.pingwidget.model.PingWidgetData;
 import ve.com.abicelis.pingwidget.util.RemoteViewsUtil;
 import ve.com.abicelis.pingwidget.util.SharedPreferencesHelper;
-import ve.com.abicelis.pingwidget.util.Util;
 
 import static ve.com.abicelis.pingwidget.enums.PingIconState.PING_BAD;
 import static ve.com.abicelis.pingwidget.enums.PingIconState.PING_OK;
@@ -60,12 +62,10 @@ class PingAsyncTask extends AsyncTask<String, Object, Integer> {
 
                 publishProgress(PING_OK, pingDelay);
 
-            }catch (Exception e) {
-                //Log.d(TAG, "PING FAILED: " + e.getMessage());
-                Log.d(TAG, "PING FAILED");
+            }catch (PingFailedException e) {
+                Log.d(TAG, "PING FAILED. FailureType=" + e.getPingFailureType().name());
                 e.printStackTrace();
-                publishProgress(PING_BAD, -1f);
-
+                publishProgress(PING_BAD, e.getPingFailureType().getErrorId());
             }
 
             try {
@@ -79,10 +79,8 @@ class PingAsyncTask extends AsyncTask<String, Object, Integer> {
     }
 
 
-    private float ping(String url) throws IOException {
+    private float ping(String url) throws PingFailedException {
         String str;
-        float pingDelay;
-
 
         //TODO: Figure this out: reader.read(buffer) takes way too long, solution is using grep to minimize output but it gives
         //TODO: permission errors; "java.io.IOException: Error running exec(). Command: [bash, -c, /system/bin/ping -c 1 -W 1 www.google.com] Working Directory: null Environment: null"
@@ -93,26 +91,51 @@ class PingAsyncTask extends AsyncTask<String, Object, Integer> {
 //        };
         //Process process =  Runtime.getRuntime().exec(pingCommand);
         //Process process =  Runtime.getRuntime().exec(String.format(Locale.getDefault(), "/system/bin/ping -c 1 -W 1 %1$s  | grep 'icmp_seq'", url));
-        Process process =  Runtime.getRuntime().exec(String.format(Locale.getDefault(), "/system/bin/ping -c 1 -W 1 %1$s", url));
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        try {
+            Process process =  Runtime.getRuntime().exec(String.format(Locale.getDefault(), "/system/bin/ping -c 1 -W 1 %1$s", url));
 
-        int i;
-        char[] buffer = new char[4096];
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+            int i;
+            char[] buffer = new char[4096];
 
 
-        StringBuilder output = new StringBuilder();
-        while ((i = reader.read(buffer)) > 0)
-            output.append(buffer, 0, i);
-        reader.close();
+            StringBuilder output = new StringBuilder();
+            while ((i = reader.read(buffer)) > 0)
+                output.append(buffer, 0, i);
+            reader.close();
 
-        str = output.toString();
-        //Log.d(TAG, "PING str:" + str);
+            str = output.toString();
+        } catch (IOException e) {
+            throw new PingFailedException(PingFailureType.COULD_NOT_PING);
+        }
 
-        str = str.substring(str.indexOf("time=")+5, str.indexOf("ms")-1);
-        pingDelay =  Float.parseFloat(str);
+        //Ping process done, checking result
+        Log.d(TAG, "PING str:" + str);
 
-        return pingDelay;
+        //Try to get ping time, if ping was successful
+        try {
+            str = str.substring(str.indexOf("time=")+5, str.indexOf("ms")-1);
+            return Float.parseFloat(str);
+        } catch (Exception e) { /* Do nothing */}
+        str = " 192.168.1.16 (192.168.1.16) 56(84) bytes of data.\n" +
+                "From 192.168.1.124: icmp_seq=1 Destination Host Unreachable\n" +
+                "\n" +
+                "--- 192.168.1.16 ping statistics ---\n" +
+                "1 packets transmitted, 0 received, +1 errors, 100% packet loss, time ";
+
+        //Try to figure out ping error type
+        if(PingFailureType.DESTINATION_PORT_UNREACHABLE.checkPingString(str))
+            throw new PingFailedException(PingFailureType.DESTINATION_PORT_UNREACHABLE);
+
+        if(PingFailureType.DESTINATION_HOST_UNREACHABLE.checkPingString(str))
+            throw new PingFailedException(PingFailureType.DESTINATION_HOST_UNREACHABLE);
+
+        //TODO: Other errors...
+
+
+        throw new PingFailedException(PingFailureType.UNKNOWN_ERROR);
     }
 
 
@@ -144,14 +167,14 @@ class PingAsyncTask extends AsyncTask<String, Object, Integer> {
 
         //Add latest ping value
         data.getPingTimes().addLast((float)values[1]);
-        if(data.getPingTimes().size() > data.getMaxPings())
+        if(data.getPingTimes().size() > data.getMaxPings().getValue())
             data.getPingTimes().removeFirst();
 
         //Save widget data
         SharedPreferencesHelper.writePingWidgetData(mAppContext.getApplicationContext(), mWidgetId, data);
 
         //Redraw widget and chart
-        RemoteViewsUtil.redrawWidget(mAppContext, views, mWidgetId, data.getPingTimes(), data.getMaxPings(), data.getTheme().getColorChart(), data.showChartLines());
+        RemoteViewsUtil.redrawWidget(mAppContext, views, mWidgetId, data.getPingTimes(), data.getMaxPings().getValue(), data.getTheme().getColorChart(), data.showChartLines());
 
         //Update widget views
         AppWidgetManager.getInstance(mAppContext).updateAppWidget(mWidgetId, views);
