@@ -81,10 +81,10 @@
 
 
     /* Ping Failure Type */
-    <string name="enum_ping_failure_type_could_not_ping">COULD_NOT_PING</string>
-    <string name="enum_ping_failure_type_destination_port_unreachable">PORT_UNREACHABLE</string>
-    <string name="enum_ping_failure_type_destination_host_unreachable">HOST_UNREACHABLE</string>
-    <string name="enum_ping_failure_type_unknown_error">UNKNOWN_ERROR</string>
+    <string name="enum_ping_failure_type_could_not_ping" translatable="false">COULD_NOT_PING</string>
+    <string name="enum_ping_failure_type_destination_port_unreachable" translatable="false">PORT_UNREACHABLE</string>
+    <string name="enum_ping_failure_type_destination_host_unreachable" translatable="false">HOST_UNREACHABLE</string>
+    <string name="enum_ping_failure_type_unknown_error" translatable="false">UNKNOWN_ERROR</string>
 
 
     /* Widget Themes (Summaries)*/
