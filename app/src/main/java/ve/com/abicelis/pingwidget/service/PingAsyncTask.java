@@ -9,6 +9,8 @@ import android.widget.RemoteViews;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.URL;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,7 +34,6 @@ class PingAsyncTask extends AsyncTask<String, Object, Integer> {
 
     //CONST
     private static final int MILLIS = 1000;
-    private int SLEEP_TIME;
     private static final String TAG = PingAsyncTask.class.getSimpleName();
 
     //DATA
@@ -40,11 +41,10 @@ class PingAsyncTask extends AsyncTask<String, Object, Integer> {
     private AppWidgetManager mAppWidgetManager;
     private int mWidgetId;
 
-    public PingAsyncTask(Context appContext, int widgetId, int pingInterval, int maxPings) {
+    public PingAsyncTask(Context appContext, int widgetId) {
 
         mAppContext = appContext;
         mWidgetId = widgetId;
-        SLEEP_TIME = pingInterval * MILLIS;
         mAppWidgetManager = AppWidgetManager.getInstance(appContext);
     }
 
@@ -53,11 +53,17 @@ class PingAsyncTask extends AsyncTask<String, Object, Integer> {
     @Override
     protected Integer doInBackground(String... strings) {
         while (!isCancelled()) {
+            PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(mAppContext, mWidgetId);
+
+            if(data == null)
+                cancel(true);
 
             try {
                 publishProgress(PING_SENT);
 
-                float pingDelay = ping(strings[0]);
+
+                //float pingDelay = ping(strings[0]);
+                float pingDelay = ping(data.getAddress());
                 Log.d(TAG, "PING SUCCESS (" + pingDelay + "ms)");
 
                 publishProgress(PING_OK, pingDelay);
@@ -69,7 +75,7 @@ class PingAsyncTask extends AsyncTask<String, Object, Integer> {
             }
 
             try {
-                Thread.sleep(SLEEP_TIME);
+                Thread.sleep(data.getPingInterval().getValue()*MILLIS);
             } catch (InterruptedException e) {
                 return -1;
             }
@@ -94,12 +100,21 @@ class PingAsyncTask extends AsyncTask<String, Object, Integer> {
 
         try {
             Process process =  Runtime.getRuntime().exec(String.format(Locale.getDefault(), "/system/bin/ping -c 1 -W 1 %1$s", url));
-
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+//            InetAddress address0 = InetAddress.getByName("www.google.com");
+//            InetAddress address = InetAddress.getByName("http://www.google.com");
+//            InetAddress address2 = InetAddress.getByName("http://google.com");
+//
+//            String str0 = address0.getHostAddress();
+//            String str1 = address.getHostAddress();
+//            String str2 = address2.getHostAddress();
+//
+//            Log.d(TAG, "Str1 = " + str1 + " str2=" + str2);
+
 
             int i;
             char[] buffer = new char[4096];
-
 
             StringBuilder output = new StringBuilder();
             while ((i = reader.read(buffer)) > 0)
@@ -162,8 +177,9 @@ class PingAsyncTask extends AsyncTask<String, Object, Integer> {
 
         //Add latest ping value
         data.getPingTimes().addLast((float)values[1]);
-        if(data.getPingTimes().size() > data.getMaxPings().getValue())
+        while(data.getPingTimes().size() > data.getMaxPings().getValue()) {
             data.getPingTimes().removeFirst();
+        }
 
         //Save widget data
         SharedPreferencesHelper.writePingWidgetData(mAppContext.getApplicationContext(), mWidgetId, data);

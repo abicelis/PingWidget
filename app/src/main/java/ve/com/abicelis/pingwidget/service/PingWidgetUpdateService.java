@@ -180,7 +180,7 @@ public class PingWidgetUpdateService extends Service {
                 AppWidgetManager.getInstance(getApplicationContext()).updateAppWidget(widgetId, views);
 
                 //Create a new task and run it, also save it to mAsyncTasks using widgetId
-                task = new PingAsyncTask(this.getApplicationContext(), widgetId, currentWidget.getPingInterval().getValue(), currentWidget.getMaxPings().getValue());
+                task = new PingAsyncTask(this.getApplicationContext(), widgetId);
                 mAsyncTasks.put(widgetId, task);
 
                 //Get stored address from PreferenceSettings
