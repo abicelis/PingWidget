@@ -7,8 +7,8 @@ android {
         applicationId "ve.com.abicelis.pingwidget"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 20
-        versionName "1.3.11"
+        versionCode 21
+        versionName "1.3.12"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
