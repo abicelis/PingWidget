@@ -101,12 +101,12 @@ public class PingWidgetUpdateService extends Service {
 
         for (int widgetId : allWidgetIds) {
 
-            //Get RemoteViews and widget data
+            //Get widget data
             PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(getApplicationContext(), widgetId);
-            RemoteViews views = RemoteViewsUtil.getRemoteViews(getApplication(), data.getWidgetLayoutType());
-
-
             if(data != null) {
+
+                //Get RemoteViews
+                RemoteViews views = RemoteViewsUtil.getRemoteViews(getApplication(), data.getWidgetLayoutType());
 
                 //Update widget views
                 RemoteViewsUtil.initWidgetViews(getApplicationContext(), widgetId, views, data);

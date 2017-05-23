@@ -116,7 +116,16 @@ public class PingWidgetData {
 
     @Override
     public String toString() {
-        return String.format(Locale.getDefault(),  "Address: %1$s. PingInterval: %2$s. MaxPings: %3$s. Theme: %4$s. DarkTheme: %5$s. ChartLines: %6$s. isRunning?: %7$b. ",
-                mAddress, mPingInterval.getEntryValue(), mMaxPings.getEntryValue(), mTheme.name(), mUseDarkTheme, mChartLines, isRunning);
+        String str = "";
+        str += "Address: " + (mAddress != null ? mAddress : "NULL");
+        str += ". PingInterval: " + (mPingInterval != null ? mPingInterval.name() : "NULL");
+        str += ". MaxPings: " + (mMaxPings != null ? mMaxPings.name() : "NULL");
+        str += ". WidgetLayout: " + (mWidgetLayoutType != null ? mWidgetLayoutType.name() : "NULL");
+        str += ". Theme: " + (mTheme != null ? mTheme.name() : "NULL");
+        str += ". DarkTheme: " +  mUseDarkTheme;
+        str += ". ChartLines: " +  mChartLines;
+        str += ". isRunning?: " +  isRunning;
+
+        return str;
     }
 }
