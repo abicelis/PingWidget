@@ -59,7 +59,7 @@ public class PingWidgetProvider extends AppWidgetProvider {
                 RemoteViews views = RemoteViewsUtil.getRemoteViews(context, data.getWidgetLayoutType());
 
                 //Update the widget's views
-                RemoteViewsUtil.initWidgetViews(context, widgetId, views, data);
+                RemoteViewsUtil.initWidgetViews(context, views, data);
 
 
                 //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()
@@ -87,19 +87,23 @@ public class PingWidgetProvider extends AppWidgetProvider {
 
         //Update SharedPreferenceData
         PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(context, appWidgetId);
-        data.setWidgetLayoutType(WidgetLayoutType.getWidgetLayoutTypeByHeight(OPTION_APPWIDGET_MIN_HEIGHT));
-        SharedPreferencesHelper.writePingWidgetData(context, appWidgetId, data);
 
-        //Get new RemoteViews layout and update widget
-        RemoteViews views = RemoteViewsUtil.getRemoteViews(context, data.getWidgetLayoutType());
-        RemoteViewsUtil.initWidgetViews(context, appWidgetId, views, data);
+        if(data != null) {
+            data.setWidgetLayoutType(WidgetLayoutType.getWidgetLayoutTypeByHeight(OPTION_APPWIDGET_MIN_HEIGHT));
+            SharedPreferencesHelper.writePingWidgetData(context, appWidgetId, data);
 
-        //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()
-        //Create an Intent, set PING_WIDGET_TOGGLE action to it, put EXTRA_APPWIDGET_ID as extra
-        Util.registerWidgetStartPauseOnClickListener(context, appWidgetId, views);
-        Util.registerWidgetReconfigureClickListener(context, appWidgetId, views);
+            //Get new RemoteViews layout and update widget
+            RemoteViews views = RemoteViewsUtil.getRemoteViews(context, data.getWidgetLayoutType());
+            RemoteViewsUtil.initWidgetViews(context, views, data);
 
-        AppWidgetManager.getInstance(context).updateAppWidget(appWidgetId, views);
+            //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()
+            //Create an Intent, set PING_WIDGET_TOGGLE action to it, put EXTRA_APPWIDGET_ID as extra
+            Util.registerWidgetStartPauseOnClickListener(context, appWidgetId, views);
+            Util.registerWidgetReconfigureClickListener(context, appWidgetId, views);
+
+            AppWidgetManager.getInstance(context).updateAppWidget(appWidgetId, views);
+        }
+
 
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
     }
@@ -139,12 +143,12 @@ public class PingWidgetProvider extends AppWidgetProvider {
 
             if (widgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
                 //Get widget data from SharedPreferences
-                PingWidgetData currentWidget = SharedPreferencesHelper.readPingWidgetData(context.getApplicationContext(), widgetId);
+                PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(context.getApplicationContext(), widgetId);
 
-                if (currentWidget != null) {
+                if (data != null) {
                     //Toggle isRunning(), write new running state into SharedPreferences
-                    currentWidget.toggleRunning();
-                    SharedPreferencesHelper.writePingWidgetData(context.getApplicationContext(), widgetId, currentWidget);
+                    data.toggleRunning();
+                    SharedPreferencesHelper.writePingWidgetData(context.getApplicationContext(), widgetId, data);
 
                     // Notify PingWidgetUpdateService about the change (start/pause) ping
                     Intent serviceIntent = new Intent(context.getApplicationContext(), PingWidgetUpdateService.class);
@@ -152,11 +156,11 @@ public class PingWidgetProvider extends AppWidgetProvider {
                     context.startService(serviceIntent);
 
                     //Get remote views and update
-                    RemoteViews views = RemoteViewsUtil.getRemoteViews(context, currentWidget.getWidgetLayoutType());
+                    RemoteViews views = RemoteViewsUtil.getRemoteViews(context, data.getWidgetLayoutType());
 
                     //Update Play/Pause icon
-                    RemoteViewsUtil.updatePlayPause(views, currentWidget.isRunning());
-                    Log.d(TAG, (currentWidget.isRunning() ? "onReceive(), Sent START to service" : "onReceive(), Sent STOP to service") );
+                    RemoteViewsUtil.updatePlayPause(views, data.isRunning());
+                    Log.d(TAG, (data.isRunning() ? "onReceive(), Sent START to service" : "onReceive(), Sent STOP to service") );
 
 
                     //Update widget

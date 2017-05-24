@@ -106,10 +106,10 @@ public class PingWidgetUpdateService extends Service {
             if(data != null) {
 
                 //Get RemoteViews
-                RemoteViews views = RemoteViewsUtil.getRemoteViews(getApplication(), data.getWidgetLayoutType());
+                RemoteViews views = RemoteViewsUtil.getRemoteViews(getApplicationContext(), data.getWidgetLayoutType());
 
                 //Update widget views
-                RemoteViewsUtil.initWidgetViews(getApplicationContext(), widgetId, views, data);
+                RemoteViewsUtil.initWidgetViews(getApplicationContext(), views, data);
 
                 //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()
                 //Create an Intent, set PING_WIDGET_TOGGLE action to it, put EXTRA_APPWIDGET_ID as extra
@@ -142,18 +142,21 @@ public class PingWidgetUpdateService extends Service {
 
 
                 //Get AppWidgetManager and RemoteViews
-                PingWidgetData currentWidget = SharedPreferencesHelper.readPingWidgetData(getApplicationContext(), entry.getKey());
-                RemoteViews views = RemoteViewsUtil.getRemoteViews(getApplicationContext(), currentWidget.getWidgetLayoutType());
+                PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(getApplicationContext(), entry.getKey());
 
-                //Change widget's start_pause icon to pause
-                views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
+                if(data != null) {
+                    RemoteViews views = RemoteViewsUtil.getRemoteViews(getApplicationContext(), data.getWidgetLayoutType());
 
-                //Finally, update the widget
-                AppWidgetManager.getInstance(getApplicationContext()).updateAppWidget(entry.getKey(), views);
+                    //Change widget's start_pause icon to pause
+                    views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
 
-                //Toggle toggleRunning() so that it's isRunning() is false.
-                currentWidget.toggleRunning();
-                SharedPreferencesHelper.writePingWidgetData(getApplicationContext(), entry.getKey(), currentWidget);
+                    //Finally, update the widget
+                    AppWidgetManager.getInstance(getApplicationContext()).updateAppWidget(entry.getKey(), views);
+
+                    //Toggle toggleRunning() so that it's isRunning() is false.
+                    data.toggleRunning();
+                    SharedPreferencesHelper.writePingWidgetData(getApplicationContext(), entry.getKey(), data);
+                }
             }
             mAsyncTasks.clear();
         }
@@ -174,17 +177,20 @@ public class PingWidgetUpdateService extends Service {
 
                 //Set widget_press_start to GONE
                 PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(getApplicationContext(), widgetId);
-                RemoteViews views = RemoteViewsUtil.getRemoteViews(getApplicationContext(), data.getWidgetLayoutType());
 
-                views.setViewVisibility(R.id.widget_press_start, View.GONE);
-                AppWidgetManager.getInstance(getApplicationContext()).updateAppWidget(widgetId, views);
+                if(data != null) {
+                    RemoteViews views = RemoteViewsUtil.getRemoteViews(getApplicationContext(), data.getWidgetLayoutType());
 
-                //Create a new task and run it, also save it to mAsyncTasks using widgetId
-                task = new PingAsyncTask(this.getApplicationContext(), widgetId);
-                mAsyncTasks.put(widgetId, task);
+                    views.setViewVisibility(R.id.widget_press_start, View.GONE);
+                    AppWidgetManager.getInstance(getApplicationContext()).updateAppWidget(widgetId, views);
 
-                //Get stored address from PreferenceSettings
-                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, currentWidget.getAddress());
+                    //Create a new task and run it, also save it to mAsyncTasks using widgetId
+                    task = new PingAsyncTask(this.getApplicationContext(), widgetId);
+                    mAsyncTasks.put(widgetId, task);
+
+                    //Get stored address from PreferenceSettings
+                    task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, currentWidget.getAddress());
+                }
             }
         } else {
             mAsyncTasks.remove(widgetId);

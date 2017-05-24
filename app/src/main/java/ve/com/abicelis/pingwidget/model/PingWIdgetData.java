@@ -1,6 +1,7 @@
 package ve.com.abicelis.pingwidget.model;
 
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 
 import java.util.LinkedList;
 import java.util.Locale;
@@ -29,7 +30,7 @@ public class PingWidgetData {
     private boolean isRunning;
 
 
-    public PingWidgetData(String address, PingIntervalPreferenceType pingInterval, MaxPingsPreferenceType maxPings, boolean showChartLines, boolean useDarkTheme, WidgetTheme theme) {
+    public PingWidgetData(@NonNull String address, @NonNull PingIntervalPreferenceType pingInterval, @NonNull MaxPingsPreferenceType maxPings, @NonNull boolean showChartLines, @NonNull boolean useDarkTheme, @NonNull WidgetTheme theme) {
         mAddress = address;
         mPingInterval = pingInterval;
         mMaxPings = maxPings;
@@ -46,7 +47,7 @@ public class PingWidgetData {
     public String getAddress() {
         return mAddress;
     }
-    public void setAddress(String mAddress) {
+    public void setAddress(@NonNull String mAddress) {
         this.mAddress = mAddress;
     }
 
@@ -54,7 +55,7 @@ public class PingWidgetData {
     public PingIntervalPreferenceType getPingInterval() {
         return mPingInterval;
     }
-    public void setPingInterval(PingIntervalPreferenceType pingInterval) {
+    public void setPingInterval(@NonNull PingIntervalPreferenceType pingInterval) {
         this.mPingInterval = pingInterval;
     }
 
@@ -62,7 +63,7 @@ public class PingWidgetData {
     public MaxPingsPreferenceType getMaxPings() {
         return mMaxPings;
     }
-    public void setMaxPings(MaxPingsPreferenceType mMaxPings) {
+    public void setMaxPings(@NonNull MaxPingsPreferenceType mMaxPings) {
         this.mMaxPings = mMaxPings;
     }
 
@@ -70,7 +71,7 @@ public class PingWidgetData {
     public boolean showChartLines() {
         return mChartLines;
     }
-    public void setShowChartLines(boolean in) {
+    public void setShowChartLines(@NonNull boolean in) {
         mChartLines = in;
     }
 
@@ -78,14 +79,14 @@ public class PingWidgetData {
     public WidgetLayoutType getWidgetLayoutType() {
         return mWidgetLayoutType;
     }
-    public void setWidgetLayoutType(WidgetLayoutType widgetLayoutType) {
+    public void setWidgetLayoutType(@NonNull WidgetLayoutType widgetLayoutType) {
         this.mWidgetLayoutType = widgetLayoutType;
     }
 
     public boolean useDarkTheme() {
         return mUseDarkTheme;
     }
-    public void setUseDarkTheme(boolean useDarkTheme) {
+    public void setUseDarkTheme(@NonNull boolean useDarkTheme) {
         this.mUseDarkTheme = useDarkTheme;
     }
 
@@ -93,7 +94,7 @@ public class PingWidgetData {
     public WidgetTheme getTheme() {
         return mTheme;
     }
-    public void setTheme(WidgetTheme theme) {
+    public void setTheme(@NonNull WidgetTheme theme) {
         this.mTheme = theme;
     }
 
@@ -101,7 +102,7 @@ public class PingWidgetData {
     public LinkedList<Float> getPingTimes() {
         return mPingTimes;
     }
-    public void setPingTimes(LinkedList<Float> mPingTimes) {
+    public void setPingTimes(@NonNull LinkedList<Float> mPingTimes) {
         this.mPingTimes = mPingTimes;
     }
 

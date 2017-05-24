@@ -9,11 +9,7 @@ import android.widget.RemoteViews;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.InetAddress;
-import java.net.URL;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import ve.com.abicelis.pingwidget.enums.PingFailureType;
 import ve.com.abicelis.pingwidget.enums.PingIconState;
@@ -185,7 +181,7 @@ class PingAsyncTask extends AsyncTask<String, Object, Integer> {
         SharedPreferencesHelper.writePingWidgetData(mAppContext.getApplicationContext(), mWidgetId, data);
 
         //Redraw widget and chart
-        RemoteViewsUtil.redrawWidget(mAppContext, views, mWidgetId, data.getPingTimes(), data.getMaxPings().getValue(), data.getTheme().getColorChart(), data.showChartLines());
+        RemoteViewsUtil.redrawWidget(mAppContext, views, data.getPingTimes(), data.getMaxPings().getValue(), data.getTheme().getChartColor(), data.showChartLines());
 
         //Update widget views
         AppWidgetManager.getInstance(mAppContext).updateAppWidget(mWidgetId, views);

@@ -251,7 +251,7 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
 
 
             //Init the widget's views
-            RemoteViewsUtil.initWidgetViews(getContext(), mWidgetId, views, data);
+            RemoteViewsUtil.initWidgetViews(getContext(), views, data);
 
 
             //Register an Intent so that onClicks on the widget are received by PingWidgetProvider.onReceive()
@@ -303,7 +303,7 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
                 SharedPreferencesHelper.writePingWidgetData(getContext(), mWidgetId, data);
 
                 //Update the widget's views
-                RemoteViewsUtil.initWidgetViews(getContext(), mWidgetId, views, data);
+                RemoteViewsUtil.initWidgetViews(getContext(), views, data);
 
                 //Finally, update the widget
                 appWidgetManager.updateAppWidget(mWidgetId, views);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -29,7 +30,7 @@ public class RemoteViewsUtil {
     /**
      * Determine appropriate view based on WidgetLayoutType.
      */
-    public static RemoteViews getRemoteViews(Context context, WidgetLayoutType widgetLayoutType) {
+    public static RemoteViews getRemoteViews(Context context, @NonNull WidgetLayoutType widgetLayoutType) {
         return new RemoteViews(context.getPackageName(), widgetLayoutType.getLayout());
     }
 
@@ -41,7 +42,7 @@ public class RemoteViewsUtil {
      *  Drawing methods, remoteViews update
      */
    // public static void initWidgetViews(RemoteViews views, String address, WidgetTheme theme, WidgetLayoutType layoutType) {
-    public static void initWidgetViews(Context context, int widgetId, RemoteViews views, PingWidgetData data) {
+    public static void initWidgetViews(Context context, RemoteViews views, PingWidgetData data) {
         views.setTextViewText(R.id.widget_host, data.getAddress());
         views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
         views.setInt(R.id.widget_layout_container_top, "setBackgroundResource", data.getTheme().getDrawableBackgroundContainerTop(data.getWidgetLayoutType()));
@@ -60,7 +61,7 @@ public class RemoteViewsUtil {
             views.setViewVisibility(R.id.widget_press_start, View.VISIBLE);
             views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
         } else {
-            RemoteViewsUtil.redrawWidget(context, views, widgetId, data.getPingTimes(), data.getMaxPings().getValue(), data.getTheme().getColorChart(), data.showChartLines());
+            RemoteViewsUtil.redrawWidget(context, views, data.getPingTimes(), data.getMaxPings().getValue(), data.getTheme().getChartColor(), data.showChartLines());
             views.setViewVisibility(R.id.widget_press_start, View.GONE);
             updatePlayPause(views, data.isRunning());
         }
@@ -99,7 +100,7 @@ public class RemoteViewsUtil {
 
 
 
-    public static void redrawWidget(Context context, RemoteViews remoteViews, int widgetId, LinkedList<Float> values, int maxPings, int chartLineColor, boolean showChartLines) {
+    public static void redrawWidget(Context context, RemoteViews remoteViews, LinkedList<Float> values, int maxPings, int chartLineColor, boolean showChartLines) {
 
         //Calculate min/max/avg
         float avg = 0.0f;
