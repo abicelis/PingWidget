@@ -25,13 +25,14 @@ import ve.com.abicelis.pingwidget.model.PingWidgetData;
 
 public class RemoteViewsUtil {
 
-    private static final int WIDGET_LAYOUT_HEIGHT_THRESHOLD = 100;
-
     /**
      * Determine appropriate view based on WidgetLayoutType.
      */
-    public static RemoteViews getRemoteViews(Context context, @NonNull WidgetLayoutType widgetLayoutType) {
-        return new RemoteViews(context.getPackageName(), widgetLayoutType.getLayout());
+    public static RemoteViews getRemoteViews(@NonNull Context context, @NonNull WidgetLayoutType widgetLayoutType) {
+        String packageName = context.getPackageName();
+        int layout = widgetLayoutType.getLayout();
+        RemoteViews rv = new RemoteViews(packageName, layout);
+        return rv;
     }
 
 
