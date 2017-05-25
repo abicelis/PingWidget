@@ -161,8 +161,8 @@ public class RemoteViewsUtil {
 
         final int POINT_SIZE = 5;
         final int SQUARE_SIZE = 5;
-        int canvasWidth = 500;
-        int canvasHeight = 100;
+        int canvasWidth = 625;  //Default 500
+        int canvasHeight = 125; //Default 100
         int chartPadding = 15;
         int chartWidth = canvasWidth - (2*chartPadding);
         int chartHeight = canvasHeight - (2*chartPadding);
