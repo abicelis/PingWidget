@@ -38,7 +38,8 @@ public class SharedPreferencesHelper {
             pingWidgetData = gson.fromJson(json, PingWidgetData.class);
 
             //Fix for widgets with old data.
-            resetPingWidgetDataIfNull(context, widgetId, pingWidgetData);
+            if(pingWidgetData != null)
+                resetPingWidgetDataIfNull(context, widgetId, pingWidgetData);
 
 
         } catch (JsonSyntaxException e) {
