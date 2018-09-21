@@ -11,7 +11,7 @@ This widget features:
 - Live real-time line chart of pings!
 - Multiple configurable options
 - Ad-free
-- Automatically stops when device goes to sleep to conserve battery
+- Automatically stops when device goes to sleep to save battery
 - Add multiple widgets to track as many servers as you like!
 
 ## Screens
