@@ -1,10 +1,5 @@
 # Ping Widget #
 
-THIS SOFTWARE IS CURRENTLY IN DEVELOPMENT
-
-
-## About the app
-
 Keep track of the health of your server / internet connection / host by pinging and tracking its response time using a friendly material widget on your Android. This app is available at the Google Play Store:
 
 <a target="_blank" href='https://play.google.com/store/apps/details?id=ve.com.abicelis.pingwidget&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="240px"/></a>
@@ -21,9 +16,11 @@ This widget features:
 
 ## Screens
 
-<img alt='Widgets' src='https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.3.0\xperiaZ3c/pingwidget_1.png ' width="260px"/>
-<img alt='Home Activity' src='https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.3.0\xperiaZ3c/pingwidget_2.png ' width="260px"/>
-<img alt='Configuration activity' src='https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.3.0\xperiaZ3c/pingwidget_3.png ' width="260px"/>
+[ ![](https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/thumbs/pingwidget_1.png) ](https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.3.0/xperiaZ3c/pingwidget_1.png)
+[ ![](https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/thumbs/Screenshot_20170515-100207.png) ](https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.3.10%20+Dark%20mode/Screenshot_20170515-100207.png)
+[ ![](https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/thumbs/pingwidget_3.png) ](https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.3.0/xperiaZ3c/pingwidget_3.png)
+[ ![](https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/thumbs/Screenshot_20170511-164342.png) ](https://github.com/abicelis/PingWidget/blob/master/graphics/play_store/screens/v1.3.8%20+Tiny%20layout/Screenshot_20170511-164342.png)
+
 
 ## Code dependencies
 
