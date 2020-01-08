@@ -3,6 +3,7 @@ package ve.com.abicelis.pingwidget.service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 
 /**
  * Created by abice on 10/2/2017.
@@ -10,6 +11,7 @@ import android.content.Intent;
 
 public class ScreenReceiver extends BroadcastReceiver {
     public static final String SCREEN_STATE = "SCREEN_STATE";
+    public static IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
 
     @Override
     public void onReceive(Context context, Intent intent) {

@@ -32,8 +32,6 @@ import ve.com.abicelis.pingwidget.util.Util;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private static String TAG = HomeActivity.class.getSimpleName();
-
     //UI
     @BindView(R.id.activity_home_text) TextView mHomeText;
     @BindView(R.id.activity_home_version) TextView mVersion;
