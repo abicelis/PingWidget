@@ -31,6 +31,7 @@ import ve.com.abicelis.pingwidget.util.Util;
 public class PingWidgetUpdateService extends Service {
     private static String TAG = PingWidgetUpdateService.class.getSimpleName();
     private static Map<Integer,PingAsyncTask> mAsyncTasks = new HashMap<>();
+    private static BroadcastReceiver mReceiver;
 
 
 
@@ -48,10 +49,7 @@ public class PingWidgetUpdateService extends Service {
         super.onCreate();
 
         //Register ScreenReceiver to screen on/off broadcasts
-        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
-        //filter.addAction(Intent.ACTION_SCREEN_ON);
-        BroadcastReceiver mReceiver = new ScreenReceiver();
-        registerReceiver(mReceiver, filter);
+        registerReceiver(mReceiver = new ScreenReceiver(), ScreenReceiver.filter);
     }
 
     @Override
@@ -59,6 +57,7 @@ public class PingWidgetUpdateService extends Service {
         Log.d(TAG, "onDestroy()");
 
         super.onDestroy();
+        unregisterReceiver(mReceiver);
     }
 
     @Override
