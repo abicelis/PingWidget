@@ -35,7 +35,7 @@ This Project uses external dependencies and SDK's
 
 ## Software used
 
-* [Android Studio 2.3 IDE](https://developer.android.com/studio/index.html) - IDE
+* [Android Studio IDE](https://developer.android.com/studio/index.html) - IDE
 
 ## Authors
 
