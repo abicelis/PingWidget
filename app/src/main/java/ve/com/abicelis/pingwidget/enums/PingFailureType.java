@@ -1,7 +1,7 @@
 package ve.com.abicelis.pingwidget.enums;
 
 import android.content.Context;
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 
 import java.security.InvalidParameterException;
 

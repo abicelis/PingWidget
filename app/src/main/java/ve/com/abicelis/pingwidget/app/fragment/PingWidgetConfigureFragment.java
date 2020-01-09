@@ -10,19 +10,18 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v14.preference.SwitchPreference;
-import android.support.v4.util.Pair;
-import android.support.v7.preference.ListPreference;
-import android.support.v7.preference.Preference;
+import androidx.annotation.Nullable;
+import androidx.preference.SwitchPreference;
+import androidx.core.util.Pair;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
 import android.util.Log;
 import android.util.Patterns;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
-import com.takisoft.fix.support.v7.preference.EditTextPreference;
-import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
-
+import com.takisoft.preferencex.EditTextPreference;
+import com.takisoft.preferencex.PreferenceFragmentCompat;
 import java.util.Locale;
 
 import ve.com.abicelis.pingwidget.R;

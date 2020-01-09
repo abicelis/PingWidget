@@ -4,22 +4,15 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.support.v4.content.ContextCompat;
+
+import androidx.core.content.ContextCompat;
 import android.text.Html;
 import android.text.Spanned;
-import android.view.View;
 import android.widget.RemoteViews;
-
-import java.util.LinkedList;
-import java.util.Locale;
 
 import ve.com.abicelis.pingwidget.R;
 import ve.com.abicelis.pingwidget.app.activity.PingWidgetConfigureActivity;
 import ve.com.abicelis.pingwidget.app.widget.PingWidgetProvider;
-import ve.com.abicelis.pingwidget.enums.PingIconState;
 
 /**
  * Created by abice on 14/2/2017.

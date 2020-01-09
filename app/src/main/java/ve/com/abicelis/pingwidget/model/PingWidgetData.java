@@ -1,12 +1,10 @@
 package ve.com.abicelis.pingwidget.model;
 
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 
 import java.util.LinkedList;
-import java.util.Locale;
 
-import ve.com.abicelis.pingwidget.R;
 import ve.com.abicelis.pingwidget.enums.MaxPingsPreferenceType;
 import ve.com.abicelis.pingwidget.enums.PingIntervalPreferenceType;
 import ve.com.abicelis.pingwidget.enums.WidgetLayoutType;

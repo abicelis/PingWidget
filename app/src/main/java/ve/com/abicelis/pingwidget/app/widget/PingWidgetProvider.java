@@ -2,20 +2,16 @@ package ve.com.abicelis.pingwidget.app.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.util.Log;
-import android.view.View;
 import android.widget.RemoteViews;
 
 import ve.com.abicelis.pingwidget.enums.WidgetLayoutType;
-import ve.com.abicelis.pingwidget.enums.WidgetTheme;
 import ve.com.abicelis.pingwidget.model.PingWidgetData;
 import ve.com.abicelis.pingwidget.service.PingWidgetUpdateService;
-import ve.com.abicelis.pingwidget.R;
 import ve.com.abicelis.pingwidget.util.Constants;
 import ve.com.abicelis.pingwidget.util.RemoteViewsUtil;
 import ve.com.abicelis.pingwidget.util.SharedPreferencesHelper;

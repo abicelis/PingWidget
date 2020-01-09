@@ -1,9 +1,9 @@
 package ve.com.abicelis.pingwidget.enums;
 
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.IdRes;
-import android.support.annotation.StringRes;
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IdRes;
+import androidx.annotation.StringRes;
 
 import ve.com.abicelis.pingwidget.R;
 

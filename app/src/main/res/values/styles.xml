@@ -16,7 +16,7 @@
 
 
      <!--Preference Fragment Styles -->
-    <style name="AppPreferenceTheme" parent="@style/PreferenceFixTheme.Light.NoActionBar">
+    <style name="AppPreferenceTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     </style>

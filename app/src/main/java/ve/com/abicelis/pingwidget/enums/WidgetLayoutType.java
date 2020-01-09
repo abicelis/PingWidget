@@ -1,6 +1,6 @@
 package ve.com.abicelis.pingwidget.enums;
 
-import android.support.annotation.LayoutRes;
+import androidx.annotation.LayoutRes;
 
 import ve.com.abicelis.pingwidget.R;
 
