@@ -1,14 +1,18 @@
 package ve.com.abicelis.pingwidget.service;
 
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ve.com.abicelis.pingwidget.R;
+import ve.com.abicelis.pingwidget.app.activity.HomeActivity;
 import ve.com.abicelis.pingwidget.app.widget.PingWidgetProvider;
 import ve.com.abicelis.pingwidget.model.PingWidgetData;
 import ve.com.abicelis.pingwidget.util.RemoteViewsUtil;
@@ -32,16 +37,14 @@ public class PingWidgetUpdateService extends Service {
     private static String TAG = PingWidgetUpdateService.class.getSimpleName();
     private static Map<Integer,PingAsyncTask> mAsyncTasks = new HashMap<>();
     private static BroadcastReceiver mReceiver;
-
-
+    private static final String CHANNEL_ID = "PINGWIDGET_FOREGROUND_NOTIFICATION_CHANNEL_ID";
+    private static final int NOTIFICATION_ID = 912;
 
     @Override
     public IBinder onBind(Intent intent) {
         Log.d(TAG, "onBind()");
         return null;
     }
-
-
 
     @Override
     public void onCreate() {
@@ -50,7 +53,44 @@ public class PingWidgetUpdateService extends Service {
 
         //Register ScreenReceiver to screen on/off broadcasts
         registerReceiver(mReceiver = new ScreenReceiver(), ScreenReceiver.filter);
+        createNotificationChannel();
+        setServiceAsForegroundWithNotification();
     }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, only on API 26+ because
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.notification_channel_name);
+            String description = getString(R.string.notification_channel_description);
+            int importance = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+
+            // Register the channel with the system
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+
+    private void setServiceAsForegroundWithNotification() {
+        Intent notificationIntent = new Intent(this, HomeActivity.class);
+        PendingIntent pendingIntent =
+                PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            Notification notification =
+                    new Notification.Builder(this, CHANNEL_ID)
+                            .setContentTitle(getText(R.string.notification_title))
+                            .setContentText(getText(R.string.notification_text))
+                            .setSmallIcon(R.drawable.icon_ping_sent)
+                            .setContentIntent(pendingIntent)
+                            .build();
+
+            startForeground(NOTIFICATION_ID, notification);
+        }
+    }
+
 
     @Override
     public void onDestroy() {
@@ -198,6 +238,12 @@ public class PingWidgetUpdateService extends Service {
                 Log.d(TAG, "ERROR: Could not find asyncTask to cancel! ID=" + widgetId);
             else if(!task.isCancelled())
                 task.cancel(false);
+
+            if(mAsyncTasks.size() == 0) {
+                //Nothing to do, stop the service
+                Log.d(TAG, "Pinging stopped, stopping service");
+                stopSelf();
+            }
         }
     }
 

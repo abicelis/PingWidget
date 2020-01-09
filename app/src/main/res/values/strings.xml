@@ -1,4 +1,10 @@
 <resources>
+    /* Notifications */
+    <string name="notification_title" translatable="false">Ping Widget</string>
+    <string name="notification_text">Ping Widget is active</string>
+    <string name="notification_channel_name">Ping notifications</string>
+    <string name="notification_channel_description">Notifications that appear when PingWidget is active</string>
+
     /* Widget */
     <string name="app_name" translatable="false">Ping Widget</string>
     <string name="app_name_short" translatable="false">PW</string>

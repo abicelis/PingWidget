@@ -46,4 +46,7 @@
     <string name="enum_preference_max_ping_format">%1$d pings</string>
     <string name="enum_preference_ping_interval_format">%1$d segundos</string>
     <string name="enum_preference_ping_interval_format_singular">%1$d segundo</string>
+    <string name="notification_channel_description">Notificationes que aparecen cuando PingWidget esta activo</string>
+    <string name="notification_channel_name">Notificaciones de Ping</string>
+    <string name="notification_text">Ping Widget esta activo</string>
 </resources>

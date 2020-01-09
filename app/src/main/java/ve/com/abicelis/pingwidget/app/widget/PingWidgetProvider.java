@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -153,7 +154,7 @@ public class PingWidgetProvider extends AppWidgetProvider {
                     // Notify PingWidgetUpdateService about the change (start/pause) ping
                     Intent serviceIntent = new Intent(context.getApplicationContext(), PingWidgetUpdateService.class);
                     serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-                    context.startService(serviceIntent);
+                    ContextCompat.startForegroundService(context, serviceIntent);
 
                     //Get remote views and update
                     RemoteViews views = RemoteViewsUtil.getRemoteViews(context, data.getWidgetLayoutType());
