@@ -8,17 +8,24 @@ import android.content.Intent;
 import androidx.core.content.ContextCompat;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import ve.com.abicelis.pingwidget.R;
 import ve.com.abicelis.pingwidget.app.activity.PingWidgetConfigureActivity;
 import ve.com.abicelis.pingwidget.app.widget.PingWidgetProvider;
+import ve.com.abicelis.pingwidget.enums.PingIconState;
+import ve.com.abicelis.pingwidget.model.PingWidgetData;
+import ve.com.abicelis.pingwidget.service.PingWidgetUpdateService;
 
 /**
  * Created by abice on 14/2/2017.
  */
 
 public class Util {
+
+    private static final String TAG = Util.class.getSimpleName();
+
 
     @SuppressWarnings("deprecation")
     public static Spanned fromHtml(String html){
@@ -58,6 +65,33 @@ public class Util {
 
         PendingIntent configPendingIntent = PendingIntent.getActivity(context, widgetId, reconfigureIntent, 0);
         views.setOnClickPendingIntent(R.id.widget_reconfigure, configPendingIntent);
+    }
+
+
+    public static void handleWidgetToggle(Context context, PingWidgetData data, int widgetId) {
+        //Toggle isRunning() and set ping count to zero, write new running state into SharedPreferences
+        data.toggleRunning();
+        data.setPingCount(0);
+        SharedPreferencesHelper.writePingWidgetData(context.getApplicationContext(), widgetId, data);
+
+        // Notify PingWidgetUpdateService about the change (start/pause) ping
+        Intent serviceIntent = new Intent(context.getApplicationContext(), PingWidgetUpdateService.class);
+        serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+        ContextCompat.startForegroundService(context, serviceIntent);
+
+        //Get remote views and update
+        RemoteViews views = RemoteViewsUtil.getRemoteViews(context, data.getWidgetLayoutType());
+
+        //Update Play/Pause icon
+        RemoteViewsUtil.updatePlayPause(views, data.isRunning());
+        if(!data.isRunning())
+            RemoteViewsUtil.updatePingIcon(views, PingIconState.PING_HIDDEN);
+
+        Log.d(TAG, (data.isRunning() ? "onReceive(), Sent START to service" : "onReceive(), Sent STOP to service") );
+
+
+        //Update widget
+        AppWidgetManager.getInstance(context).updateAppWidget(widgetId, views);
     }
 
 

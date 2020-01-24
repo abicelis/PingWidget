@@ -18,6 +18,8 @@
     <string name="widget_last_err">Last: ERR</string>
     <string name="widget_uptime_err">Uptime 0%</string>
     <string name="widget_avg_err">Avg: ERR</string>
+    <string name="infinite">Infinite</string>
+
 
     /* Activity Home */
     <string name="activity_home_title">Welcome to Ping Widget!</string>
@@ -49,13 +51,16 @@
     <string name="fragment_widget_configure_interval_title">Ping Interval</string>
 
     <string name="fragment_widget_configure_max_pings_key" translatable="false">widget_configure_max_pings</string>
-    <string name="fragment_widget_configure_max_pings_title">Max number of pings</string>
+    <string name="fragment_widget_configure_max_pings_title">Max pings to execute (Per start)</string>
+
+    <string name="fragment_widget_configure_max_pings_on_chart_key" translatable="false">widget_configure_max_pings_on_chart</string>
+    <string name="fragment_widget_configure_max_pings_on_chart_title">Max pings to draw on chart</string>
 
     <string name="fragment_widget_show_chart_lines_key" translatable="false">widget_show_chart_lines</string>
     <string name="fragment_widget_show_chart_lines_title">Draw average on chart</string>
 
     <string name="fragment_widget_dark_theme_key" translatable="false">widget_dark_theme</string>
-    <string name="fragment_widget_dark_theme_title">Use dark theme (NEW!)</string>
+    <string name="fragment_widget_dark_theme_title">Use dark theme</string>
 
     <string name="fragment_widget_configure_theme_key" translatable="false">widget_configure_theme</string>
     <string name="fragment_widget_configure_theme_title">Theme</string>
@@ -78,7 +83,7 @@
     <string name="fragment_widget_configure_err_address">Please enter a valid Address</string>
     <string name="fragment_widget_configure_err_interval">Please select an interval</string>
     <string name="fragment_widget_configure_err_max_pings">Please select a Max Pings amount</string>
-
+    <string name="fragment_widget_configure_err_max_pings_on_chart">Please select a Max Pings On Chart amount</string>
 
 
     <string name="enum_preference_max_ping_format">%1$d pings</string>

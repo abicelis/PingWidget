@@ -13,6 +13,9 @@
     <ListPreference
         android:key="@string/fragment_widget_configure_max_pings_key"
         android:title="@string/fragment_widget_configure_max_pings_title"/>
+    <ListPreference
+        android:key="@string/fragment_widget_configure_max_pings_on_chart_key"
+        android:title="@string/fragment_widget_configure_max_pings_on_chart_title"/>
 
     <SwitchPreference
         android:key="@string/fragment_widget_show_chart_lines_key"

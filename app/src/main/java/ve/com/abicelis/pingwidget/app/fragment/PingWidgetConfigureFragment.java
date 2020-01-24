@@ -26,6 +26,7 @@ import java.util.Locale;
 
 import ve.com.abicelis.pingwidget.R;
 import ve.com.abicelis.pingwidget.app.preference.ThemePreference;
+import ve.com.abicelis.pingwidget.enums.MaxPingsOnChartPreferenceType;
 import ve.com.abicelis.pingwidget.enums.MaxPingsPreferenceType;
 import ve.com.abicelis.pingwidget.enums.PingIntervalPreferenceType;
 import ve.com.abicelis.pingwidget.enums.WidgetLayoutType;
@@ -51,6 +52,7 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
     private EditTextPreference mAddress;
     private ListPreference mInterval;
     private ListPreference mMaxPings;
+    private ListPreference mMaxPingsOnChart;
     private SwitchPreference mShowChartLines;
     private SwitchPreference mUseDarkTheme;
     private ThemePreference mTheme;
@@ -76,7 +78,6 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
             }
         });
 
-
         mInterval = (ListPreference) findPreference(getResources().getString(R.string.fragment_widget_configure_interval_key));
         mInterval.setEntries(PingIntervalPreferenceType.getEntries(getContext()));
         mInterval.setEntryValues(PingIntervalPreferenceType.getEntryValues());
@@ -101,18 +102,32 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
         mMaxPings.setEntryValues(MaxPingsPreferenceType.getEntryValues());
 
         if(mMaxPings.getValue() == null || !MaxPingsPreferenceType.isValidEntry(mMaxPings.getValue())) {
-            mMaxPings.setValue(MaxPingsPreferenceType.MAX_PINGS_15.getEntryValue());
-            mMaxPings.setSummary(MaxPingsPreferenceType.MAX_PINGS_15.getEntry(getContext()));
+            mMaxPings.setValue(MaxPingsPreferenceType.MAX_PINGS_INFINITE.getEntryValue());
+            mMaxPings.setSummary(MaxPingsPreferenceType.MAX_PINGS_INFINITE.getEntry(getContext()));
         } else {
             mMaxPings.setSummary(MaxPingsPreferenceType.valueOf(mMaxPings.getValue()).getEntry(getContext()));
         }
-        mMaxPings.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                mMaxPings.setSummary(MaxPingsPreferenceType.valueOf((String) newValue).getEntry(getContext()));
-                return true;
-            }
+        mMaxPings.setOnPreferenceChangeListener((preference, newValue) -> {
+            mMaxPings.setSummary(MaxPingsPreferenceType.valueOf((String) newValue).getEntry(getContext()));
+            return true;
         });
+
+
+        mMaxPingsOnChart = (ListPreference) findPreference(getResources().getString(R.string.fragment_widget_configure_max_pings_on_chart_key));
+        mMaxPingsOnChart.setEntries(MaxPingsOnChartPreferenceType.getEntries(getContext()));
+        mMaxPingsOnChart.setEntryValues(MaxPingsOnChartPreferenceType.getEntryValues());
+
+        if(mMaxPingsOnChart.getValue() == null || !MaxPingsOnChartPreferenceType.isValidEntry(mMaxPingsOnChart.getValue())) {
+            mMaxPingsOnChart.setValue(MaxPingsOnChartPreferenceType.MAX_PINGS_15.getEntryValue());
+            mMaxPingsOnChart.setSummary(MaxPingsOnChartPreferenceType.MAX_PINGS_15.getEntry(getContext()));
+        } else {
+            mMaxPingsOnChart.setSummary(MaxPingsOnChartPreferenceType.valueOf(mMaxPingsOnChart.getValue()).getEntry(getContext()));
+        }
+        mMaxPingsOnChart.setOnPreferenceChangeListener((preference, newValue) -> {
+            mMaxPingsOnChart.setSummary(MaxPingsOnChartPreferenceType.valueOf((String) newValue).getEntry(getContext()));
+            return true;
+        });
+
 
 
         mShowChartLines = (SwitchPreference) findPreference(getResources().getString(R.string.fragment_widget_show_chart_lines_key));
@@ -121,23 +136,17 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
         mAbout = findPreference(getResources().getString(R.string.fragment_widget_configure_about_key));
         mAbout.setSummary(String.format(Locale.getDefault(), getResources().getString(R.string.fragment_widget_configure_about_summary), getAppVersionAndBuild(getActivity()).first));
         mRate = findPreference(getResources().getString(R.string.fragment_widget_configure_rate_key));
-        mRate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Intent playStoreIntent = new Intent(Intent.ACTION_VIEW);
-                playStoreIntent.setData(Uri.parse(getResources().getString(R.string.url_market)));
-                startActivity(playStoreIntent);
-                return true;
-            }
+        mRate.setOnPreferenceClickListener(preference -> {
+            Intent playStoreIntent = new Intent(Intent.ACTION_VIEW);
+            playStoreIntent.setData(Uri.parse(getResources().getString(R.string.url_market)));
+            startActivity(playStoreIntent);
+            return true;
         });
         mContact = findPreference(getResources().getString(R.string.fragment_widget_configure_contact_key));
-        mContact.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto",getResources().getString(R.string.address_email), null));
-                startActivity(Intent.createChooser(emailIntent, "Send email..."));
-                return true;
-            }
+        mContact.setOnPreferenceClickListener(preference -> {
+            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto",getResources().getString(R.string.address_email), null));
+            startActivity(Intent.createChooser(emailIntent, "Send email..."));
+            return true;
         });
 
         //Get the arguments (bundle) passed from PingWidgetConfigureActivity, which contains the widgetId
@@ -159,6 +168,9 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
 
             mMaxPings.setValue(data.getMaxPings().getEntryValue());
             mMaxPings.setSummary(data.getMaxPings().getEntry(getContext()));
+
+            mMaxPingsOnChart.setValue(data.getMaxPingsOnChart().getEntryValue());
+            mMaxPingsOnChart.setSummary(data.getMaxPingsOnChart().getEntry(getContext()));
 
             mShowChartLines.setChecked(data.showChartLines());
             mUseDarkTheme.setChecked(data.useDarkTheme());
@@ -219,11 +231,16 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
             Toast.makeText(getActivity(), getResources().getString(R.string.fragment_widget_configure_err_max_pings), Toast.LENGTH_SHORT).show();
             return false;
         }
+
+        if(mMaxPingsOnChart.getValue() == null) {
+            Toast.makeText(getActivity(), getResources().getString(R.string.fragment_widget_configure_err_max_pings_on_chart), Toast.LENGTH_SHORT).show();
+            return false;
+        }
         return true;
     }
 
-    private PingWidgetData savePingWidgetData(int widgetId, String address, PingIntervalPreferenceType pingInterval, MaxPingsPreferenceType maxPings, boolean showMaxMinAvgLines, boolean useDarkTheme, String themeName) {
-        PingWidgetData data = new PingWidgetData(address, pingInterval, maxPings, showMaxMinAvgLines, useDarkTheme, WidgetTheme.valueOf(themeName));
+    private PingWidgetData savePingWidgetData(int widgetId, String address, PingIntervalPreferenceType pingInterval, MaxPingsPreferenceType maxPings, MaxPingsOnChartPreferenceType maxPingsOnChart, boolean showMaxMinAvgLines, boolean useDarkTheme, String themeName) {
+        PingWidgetData data = new PingWidgetData(address, pingInterval, maxPings, maxPingsOnChart, showMaxMinAvgLines, useDarkTheme, WidgetTheme.valueOf(themeName));
         SharedPreferencesHelper.writePingWidgetData(getContext().getApplicationContext(), widgetId, data);
         return data;
     }
@@ -246,7 +263,7 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
             RemoteViews views = RemoteViewsUtil.getRemoteViews(getContext(), WidgetLayoutType.TALL);  //Initially, widget layout is tall
 
             //Save PingWidgetData in SharedPreferences()
-            PingWidgetData data = savePingWidgetData(mWidgetId, mAddress.getText(), PingIntervalPreferenceType.valueOf(mInterval.getValue()), MaxPingsPreferenceType.valueOf(mMaxPings.getValue()), mShowChartLines.isChecked(), mUseDarkTheme.isChecked(), mTheme.getSelectedTheme());
+            PingWidgetData data = savePingWidgetData(mWidgetId, mAddress.getText(), PingIntervalPreferenceType.valueOf(mInterval.getValue()), MaxPingsPreferenceType.valueOf(mMaxPings.getValue()), MaxPingsOnChartPreferenceType.valueOf(mMaxPingsOnChart.getValue()), mShowChartLines.isChecked(), mUseDarkTheme.isChecked(), mTheme.getSelectedTheme());
 
 
             //Init the widget's views
@@ -296,6 +313,7 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
                 data.setAddress(mAddress.getText());
                 data.setPingInterval(PingIntervalPreferenceType.valueOf(mInterval.getValue()));
                 data.setMaxPings(MaxPingsPreferenceType.valueOf(mMaxPings.getValue()));
+                data.setMaxPingsOnChart(MaxPingsOnChartPreferenceType.valueOf(mMaxPingsOnChart.getValue()));
                 data.setShowChartLines(mShowChartLines.isChecked());
                 data.setUseDarkTheme(mUseDarkTheme.isChecked());
                 data.setTheme(WidgetTheme.valueOf(mTheme.getSelectedTheme()));

@@ -6,20 +6,25 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import androidx.annotation.NonNull;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Locale;
 
+import ve.com.abicelis.pingwidget.enums.MaxPingsPreferenceType;
 import ve.com.abicelis.pingwidget.enums.PingFailureType;
 import ve.com.abicelis.pingwidget.enums.PingIconState;
 import ve.com.abicelis.pingwidget.exception.PingFailedException;
 import ve.com.abicelis.pingwidget.model.PingWidgetData;
 import ve.com.abicelis.pingwidget.util.RemoteViewsUtil;
 import ve.com.abicelis.pingwidget.util.SharedPreferencesHelper;
+import ve.com.abicelis.pingwidget.util.Util;
 
 import static ve.com.abicelis.pingwidget.enums.PingIconState.PING_BAD;
 import static ve.com.abicelis.pingwidget.enums.PingIconState.PING_OK;
+import static ve.com.abicelis.pingwidget.enums.PingIconState.PING_REACHED_MAX;
 import static ve.com.abicelis.pingwidget.enums.PingIconState.PING_SENT;
 
 /**
@@ -33,15 +38,13 @@ class PingAsyncTask extends AsyncTask<String, Object, Integer> {
     private static final String TAG = PingAsyncTask.class.getSimpleName();
 
     //DATA
-    private Context mAppContext;
-    private AppWidgetManager mAppWidgetManager;
+    @NonNull private PingAsyncTaskDelegate mDelegate;
     private int mWidgetId;
 
-    public PingAsyncTask(Context appContext, int widgetId) {
+    public PingAsyncTask(PingAsyncTaskDelegate delegate, int widgetId) {
 
-        mAppContext = appContext;
+        mDelegate = delegate;
         mWidgetId = widgetId;
-        mAppWidgetManager = AppWidgetManager.getInstance(appContext);
     }
 
 
@@ -49,26 +52,36 @@ class PingAsyncTask extends AsyncTask<String, Object, Integer> {
     @Override
     protected Integer doInBackground(String... strings) {
         while (!isCancelled()) {
-            PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(mAppContext, mWidgetId);
+            PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(mDelegate.getAppContext(), mWidgetId);
 
-            if(data == null)
+            if(data == null) {
                 cancel(true);
-
-            try {
-                publishProgress(PING_SENT);
-
-
-                //float pingDelay = ping(strings[0]);
-                float pingDelay = ping(data.getAddress());
-                Log.d(TAG, "PING SUCCESS (" + pingDelay + "ms)");
-
-                publishProgress(PING_OK, pingDelay);
-
-            }catch (PingFailedException e) {
-                Log.d(TAG, "PING FAILED. FailureType=" + e.getPingFailureType().name());
-                e.printStackTrace();
-                publishProgress(PING_BAD, e.getPingFailureType().getErrorId());
+                return -1;
             }
+
+            //Check count
+            if (data.getMaxPings() != MaxPingsPreferenceType.MAX_PINGS_INFINITE &&
+            data.getPingCount() >= data.getMaxPings().getValue()) {
+                publishProgress(PING_REACHED_MAX);
+            }
+            else {
+                try {
+                    publishProgress(PING_SENT);
+
+
+                    //float pingDelay = ping(strings[0]);
+                    float pingDelay = ping(data.getAddress());
+                    Log.d(TAG, "PING SUCCESS (" + pingDelay + "ms)");
+
+                    publishProgress(PING_OK, pingDelay);
+
+                }catch (PingFailedException e) {
+                    Log.d(TAG, "PING FAILED. FailureType=" + e.getPingFailureType().name());
+                    e.printStackTrace();
+                    publishProgress(PING_BAD, e.getPingFailureType().getErrorId());
+                }
+            }
+
 
             try {
                 Thread.sleep(data.getPingInterval().getValue()*MILLIS);
@@ -149,7 +162,7 @@ class PingAsyncTask extends AsyncTask<String, Object, Integer> {
     protected void onProgressUpdate(Object... values) {
 
         //Get widget data, check if exists
-        PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(mAppContext.getApplicationContext(), mWidgetId);
+        PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(mDelegate.getAppContext().getApplicationContext(), mWidgetId);
         if(data == null) {
             //Widget was probably destroyed while running, kill this AsyncTask.
             cancel(true);
@@ -158,14 +171,26 @@ class PingAsyncTask extends AsyncTask<String, Object, Integer> {
         }
 
         //Get remote views
-        RemoteViews views = RemoteViewsUtil.getRemoteViews(mAppContext, data.getWidgetLayoutType());
+        RemoteViews views = RemoteViewsUtil.getRemoteViews(mDelegate.getAppContext(), data.getWidgetLayoutType());
 
         //Update ping icon
         RemoteViewsUtil.updatePingIcon(views, (PingIconState) values[0]);
 
-        //If update is PING_SENT, update widget views and leave
+        //If update is PING_SENT, update widget views
         if(values[0] == PingIconState.PING_SENT) {
-            AppWidgetManager.getInstance(mAppContext).updateAppWidget(mWidgetId, views);
+
+            //Increment counter
+            data.setPingCount(data.getPingCount() + 1);
+
+            //Save widget data
+            SharedPreferencesHelper.writePingWidgetData(mDelegate.getAppContext().getApplicationContext(), mWidgetId, data);
+
+            //Update widget
+            AppWidgetManager.getInstance(mDelegate.getAppContext()).updateAppWidget(mWidgetId, views);
+            return;
+        } else if(values[0] == PING_REACHED_MAX) {
+            Util.handleWidgetToggle(mDelegate.getAppContext(), data, mWidgetId);
+            Log.d(TAG, "Widget " + mWidgetId + " reached max pings.");
             return;
         }
 
@@ -173,19 +198,22 @@ class PingAsyncTask extends AsyncTask<String, Object, Integer> {
 
         //Add latest ping value
         data.getPingTimes().addLast((float)values[1]);
-        while(data.getPingTimes().size() > data.getMaxPings().getValue()) {
+        while(data.getPingTimes().size() > data.getMaxPingsOnChart().getValue()) {
             data.getPingTimes().removeFirst();
         }
 
         //Save widget data
-        SharedPreferencesHelper.writePingWidgetData(mAppContext.getApplicationContext(), mWidgetId, data);
+        SharedPreferencesHelper.writePingWidgetData(mDelegate.getAppContext().getApplicationContext(), mWidgetId, data);
 
         //Redraw widget and chart
-        RemoteViewsUtil.redrawWidget(mAppContext, views, data.getPingTimes(), data.getMaxPings().getValue(), data.getTheme().getChartColor(), data.showChartLines());
+        RemoteViewsUtil.redrawWidget(mDelegate.getAppContext(), views, data.getPingTimes(), data.getMaxPingsOnChart().getValue(), data.getTheme().getChartColor(), data.showChartLines());
 
         //Update widget views
-        AppWidgetManager.getInstance(mAppContext).updateAppWidget(mWidgetId, views);
+        AppWidgetManager.getInstance(mDelegate.getAppContext()).updateAppWidget(mWidgetId, views);
 
     }
 
+    interface PingAsyncTaskDelegate {
+        Context getAppContext();
+    }
 }

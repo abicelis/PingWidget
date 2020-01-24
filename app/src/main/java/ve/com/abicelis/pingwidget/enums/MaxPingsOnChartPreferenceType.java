@@ -10,8 +10,7 @@ import ve.com.abicelis.pingwidget.R;
  * Created by abice on 3/5/2017.
  */
 
-public enum MaxPingsPreferenceType {
-    MAX_PINGS_INFINITE(0),
+public enum MaxPingsOnChartPreferenceType {
     MAX_PINGS_5(5),
     MAX_PINGS_10(10),
     MAX_PINGS_15(15),
@@ -27,7 +26,7 @@ public enum MaxPingsPreferenceType {
 
     private int mPings;
 
-    MaxPingsPreferenceType(int pings) {
+    MaxPingsOnChartPreferenceType(int pings) {
         mPings = pings;
     }
 
@@ -37,9 +36,6 @@ public enum MaxPingsPreferenceType {
 
 
     public String getEntry(Context context) {
-        if(this == MAX_PINGS_INFINITE)
-            return context.getResources().getString(R.string.infinite);
-
         return String.format(Locale.getDefault(), context.getResources().getString(R.string.enum_preference_max_ping_format), this.getValue());
     }
 
@@ -49,27 +45,27 @@ public enum MaxPingsPreferenceType {
 
 
     public static CharSequence[] getEntryValues() {
-        CharSequence entries[] = new CharSequence[MaxPingsPreferenceType.values().length];
+        CharSequence entries[] = new CharSequence[MaxPingsOnChartPreferenceType.values().length];
 
-        for (int i = 0; i < MaxPingsPreferenceType.values().length; i++) {
-            entries[i] = MaxPingsPreferenceType.values()[i].name();
+        for (int i = 0; i < MaxPingsOnChartPreferenceType.values().length; i++) {
+            entries[i] = MaxPingsOnChartPreferenceType.values()[i].name();
         }
         return entries;
     }
 
     public static CharSequence[] getEntries(Context context) {
-        CharSequence entries[] = new CharSequence[MaxPingsPreferenceType.values().length];
+        CharSequence entries[] = new CharSequence[MaxPingsOnChartPreferenceType.values().length];
         String format = context.getResources().getString(R.string.enum_preference_max_ping_format);
 
-        for (int i = 0; i < MaxPingsPreferenceType.values().length; i++) {
-            entries[i] = MaxPingsPreferenceType.values()[i].getEntry(context);
+        for (int i = 0; i < MaxPingsOnChartPreferenceType.values().length; i++) {
+            entries[i] = MaxPingsOnChartPreferenceType.values()[i].getEntry(context);
         }
         return entries;
     }
 
     public static boolean isValidEntry(String entryString) {
         try {
-            MaxPingsPreferenceType.valueOf(entryString);
+            MaxPingsOnChartPreferenceType.valueOf(entryString);
             return true;
         } catch (IllegalArgumentException e) {
             return false;

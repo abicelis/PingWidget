@@ -62,7 +62,7 @@ public class RemoteViewsUtil {
             views.setViewVisibility(R.id.widget_press_start, View.VISIBLE);
             views.setImageViewResource(R.id.widget_start_pause, android.R.drawable.ic_media_play);
         } else {
-            RemoteViewsUtil.redrawWidget(context, views, data.getPingTimes(), data.getMaxPings().getValue(), data.getTheme().getChartColor(), data.showChartLines());
+            RemoteViewsUtil.redrawWidget(context, views, data.getPingTimes(), data.getMaxPingsOnChart().getValue(), data.getTheme().getChartColor(), data.showChartLines());
             views.setViewVisibility(R.id.widget_press_start, View.GONE);
             updatePlayPause(views, data.isRunning());
         }
@@ -86,6 +86,7 @@ public class RemoteViewsUtil {
                 views.setViewVisibility(R.id.widget_ping_bad_icon, View.VISIBLE);
                 break;
             case PING_HIDDEN:
+            default:
                 //Do nothing
                 break;
         }

@@ -68,7 +68,8 @@ public class PingWidgetUpdateService extends Service {
 
             // Register the channel with the system
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+            if(notificationManager != null)
+                notificationManager.createNotificationChannel(channel);
         }
     }
 
@@ -174,7 +175,7 @@ public class PingWidgetUpdateService extends Service {
                 Log.d(TAG, "handleScreenState() Shutting down Widget " + entry.getKey());
 
                 //Stop asyncTask
-                if(entry == null || entry.getKey() == null || entry.getValue() == null)
+                if(entry.getKey() == null || entry.getValue() == null)
                     Log.d(TAG, "ERROR: Could not find asyncTask to cancel! ID=" + entry.getKey());
                 else if(!entry.getValue().isCancelled())
                     entry.getValue().cancel(false);
@@ -224,7 +225,7 @@ public class PingWidgetUpdateService extends Service {
                     AppWidgetManager.getInstance(getApplicationContext()).updateAppWidget(widgetId, views);
 
                     //Create a new task and run it, also save it to mAsyncTasks using widgetId
-                    task = new PingAsyncTask(this.getApplicationContext(), widgetId);
+                    task = new PingAsyncTask(this::getApplicationContext, widgetId);
                     mAsyncTasks.put(widgetId, task);
 
                     //Get stored address from PreferenceSettings

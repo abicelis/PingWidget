@@ -95,7 +95,7 @@
                 android:layout_height="16dp"
                 android:layout_marginLeft="4dp"
                 android:layout_marginStart="4dp"
-                android:src="@drawable/icon_wrench"
+                android:src="@drawable/icon_reconfigure"
                 />
 
         </LinearLayout>

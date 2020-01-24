@@ -49,4 +49,5 @@
     <string name="notification_channel_description">Notificationes que aparecen cuando PingWidget esta activo</string>
     <string name="notification_channel_name">Notificaciones de Ping</string>
     <string name="notification_text">Ping Widget esta activo</string>
+    <string name="fragment_widget_configure_max_pings_on_chart_title">Numero máximo de pings en gráfico</string>
 </resources>

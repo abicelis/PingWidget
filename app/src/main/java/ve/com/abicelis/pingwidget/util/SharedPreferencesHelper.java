@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import ve.com.abicelis.pingwidget.enums.MaxPingsOnChartPreferenceType;
 import ve.com.abicelis.pingwidget.enums.MaxPingsPreferenceType;
 import ve.com.abicelis.pingwidget.enums.PingIntervalPreferenceType;
 import ve.com.abicelis.pingwidget.enums.WidgetLayoutType;
@@ -63,7 +64,11 @@ public class SharedPreferencesHelper {
             flag = true;
         }
         if(data.getMaxPings() == null) {
-            data.setMaxPings(MaxPingsPreferenceType.MAX_PINGS_15);
+            data.setMaxPings(MaxPingsPreferenceType.MAX_PINGS_INFINITE);
+            flag = true;
+        }
+        if(data.getMaxPingsOnChart() == null) {
+            data.setMaxPingsOnChart(MaxPingsOnChartPreferenceType.MAX_PINGS_15);
             flag = true;
         }
         if(data.getAddress() == null || data.getAddress().isEmpty()) {

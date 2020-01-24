@@ -8,6 +8,7 @@ public enum PingIconState {
     PING_HIDDEN,
     PING_SENT,
     PING_OK,
-    PING_BAD;
+    PING_BAD,
+    PING_REACHED_MAX;
 
 }

@@ -135,33 +135,16 @@ public class PingWidgetProvider extends AppWidgetProvider {
 
             //Get extras from intent, namely, the widgetId
             Bundle extras = intent.getExtras();
-            int widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-            Log.d(TAG, "onReceive(), widgetId=" + widgetId);
+            if(extras != null) {
+                int widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+                Log.d(TAG, "onReceive(), widgetId=" + widgetId);
 
-            if (widgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
-                //Get widget data from SharedPreferences
-                PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(context.getApplicationContext(), widgetId);
+                if (widgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+                    //Get widget data from SharedPreferences
+                    PingWidgetData data = SharedPreferencesHelper.readPingWidgetData(context.getApplicationContext(), widgetId);
 
-                if (data != null) {
-                    //Toggle isRunning(), write new running state into SharedPreferences
-                    data.toggleRunning();
-                    SharedPreferencesHelper.writePingWidgetData(context.getApplicationContext(), widgetId, data);
-
-                    // Notify PingWidgetUpdateService about the change (start/pause) ping
-                    Intent serviceIntent = new Intent(context.getApplicationContext(), PingWidgetUpdateService.class);
-                    serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-                    ContextCompat.startForegroundService(context, serviceIntent);
-
-                    //Get remote views and update
-                    RemoteViews views = RemoteViewsUtil.getRemoteViews(context, data.getWidgetLayoutType());
-
-                    //Update Play/Pause icon
-                    RemoteViewsUtil.updatePlayPause(views, data.isRunning());
-                    Log.d(TAG, (data.isRunning() ? "onReceive(), Sent START to service" : "onReceive(), Sent STOP to service") );
-
-
-                    //Update widget
-                    AppWidgetManager.getInstance(context).updateAppWidget(widgetId, views);
+                    if (data != null)
+                        Util.handleWidgetToggle(context, data, widgetId);
                 }
             }
         }
