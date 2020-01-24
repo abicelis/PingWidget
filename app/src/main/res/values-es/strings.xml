@@ -50,4 +50,5 @@
     <string name="notification_channel_name">Notificaciones de Ping</string>
     <string name="notification_text">Ping Widget esta activo</string>
     <string name="fragment_widget_configure_max_pings_on_chart_title">Numero máximo de pings en gráfico</string>
+    <string name="fragment_widget_configure_err_max_pings_on_chart">Ingrese un valor máximo de pings en el grafico</string>
 </resources>
