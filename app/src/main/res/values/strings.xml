@@ -44,11 +44,11 @@
 
 
     <string name="fragment_widget_configure_address_key" translatable="false">widget_configure_address</string>
-    <string name="fragment_widget_configure_address_title">IP Address or domain</string>
+    <string name="fragment_widget_configure_address_title">IP Address or hostname</string>
     <string name="fragment_widget_configure_address_summary" translatable="false">www.google.com</string>
 
     <string name="fragment_widget_configure_interval_key" translatable="false">widget_configure_interval</string>
-    <string name="fragment_widget_configure_interval_title">Ping Interval</string>
+    <string name="fragment_widget_configure_interval_title">Ping Frequency</string>
 
     <string name="fragment_widget_configure_max_pings_key" translatable="false">widget_configure_max_pings</string>
     <string name="fragment_widget_configure_max_pings_title">Max pings to execute (Per start)</string>
@@ -60,7 +60,7 @@
     <string name="fragment_widget_show_chart_lines_title">Draw average on chart</string>
 
     <string name="fragment_widget_dark_theme_key" translatable="false">widget_dark_theme</string>
-    <string name="fragment_widget_dark_theme_title">Use dark theme</string>
+    <string name="fragment_widget_dark_theme_title">Dark background</string>
 
     <string name="fragment_widget_configure_theme_key" translatable="false">widget_configure_theme</string>
     <string name="fragment_widget_configure_theme_title">Theme</string>

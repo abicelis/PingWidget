@@ -89,18 +89,7 @@
                 android:maxLines="1"
                 android:text="www.google.com"
                 />
-            <ImageView
-                android:id="@+id/widget_reconfigure"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginStart="4dp"
-                android:src="@drawable/icon_reconfigure"
-                />
-
         </LinearLayout>
-
-
 
         <ImageView
             android:id="@+id/widget_start_pause"

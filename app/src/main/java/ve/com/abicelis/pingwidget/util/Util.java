@@ -64,7 +64,8 @@ public class Util {
         reconfigureIntent.setAction(Constants.ACTION_WIDGET_RECONFIGURE);
 
         PendingIntent configPendingIntent = PendingIntent.getActivity(context, widgetId, reconfigureIntent, 0);
-        views.setOnClickPendingIntent(R.id.widget_reconfigure, configPendingIntent);
+        views.setOnClickPendingIntent(R.id.widget_host, configPendingIntent);
+        views.setOnClickPendingIntent(R.id.widget_app_name, configPendingIntent);
     }
 
 

@@ -6,13 +6,13 @@
     <string name="activity_home_version">Versión %1$s</string>
     <string name="activity_widget_configure_menu_done">LISTO</string>
     <string name="fragment_widget_configure_about_summary">Versión %1$s</string>
-    <string name="fragment_widget_configure_address_title">IP ó dirección web</string>
+    <string name="fragment_widget_configure_address_title">IP ó hostname</string>
     <string name="fragment_widget_configure_contact_summary">Tiene algun problema para usar esta app? Preguntas? Contáctame a alejandro@alejandrobicelis.com.ve</string>
     <string name="fragment_widget_configure_contact_title">Contactar al desarrolador</string>
     <string name="fragment_widget_configure_err_address">Ingrese un IP o dirección válido</string>
     <string name="fragment_widget_configure_err_interval">Ingrese un intervalo válido</string>
     <string name="fragment_widget_configure_err_max_pings">Ingrese un valor máximo de pings</string>
-    <string name="fragment_widget_configure_interval_title">Intervalo entre pings</string>
+    <string name="fragment_widget_configure_interval_title">Frecuencia de pings</string>
     <string name="fragment_widget_configure_max_pings_title">Numero máximo de pings</string>
     <string name="fragment_widget_configure_name">Configurar Ping Widget</string>
     <string name="fragment_widget_configure_rate_summary">Te gusta éste app? Déjame una calificación de 5 estrellas!</string>
@@ -42,7 +42,7 @@
             &nbsp;&nbsp;&nbsp;&#8226; Añada un PingWidget<br/>
         ]]></string>
     <string name="fragment_widget_show_chart_lines_title">Mostrar averaje en gráfico</string>
-    <string name="fragment_widget_dark_theme_title">Usar tema oscuro (NUEVO!)</string>
+    <string name="fragment_widget_dark_theme_title">Fondo oscuro</string>
     <string name="enum_preference_max_ping_format">%1$d pings</string>
     <string name="enum_preference_ping_interval_format">%1$d segundos</string>
     <string name="enum_preference_ping_interval_format_singular">%1$d segundo</string>
