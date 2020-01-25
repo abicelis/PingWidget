@@ -1,120 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_app_preference_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@drawable/gradient_background">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/activity_home_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:theme="@style/ToolbarTheme"
-        android:background="@color/colorPrimary"
-        />
+    <TextView
+        android:id="@+id/activity_home_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/activity_home_version"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/activity_home_app_text_links"
+        app:layout_constraintBaseline_toBaselineOf="@id/activity_home_title"
+        app:layout_constraintStart_toEndOf="@id/activity_home_title"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"/>
 
-    <ScrollView
+    <TextView
+        android:id="@+id/activity_home_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/activity_home_title"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/activity_home_app_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="32dp"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/activity_home_start_guideline"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true" >
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".15"/>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#eeeeee"
-            android:paddingBottom="8dp"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingTop="8dp" >
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/activity_home_end_guideline"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".85"/>
 
-            <ImageView
-                android:id="@+id/activity_home_app_icon"
-                android:layout_width="@dimen/activity_home_app_logo"
-                android:layout_height="@dimen/activity_home_app_logo"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/icon_ping_widget" />
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/widget_preview_image_dark"
+        app:layout_constraintStart_toStartOf="@id/activity_home_start_guideline"
+        app:layout_constraintEnd_toEndOf="@id/activity_home_end_guideline"
+        app:layout_constraintTop_toBottomOf="@id/activity_home_title"
+        app:layout_constraintBottom_toTopOf="@id/activity_home_subtitle"
+        />
 
-            <TextView
-                android:id="@+id/activity_home_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="@string/activity_home_title"
-                android:textSize="@dimen/activity_home_app_title"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:layout_below="@+id/activity_home_app_icon"
-                android:layout_centerHorizontal="true" />
+    <TextView
+        android:id="@+id/activity_home_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/activity_home_subtitle"
+        android:textColor="#DDFFFFFF"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@id/activity_home_steps_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="12dp"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/activity_home_steps_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/activity_home_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias=".9"
+        >
+
+        <TextView
+            android:id="@+id/activity_home_step_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_home_step_1_num"
+            android:textColor="#DDFFFFFF"
+            android:textSize="36sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/activity_home_step_2"
+            />
+
+        <TextView
+            android:id="@+id/activity_home_step_1_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_home_step_1"
+            android:textColor="#DDFFFFFF"
+            android:textSize="@dimen/activity_home_app_text"
+            app:layout_constraintTop_toTopOf="@id/activity_home_step_1"
+            app:layout_constraintBottom_toBottomOf="@id/activity_home_step_1"
+            app:layout_constraintStart_toEndOf="@id/activity_home_step_1"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            />
+
+        <TextView
+            android:id="@+id/activity_home_step_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_home_step_2_num"
+            android:textColor="#DDFFFFFF"
+            android:textSize="36sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/activity_home_step_3"
+            />
+
+        <TextView
+            android:id="@+id/activity_home_step_2_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_home_step_2"
+            android:textColor="#DDFFFFFF"
+            android:textSize="@dimen/activity_home_app_text"
+            app:layout_constraintTop_toTopOf="@id/activity_home_step_2"
+            app:layout_constraintBottom_toBottomOf="@id/activity_home_step_2"
+            app:layout_constraintStart_toEndOf="@id/activity_home_step_2"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            />
+
+        <TextView
+            android:id="@+id/activity_home_step_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_home_step_3_num"
+            android:textColor="#DDFFFFFF"
+            android:textSize="36sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/activity_home_step_3_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_home_step_3"
+            android:textColor="#DDFFFFFF"
+            android:textSize="@dimen/activity_home_app_text"
+            app:layout_constraintTop_toTopOf="@id/activity_home_step_3"
+            app:layout_constraintBottom_toBottomOf="@id/activity_home_step_3"
+            app:layout_constraintStart_toEndOf="@id/activity_home_step_3"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/activity_home_button"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_alignParentBottom="true"
+        android:background="#44FFFFFF"
+        android:textSize="18sp"
+        android:textColor="@color/text_white"
+        android:text="@string/activity_home_continue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
 
-            <TextView
-                android:id="@+id/activity_home_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="@string/activity_home_text"
-                android:textSize="@dimen/activity_home_app_text"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_below="@+id/activity_home_title"
-                android:layout_centerHorizontal="true" />
-
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/activity_home_github_link"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                app:backgroundTint="@color/colorPrimaryDark"
-                android:textColor="@color/text_white"
-                android:text="@string/activity_home_github_link"
-                />
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/activity_home_market_link"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                app:backgroundTint="@color/colorPrimaryDark"
-                android:textColor="@color/text_white"
-
-                android:text="@string/activity_home_market_link"
-                />
-            <TextView
-                android:id="@+id/activity_home_website_link"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_above="@id/activity_home_github_link"
-                android:textSize="@dimen/activity_home_app_text_links"
-                android:layout_centerHorizontal="true"
-                android:text="@string/activity_home_website_link"
-                />
-
-            <TextView
-                android:id="@+id/activity_home_author"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@id/activity_home_website_link"
-                android:textSize="@dimen/activity_home_app_text_links"
-                android:layout_centerHorizontal="true"
-                android:text="@string/activity_home_author" />
-
-            <TextView
-                android:id="@+id/activity_home_version"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:textSize="@dimen/activity_home_app_text_links"
-                android:layout_centerHorizontal="true"
-                android:layout_above="@id/activity_home_author"
-                android:text="@string/activity_home_version" />
-
-
-
-        </RelativeLayout>
-
-    </ScrollView>
-</LinearLayout>
-
+</androidx.constraintlayout.widget.ConstraintLayout>

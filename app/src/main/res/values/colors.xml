@@ -4,6 +4,11 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <!--Home gradient-->
+    <color name="gradient_background_start">#2B71E9</color>
+    <color name="gradient_background_end">#009688</color>
+
+
     <color name="text_white">#EEEEEE</color>
     <color name="text_dark_gray">#424242</color>
 

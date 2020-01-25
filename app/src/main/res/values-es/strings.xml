@@ -3,11 +3,10 @@
     <string name="activity_home_github_link">Ver proyecto en Github</string>
     <string name="activity_home_market_link">Calificar app</string>
     <string name="activity_home_title">Bienvenido a Ping Widget!</string>
-    <string name="activity_home_version">Versión %1$s</string>
     <string name="activity_widget_configure_menu_done">LISTO</string>
     <string name="fragment_widget_configure_about_summary">Versión %1$s</string>
     <string name="fragment_widget_configure_address_title">IP ó hostname</string>
-    <string name="fragment_widget_configure_contact_summary">Tiene algun problema para usar esta app? Preguntas? Contáctame a alejandro@alejandrobicelis.com.ve</string>
+    <string name="fragment_widget_configure_contact_summary">Tiene algún problema para usar esta app? Preguntas? Contáctame a alejandro@alejandrobicelis.com.ve</string>
     <string name="fragment_widget_configure_contact_title">Contactar al desarrolador</string>
     <string name="fragment_widget_configure_err_address">Ingrese un IP o dirección válido</string>
     <string name="fragment_widget_configure_err_interval">Ingrese un intervalo válido</string>
@@ -20,8 +19,8 @@
     <string name="fragment_widget_configure_theme_title">Tema</string>
     <string name="widget_avg">Avg: %1$s</string>
     <string name="widget_avg_err">Avg: ERR</string>
-    <string name="widget_last">Ultimo: %1$s</string>
-    <string name="widget_last_err">Ultimo: ERR</string>
+    <string name="widget_last">Último: %1$s</string>
+    <string name="widget_last_err">Último: ERR</string>
     <string name="widget_max_min">Max: %1$s - Min: %2$s</string>
     <string name="widget_max_min_err">Max: ERR - Min: ERR</string>
     <string name="widget_press_start_activate">Click boton de play para iniciar</string>
@@ -34,13 +33,6 @@
     <string name="widget_theme_summary_teal_orange">Verde/Naranja</string>
     <string name="widget_uptime">Arriba %1$d%%</string>
     <string name="widget_uptime_err">Arriba 0%</string>
-    <string name="activity_home_text">
-        <![CDATA[
-            Para agregar un PingWidget:<br/>
-            &nbsp;&nbsp;&nbsp;&#8226; Click largo en su pantalla principal<br/>
-            &nbsp;&nbsp;&nbsp;&#8226; Seleccione \'Widgets\'<br/>
-            &nbsp;&nbsp;&nbsp;&#8226; Añada un PingWidget<br/>
-        ]]></string>
     <string name="fragment_widget_show_chart_lines_title">Mostrar averaje en gráfico</string>
     <string name="fragment_widget_dark_theme_title">Fondo oscuro</string>
     <string name="enum_preference_max_ping_format">%1$d pings</string>
@@ -51,4 +43,9 @@
     <string name="notification_text">Ping Widget esta activo</string>
     <string name="fragment_widget_configure_max_pings_on_chart_title">Numero máximo de pings en gráfico</string>
     <string name="fragment_widget_configure_err_max_pings_on_chart">Ingrese un valor máximo de pings en el grafico</string>
+    <string name="infinite">Infinito</string>
+    <string name="activity_home_step_1">Mantener pulsado el Home screen</string>
+    <string name="activity_home_step_2">Tocar en \'Widgets\'</string>
+    <string name="activity_home_step_3">Arrastrar un PingWidget al Home screen</string>
+    <string name="activity_home_subtitle">Para usar PindWidget:</string>
 </resources>

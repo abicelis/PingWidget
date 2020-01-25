@@ -10,7 +10,6 @@
     <dimen name="text_medium">18sp</dimen>
     <dimen name="text_small">18sp</dimen>
 
-    <dimen name="activity_home_app_logo">192dp</dimen>
     <dimen name="activity_home_app_title">40sp</dimen>
     <dimen name="activity_home_app_text">32sp</dimen>
     <dimen name="activity_home_app_text_links">26sp</dimen>
