@@ -6,8 +6,8 @@ android {
         applicationId "ve.com.abicelis.pingwidget"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 10501       // Mmmbb
-        versionName "1.5.1"     // M.m.b
+        versionCode 10502      // Mmmbb
+        versionName "1.5.2"     // M.m.b
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
