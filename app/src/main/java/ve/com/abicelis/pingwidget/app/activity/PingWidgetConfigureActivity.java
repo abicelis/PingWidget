@@ -50,13 +50,15 @@ public class PingWidgetConfigureActivity extends AppCompatActivity {
 
     private void setUpToolbar() {
 
-        mToolbar = (Toolbar) findViewById(R.id.activity_preference_toolbar);
+        mToolbar = findViewById(R.id.activity_preference_toolbar);
         mToolbar.setTitle(getResources().getString(R.string.fragment_widget_configure_name));
 
         //Set toolbar as actionbar
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
 
     }
 
@@ -76,10 +78,12 @@ public class PingWidgetConfigureActivity extends AppCompatActivity {
                 return true;
             case R.id.menu_activity_widget_configure_done:
                 PingWidgetConfigureFragment fragment = (PingWidgetConfigureFragment) getSupportFragmentManager().findFragmentById(R.id.activity_preference_fragment);
-                if (Constants.ACTION_WIDGET_CONFIGURE.equals(getIntent().getAction()))
-                    fragment.handleWidgetCreation();
-                else
-                    fragment.handleWidgetReconfigure();
+                if(fragment != null) {
+                    if (Constants.ACTION_WIDGET_CONFIGURE.equals(getIntent().getAction()))
+                        fragment.handleWidgetCreation();
+                    else
+                        fragment.handleWidgetReconfigure();
+                }
         }
         return super.onOptionsItemSelected(item);
     }

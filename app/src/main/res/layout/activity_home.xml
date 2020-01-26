@@ -7,17 +7,15 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background">
 
-    <TextView
-        android:id="@+id/activity_home_version"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/activity_home_version"
-        android:textColor="#FFFFFF"
-        android:textSize="@dimen/activity_home_app_text_links"
-        app:layout_constraintBaseline_toBaselineOf="@id/activity_home_title"
-        app:layout_constraintStart_toEndOf="@id/activity_home_title"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"/>
+    <ImageView
+        android:id="@+id/activity_home_github"
+        android:layout_width="@dimen/activity_home_github"
+        android:layout_height="@dimen/activity_home_github"
+        android:layout_margin="8dp"
+        android:src="@drawable/icon_github"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <TextView
         android:id="@+id/activity_home_title"
@@ -25,12 +23,23 @@
         android:layout_height="wrap_content"
         android:text="@string/activity_home_title"
         android:textColor="#FFFFFF"
-        android:textSize="@dimen/activity_home_app_title"
+        android:textSize="@dimen/activity_home_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="32dp"/>
 
+    <TextView
+        android:id="@+id/activity_home_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/activity_home_version"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/activity_home_version"
+        app:layout_constraintTop_toBottomOf="@id/activity_home_title"
+        app:layout_constraintEnd_toEndOf="@id/activity_home_title"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"/>
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/activity_home_start_guideline"
         android:layout_width="match_parent"
@@ -61,7 +70,7 @@
         android:layout_height="wrap_content"
         android:text="@string/activity_home_subtitle"
         android:textColor="#DDFFFFFF"
-        android:textSize="22sp"
+        android:textSize="@dimen/activity_home_subtitle"
         app:layout_constraintBottom_toTopOf="@id/activity_home_steps_container"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,7 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/activity_home_button"
+        app:layout_constraintBottom_toTopOf="@id/activity_home_ok_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias=".9"
@@ -85,7 +94,7 @@
             android:layout_height="wrap_content"
             android:text="@string/activity_home_step_1_num"
             android:textColor="#DDFFFFFF"
-            android:textSize="36sp"
+            android:textSize="@dimen/activity_home_list_num"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/activity_home_step_2"
             />
@@ -96,7 +105,7 @@
             android:layout_height="wrap_content"
             android:text="@string/activity_home_step_1"
             android:textColor="#DDFFFFFF"
-            android:textSize="@dimen/activity_home_app_text"
+            android:textSize="@dimen/activity_home_list_text"
             app:layout_constraintTop_toTopOf="@id/activity_home_step_1"
             app:layout_constraintBottom_toBottomOf="@id/activity_home_step_1"
             app:layout_constraintStart_toEndOf="@id/activity_home_step_1"
@@ -110,7 +119,7 @@
             android:layout_height="wrap_content"
             android:text="@string/activity_home_step_2_num"
             android:textColor="#DDFFFFFF"
-            android:textSize="36sp"
+            android:textSize="@dimen/activity_home_list_num"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/activity_home_step_3"
             />
@@ -121,7 +130,7 @@
             android:layout_height="wrap_content"
             android:text="@string/activity_home_step_2"
             android:textColor="#DDFFFFFF"
-            android:textSize="@dimen/activity_home_app_text"
+            android:textSize="@dimen/activity_home_list_text"
             app:layout_constraintTop_toTopOf="@id/activity_home_step_2"
             app:layout_constraintBottom_toBottomOf="@id/activity_home_step_2"
             app:layout_constraintStart_toEndOf="@id/activity_home_step_2"
@@ -135,7 +144,7 @@
             android:layout_height="wrap_content"
             android:text="@string/activity_home_step_3_num"
             android:textColor="#DDFFFFFF"
-            android:textSize="36sp"
+            android:textSize="@dimen/activity_home_list_num"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             />
@@ -146,7 +155,7 @@
             android:layout_height="wrap_content"
             android:text="@string/activity_home_step_3"
             android:textColor="#DDFFFFFF"
-            android:textSize="@dimen/activity_home_app_text"
+            android:textSize="@dimen/activity_home_list_text"
             app:layout_constraintTop_toTopOf="@id/activity_home_step_3"
             app:layout_constraintBottom_toBottomOf="@id/activity_home_step_3"
             app:layout_constraintStart_toEndOf="@id/activity_home_step_3"
@@ -156,13 +165,14 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/activity_home_button"
+        android:id="@+id/activity_home_ok_button"
         android:layout_width="match_parent"
         android:layout_height="58dp"
         android:layout_alignParentBottom="true"
         android:background="#44FFFFFF"
-        android:textSize="18sp"
+        android:textSize="@dimen/activity_home_ok_button"
         android:textColor="@color/text_white"
         android:text="@string/activity_home_continue"
         app:layout_constraintBottom_toBottomOf="parent"

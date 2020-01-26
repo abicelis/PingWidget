@@ -11,8 +11,12 @@
     <dimen name="text_small">12sp</dimen>
     <dimen name="text_smaller">10sp</dimen>
 
-    <dimen name="activity_home_app_title">36sp</dimen>
-    <dimen name="activity_home_app_text">14sp</dimen>
-    <dimen name="activity_home_app_text_links">14sp</dimen>
 
+    <dimen name="activity_home_github">28dp</dimen>
+    <dimen name="activity_home_title">36sp</dimen>
+    <dimen name="activity_home_subtitle">22sp</dimen>
+    <dimen name="activity_home_version">14sp</dimen>
+    <dimen name="activity_home_list_num">36sp</dimen>
+    <dimen name="activity_home_list_text">14sp</dimen>
+    <dimen name="activity_home_ok_button">22sp</dimen>
 </resources>

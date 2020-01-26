@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="activity_home_github_link">Ver proyecto en Github</string>
-    <string name="activity_home_market_link">Calificar app</string>
     <string name="activity_home_title">Bienvenido a Ping Widget!</string>
     <string name="activity_widget_configure_menu_done">LISTO</string>
     <string name="fragment_widget_configure_about_summary">Versión %1$s</string>
@@ -20,7 +18,6 @@
     <string name="widget_avg">Avg: %1$s</string>
     <string name="widget_avg_err">Avg: ERR</string>
     <string name="widget_last">Último: %1$s</string>
-    <string name="widget_last_err">Último: ERR</string>
     <string name="widget_max_min">Max: %1$s - Min: %2$s</string>
     <string name="widget_max_min_err">Max: ERR - Min: ERR</string>
     <string name="widget_press_start_activate">Click boton de play para iniciar</string>

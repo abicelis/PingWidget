@@ -15,7 +15,6 @@
     <string name="widget_uptime">Uptime %1$d%%</string>
     <string name="widget_avg">Avg: %1$s</string>
     <string name="widget_max_min_err">Max: ERR - Min: ERR</string>
-    <string name="widget_last_err">Last: ERR</string>
     <string name="widget_uptime_err">Uptime 0%</string>
     <string name="widget_avg_err">Avg: ERR</string>
     <string name="infinite">Infinite</string>
@@ -30,14 +29,10 @@
     <string name="activity_home_step_1">Long press your home screen</string>
     <string name="activity_home_step_2">Tap on \'Widgets\'</string>
     <string name="activity_home_step_3">Drag a PingWidget to your home screen</string>
-    <string name="activity_home_continue" translatable="false">Ok!</string>
+    <string name="activity_home_continue" translatable="false">Got it!</string>
 
     <string name="activity_home_version" translatable="false">v%1$s</string>
     <string name="activity_home_author" translatable="false">Alejandro Bicelis %1$d</string>
-
-    <string name="activity_home_market_link">Rate app</string>
-    <string name="activity_home_github_link">View GitHub Project</string>
-    <string name="activity_home_website_link" translatable="false">www.alejandrobicelis.com.ve</string>
 
     /* Widget Configure preference activity/fragment */
     <string name="fragment_widget_configure_name">Configure Ping Widget</string>
@@ -69,15 +64,15 @@
 
 
     <string name="fragment_widget_configure_about_key" translatable="false">widget_configure_about</string>
-    <string name="fragment_widget_configure_about_summary">Version %1$s</string>
+    <string name="fragment_widget_configure_about_summary">Made with ❤ by Alejandro Bicelis, v%1$s</string>
 
     <string name="fragment_widget_configure_rate_key" translatable="false">widget_configure_rate</string>
     <string name="fragment_widget_configure_rate_title">Rate Ping Widget</string>
-    <string name="fragment_widget_configure_rate_summary">Like this app? A 5-star rating is gladly appreciated</string>
+    <string name="fragment_widget_configure_rate_summary">Liking this app? Take a minute to rate it, thanks!</string>
 
     <string name="fragment_widget_configure_contact_key" translatable="false">widget_configure_contact</string>
     <string name="fragment_widget_configure_contact_title">Contact developer</string>
-    <string name="fragment_widget_configure_contact_summary">Having trouble using this app? Questions? Email me at alejandro@alejandrobicelis.com.ve</string>
+    <string name="fragment_widget_configure_contact_summary">Having trouble or have questions? Tap here to email me</string>
 
 
 

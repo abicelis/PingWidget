@@ -1,27 +1,13 @@
 package ve.com.abicelis.pingwidget.app.activity;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.core.util.Pair;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.Calendar;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -36,12 +22,9 @@ import ve.com.abicelis.pingwidget.util.Util;
 public class HomeActivity extends AppCompatActivity {
 
     //UI
-//    @BindView(R.id.activity_home_text) TextView mHomeText;
     @BindView(R.id.activity_home_version) TextView mVersion;
-//    @BindView(R.id.activity_home_author) TextView mAuthor;
-//    @BindView(R.id.activity_home_website_link) TextView mWebsiteLink;
-    @BindView(R.id.activity_home_button) Button mButton;
-//    @BindView(R.id.activity_home_github_link) Button mGithubButton;
+    @BindView(R.id.activity_home_ok_button) Button mOkButton;
+    @BindView(R.id.activity_home_github) ImageView mGithub;
 
 
     @Override
@@ -50,65 +33,8 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
 
-//        mHomeText.setText(Util.fromHtml(getResources().getString(R.string.activity_home_text)));
-        mVersion.setText(String.format(Locale.getDefault(), getResources().getString(R.string.activity_home_version), getAppVersionAndBuild(this).first));
-//        mAuthor.setText(String.format(Locale.getDefault(), getResources().getString(R.string.activity_home_author), Calendar.getInstance().get(Calendar.YEAR)));
-
-//        final AppCompatActivity thisActivity = this;
-//        mMarketLink.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent playStoreIntent = new Intent(Intent.ACTION_VIEW);
-//                playStoreIntent.setData(Uri.parse(getResources().getString(R.string.url_market)));
-//                startActivity(playStoreIntent);
-//            }
-//        });
-//        mGithubButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                launchWebBrowser(thisActivity, getResources().getString(R.string.url_github));
-//            }
-//        });
-//        mWebsiteLink.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                launchWebBrowser(thisActivity, getResources().getString(R.string.url_website));
-//            }
-//        });
-        mButton.setOnClickListener(v -> onBackPressed());
-    }
-
-    public static Pair<String, Integer> getAppVersionAndBuild(Context context) {
-        try {
-            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            return new Pair<>(pInfo.versionName, pInfo.versionCode);
-        } catch (Exception e) {
-            return new Pair<>("", 0);
-        }
-    }
-
-    @SuppressLint("DefaultLocale")
-    public static boolean launchWebBrowser(Context context, String url) {
-        try {
-            url = url.toLowerCase();
-            if (!url.startsWith("http://") || !url.startsWith("https://")) {
-                url = "http://" + url;
-            }
-
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(url));
-            ResolveInfo resolveInfo = context.getPackageManager().resolveActivity(intent,
-                    PackageManager.MATCH_DEFAULT_ONLY);
-            if (null == resolveInfo) {
-                Toast.makeText(context, "Could not find a Browser to open link", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            context.startActivity(intent);
-            return true;
-        } catch (Exception e) {
-            Toast.makeText(context, "Could not start web browser", Toast.LENGTH_SHORT).show();
-
-            return false;
-        }
+        mVersion.setText(String.format(Locale.getDefault(), getResources().getString(R.string.activity_home_version), Util.getAppVersionAndBuild(this).first));
+        mGithub.setOnClickListener(v -> Util.launchWebBrowser(HomeActivity.this, getResources().getString(R.string.url_github)));
+        mOkButton.setOnClickListener(v -> onBackPressed());
     }
 }

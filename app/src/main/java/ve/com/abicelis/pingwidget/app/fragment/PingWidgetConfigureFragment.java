@@ -70,12 +70,9 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
 
         mAddress = (EditTextPreference) findPreference(getResources().getString(R.string.fragment_widget_configure_address_key));
         mAddress.setSummary(mAddress.getText());                            //If a value was previously set for a previous widget, keep that for next widget
-        mAddress.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                mAddress.setSummary((String) newValue);
-                return true;
-            }
+        mAddress.setOnPreferenceChangeListener((preference, newValue) -> {
+            mAddress.setSummary((String) newValue);
+            return true;
         });
 
         mInterval = (ListPreference) findPreference(getResources().getString(R.string.fragment_widget_configure_interval_key));
@@ -88,12 +85,9 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
         } else {
             mInterval.setSummary(PingIntervalPreferenceType.valueOf(mInterval.getValue()).getEntry(getContext()));
         }
-        mInterval.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                mInterval.setSummary(PingIntervalPreferenceType.valueOf((String) newValue).getEntry(getContext()));
-                return true;
-            }
+        mInterval.setOnPreferenceChangeListener((preference, newValue) -> {
+            mInterval.setSummary(PingIntervalPreferenceType.valueOf((String) newValue).getEntry(getContext()));
+            return true;
         });
 
 
@@ -130,24 +124,27 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
 
 
 
-        mShowChartLines = (SwitchPreference) findPreference(getResources().getString(R.string.fragment_widget_show_chart_lines_key));
-        mUseDarkTheme = (SwitchPreference) findPreference(getResources().getString(R.string.fragment_widget_dark_theme_key));
-        mTheme = (ThemePreference) findPreference(getResources().getString(R.string.fragment_widget_configure_theme_key));
+        mShowChartLines = findPreference(getResources().getString(R.string.fragment_widget_show_chart_lines_key));
+        mUseDarkTheme = findPreference(getResources().getString(R.string.fragment_widget_dark_theme_key));
+        mTheme = findPreference(getResources().getString(R.string.fragment_widget_configure_theme_key));
         mAbout = findPreference(getResources().getString(R.string.fragment_widget_configure_about_key));
-        mAbout.setSummary(String.format(Locale.getDefault(), getResources().getString(R.string.fragment_widget_configure_about_summary), getAppVersionAndBuild(getActivity()).first));
+        if (mAbout != null)
+            mAbout.setSummary(String.format(Locale.getDefault(), getResources().getString(R.string.fragment_widget_configure_about_summary), Util.getAppVersionAndBuild(getActivity()).first));
         mRate = findPreference(getResources().getString(R.string.fragment_widget_configure_rate_key));
-        mRate.setOnPreferenceClickListener(preference -> {
-            Intent playStoreIntent = new Intent(Intent.ACTION_VIEW);
-            playStoreIntent.setData(Uri.parse(getResources().getString(R.string.url_market)));
-            startActivity(playStoreIntent);
-            return true;
-        });
+        if(mRate != null)
+            mRate.setOnPreferenceClickListener(preference -> {
+                Intent playStoreIntent = new Intent(Intent.ACTION_VIEW);
+                playStoreIntent.setData(Uri.parse(getResources().getString(R.string.url_market)));
+                startActivity(playStoreIntent);
+                return true;
+            });
         mContact = findPreference(getResources().getString(R.string.fragment_widget_configure_contact_key));
-        mContact.setOnPreferenceClickListener(preference -> {
-            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto",getResources().getString(R.string.address_email), null));
-            startActivity(Intent.createChooser(emailIntent, "Send email..."));
-            return true;
-        });
+        if(mContact != null)
+            mContact.setOnPreferenceClickListener(preference -> {
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto",getResources().getString(R.string.address_email), null));
+                startActivity(Intent.createChooser(emailIntent, "Send email..."));
+                return true;
+            });
 
         //Get the arguments (bundle) passed from PingWidgetConfigureActivity, which contains the widgetId
         mWidgetId = getArguments().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
@@ -180,40 +177,6 @@ public class PingWidgetConfigureFragment extends PreferenceFragmentCompat {
         }
 
 
-    }
-
-    private static Pair<String, Integer> getAppVersionAndBuild(Context context) {
-        try {
-            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            return new Pair<>(pInfo.versionName, pInfo.versionCode);
-        } catch (Exception e) {
-            return new Pair<>("", 0);
-        }
-    }
-
-    @SuppressLint("DefaultLocale")
-    private static boolean launchWebBrowser(Context context, String url) {
-        try {
-            url = url.toLowerCase();
-            if (!url.startsWith("http://") || !url.startsWith("https://")) {
-                url = "http://" + url;
-            }
-
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(url));
-            ResolveInfo resolveInfo = context.getPackageManager().resolveActivity(intent,
-                    PackageManager.MATCH_DEFAULT_ONLY);
-            if (null == resolveInfo) {
-                Toast.makeText(context, "Could not find a Browser to open link", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            context.startActivity(intent);
-            return true;
-        } catch (Exception e) {
-            Toast.makeText(context, "Could not start web browser", Toast.LENGTH_SHORT).show();
-
-            return false;
-        }
     }
 
     private boolean checkValues() {

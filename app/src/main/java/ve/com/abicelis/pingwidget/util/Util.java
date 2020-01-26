@@ -1,15 +1,23 @@
 package ve.com.abicelis.pingwidget.util;
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 
 import androidx.core.content.ContextCompat;
+import androidx.core.util.Pair;
+
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import ve.com.abicelis.pingwidget.R;
 import ve.com.abicelis.pingwidget.app.activity.PingWidgetConfigureActivity;
@@ -95,6 +103,39 @@ public class Util {
         AppWidgetManager.getInstance(context).updateAppWidget(widgetId, views);
     }
 
+    public static Pair<String, Integer> getAppVersionAndBuild(Context context) {
+        try {
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return new Pair<>(pInfo.versionName, pInfo.versionCode);
+        } catch (Exception e) {
+            return new Pair<>("", 0);
+        }
+    }
 
+
+    @SuppressLint("DefaultLocale")
+    public static boolean launchWebBrowser(Context context, String url) {
+        try {
+            url = url.toLowerCase();
+            if (!url.startsWith("http://") || !url.startsWith("https://")) {
+                url = "http://" + url;
+            }
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            ResolveInfo resolveInfo = context.getPackageManager().resolveActivity(intent,
+                    PackageManager.MATCH_DEFAULT_ONLY);
+            if (null == resolveInfo) {
+                Toast.makeText(context, "Could not find a Browser to open link", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            context.startActivity(intent);
+            return true;
+        } catch (Exception e) {
+            Toast.makeText(context, "Could not start web browser", Toast.LENGTH_SHORT).show();
+
+            return false;
+        }
+    }
 
 }
